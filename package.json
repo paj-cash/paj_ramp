@@ -1,0 +1,32 @@
+{
+  "name": "paj",
+  "version": "1.0.0",
+  "description": "paj offramp service",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "prelink": "npm run build",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GOSPEL-CHUKWU/paj_ramp.git"
+  },
+  "keywords": [
+    "PAJ"
+  ],
+  "author": "Ebube",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GOSPEL-CHUKWU/paj_ramp/issues"
+  },
+  "homepage": "https://github.com/GOSPEL-CHUKWU/paj_ramp#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "axios": "^1.9.0"
+  }
+}
