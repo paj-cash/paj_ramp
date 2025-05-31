@@ -34,10 +34,10 @@ yarn add paj_ramp
 
 ```bash
 # Get tx pool address
-cosnt txpooladdress = await getTXPoolAddress();
+    cosnt txpooladdress = await getTXPoolAddress();
 
 # Response
-{
-	address: string,
-}
+    {
+    address: string,
+    }
 ```
