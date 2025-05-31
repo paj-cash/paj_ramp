@@ -32,12 +32,13 @@ yarn add paj_ramp
 
 ## 📘 Usage Examples
 
+### Get tx pool address
+
 ```bash
-# Get tx pool address
-    cosnt txpooladdress = await getTXPoolAddress();
+const txpooladdress = await getTXPoolAddress();
 
 # Response
-    {
+{
     address: string,
-    }
+}
 ```
