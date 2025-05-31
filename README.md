@@ -4,4 +4,8 @@ Paj Ramp is a crypto offramp API designed to allow users to convert Solana-based
 
 > *A simple wrapper for communicating with paj_ramp's backend endpoints — no manual API calls required.*
 
+## *“Send SOL. Get Naira.”*
+> *The goal is to let users withdraw their crypto holdings from a Solana wallet and receive fiat currency in their linked bank accounts — all through a simple, authenticated API integration.*
+
 ---
+
