@@ -23,7 +23,7 @@ Paj Ramp is a crypto offramp API designed to allow users to convert Solana-based
 
 ```bash
 # With npm
-`npm install paj_ramp`
+npm install paj_ramp
 
 # With yarn
-`yarn add paj_ramp`
+yarn add paj_ramp
