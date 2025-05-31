@@ -35,10 +35,27 @@ yarn add paj_ramp
 ### Get tx pool address
 
 ```bash
+import { getTXPoolAddress } from 'paj_ramp';
+
 const txpooladdress = await getTXPoolAddress();
 
 # Response
 {
     address: string,
+}
+```
+
+### Get rate
+
+```bash
+import { getRate } from 'paj_ramp';
+
+const rate = await getRate();
+
+# Response
+{
+  baseCurrency: string,
+  targetCurrency: string,
+  rate: number
 }
 ```
