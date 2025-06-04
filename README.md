@@ -69,7 +69,7 @@ const rate = await getRate(50000);
 
 # Response
 {
-	rate: {
+  rate: {
 		baseCurrency: string,
     targetCurrency: string,
     rate: number
