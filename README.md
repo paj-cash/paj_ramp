@@ -212,10 +212,10 @@ const addedWallet = await addWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc
 
 # Response
 {
-	id: string,
+  id: string,
   publicKey: string,
   bankAccount: {
-	  id: string,
+    id: string,
     accountName: string,
     accountNumber: string,
     bank: string
