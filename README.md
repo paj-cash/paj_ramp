@@ -242,4 +242,3 @@ const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRs
   }
 }
 ```
-
