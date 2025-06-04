@@ -41,7 +41,7 @@ const txpooladdress = await getTXPoolAddress();
 
 # Response
 {
-    address: string,
+  address: string,
 }
 ```
 
@@ -59,3 +59,187 @@ const rate = await getRate();
   rate: number
 }
 ```
+
+### Get rate with amount
+
+```bash
+import { getRate } from 'paj_ramp';
+
+const rate = await getRate(50000);
+
+# Response
+{
+	rate: {
+		baseCurrency: string,
+    targetCurrency: string,
+    rate: number
+  },
+  amounts: {
+	  userTax: number,
+	  merchantTax": number,
+    amountUSD": number,
+    userAmountFiat": number
+   }
+}
+```
+
+### Initiate Session
+
+```bash
+import { initiate } from 'paj_ramp';
+
+const initialized = await initiate('pay_ramp@gmail.com');
+
+# Response
+{
+	email: string
+}
+```
+
+### Verify Session
+
+```bash
+import { verify } from 'paj_ramp';
+
+const verified = await verify('paj_ramp@gmail.com', '1234', 'security');
+
+# Response
+{
+	email: string,
+	isActive: string,
+	expiresAt: string,
+	token: string
+}
+```
+
+### Get Banks: Get list of banks
+
+```bash
+import { getBanks } from 'paj_ramp';
+
+const banks = await getBanks();
+
+# Response
+[
+	{
+		id: string,
+		name: string,
+    country: string
+  }
+]
+```
+
+### Resolve Bank Account
+
+```bash
+import { resolveBankAccount } from 'paj_ramp';
+
+const resolvedBankAccount = await resolveBankAccount('6805867ef4b553222f92acf9', '9037274774');
+
+# Response
+{
+	accountName: string,
+  accountNumber: string,
+  bank: {
+	  id: string,
+    name: string,
+    code: string,
+    country: string,
+  }
+}
+```
+
+### Add Bank Account
+
+```bash
+import { addBankAccount } from 'paj_ramp';
+
+const addedBankAccount = await addBankAccount('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825', '6805867ef4b553222f92acf9', '9037274777');
+
+# Response
+{
+	id: string,
+	accountName: string,
+  accountNumber: string,
+  bank: string
+}
+```
+
+### Get Bank Accounts
+
+```bash
+import { getBankAccounts } from 'paj_ramp';
+
+const addedBankAccount = await getBankAccounts('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825');
+
+# Response
+[
+	{
+		id: string,
+    accountName: string,
+    accountNumber: string,
+    bank: string
+  }
+]
+```
+
+### Get Wallet Info
+
+```bash
+import { getWallet } from 'paj_ramp';
+
+const wallet = await getWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825');
+
+# Response
+{
+	id: string,
+  publicKey: string,
+  bankAccount: {
+	  id: string,
+    accountName: string,
+    accountNumber: string,
+    bank: string
+  }
+}
+```
+
+### Add Wallet
+
+```bash
+import { addWallet } from 'paj_ramp';
+
+const addedWallet = await addWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825', '68346e4dd7d5d51ea42f261c');
+
+# Response
+{
+	id: string,
+  publicKey: string,
+  bankAccount: {
+	  id: string,
+    accountName: string,
+    accountNumber: string,
+    bank: string
+  }
+}
+```
+
+### Switch Bank Account on Wallet
+
+```bash
+import { switchWalletBankAccount } from 'paj_ramp';
+
+const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRswe4XthtVQgamEPST9s');
+
+# Response
+{
+	id: string,
+  publicKey: string,
+  bankAccount: {
+	  id: string,
+    accountName: string,
+    accountNumber: string,
+    bank: string
+  }
+}
+```
+
