@@ -192,10 +192,10 @@ const wallet = await getWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024f
 
 # Response
 {
-	id: string,
+  id: string,
   publicKey: string,
   bankAccount: {
-	  id: string,
+    id: string,
     accountName: string,
     accountNumber: string,
     bank: string
@@ -232,10 +232,10 @@ const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRs
 
 # Response
 {
-	id: string,
+  id: string,
   publicKey: string,
   bankAccount: {
-	  id: string,
+    id: string,
     accountName: string,
     accountNumber: string,
     bank: string
