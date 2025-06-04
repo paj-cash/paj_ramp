@@ -70,13 +70,13 @@ const rate = await getRate(50000);
 # Response
 {
   rate: {
-		baseCurrency: string,
+    baseCurrency: string,
     targetCurrency: string,
     rate: number
   },
   amounts: {
-	  userTax: number,
-	  merchantTax": number,
+    userTax: number,
+    merchantTax": number,
     amountUSD": number,
     userAmountFiat": number
    }
@@ -92,7 +92,7 @@ const initialized = await initiate('pay_ramp@gmail.com');
 
 # Response
 {
-	email: string
+  email: string
 }
 ```
 
@@ -105,10 +105,10 @@ const verified = await verify('paj_ramp@gmail.com', '1234', 'security');
 
 # Response
 {
-	email: string,
-	isActive: string,
-	expiresAt: string,
-	token: string
+  email: string,
+  isActive: string,
+  expiresAt: string,
+  token: string
 }
 ```
 
@@ -121,9 +121,9 @@ const banks = await getBanks();
 
 # Response
 [
-	{
-		id: string,
-		name: string,
+  {
+    id: string,
+    name: string,
     country: string
   }
 ]
@@ -138,10 +138,10 @@ const resolvedBankAccount = await resolveBankAccount('6805867ef4b553222f92acf9',
 
 # Response
 {
-	accountName: string,
+  accountName: string,
   accountNumber: string,
   bank: {
-	  id: string,
+  id: string,
     name: string,
     code: string,
     country: string,
@@ -158,8 +158,8 @@ const addedBankAccount = await addBankAccount('dce29069ba963e04a32028111ef0231a9
 
 # Response
 {
-	id: string,
-	accountName: string,
+  id: string,
+  accountName: string,
   accountNumber: string,
   bank: string
 }
@@ -174,8 +174,8 @@ const addedBankAccount = await getBankAccounts('dce29069ba963e04a32028111ef0231a
 
 # Response
 [
-	{
-		id: string,
+  {
+    id: string,
     accountName: string,
     accountNumber: string,
     bank: string
