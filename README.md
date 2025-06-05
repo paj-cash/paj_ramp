@@ -30,6 +30,8 @@ npm install paj_ramp
 yarn add paj_ramp
 ```
 
+---
+
 ## 📘 Usage Examples
 
 ### Get tx pool address
@@ -242,3 +244,19 @@ const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRs
   }
 }
 ```
+
+---
+
+## 🛠 Tech Stack
+
+- Node.js
+- TypeScript
+- Axios (or `fetch`, if you're using it)
+
+---
+
+## 🧑‍💻 Author
+
+Your Name — Gospel Chidiebube Chukwu
+
+
