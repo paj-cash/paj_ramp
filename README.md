@@ -247,14 +247,6 @@ const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRs
 
 ---
 
-## 🛠 Tech Stack
-
-- Node.js
-- TypeScript
-- Axios
-
----
-
 ## 🧑‍💻 Author
 
 Your Name — Gospel Chidiebube Chukwu
