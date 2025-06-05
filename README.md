@@ -251,7 +251,7 @@ const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRs
 
 - Node.js
 - TypeScript
-- Axios (or `fetch`, if you're using it)
+- Axios
 
 ---
 
