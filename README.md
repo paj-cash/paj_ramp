@@ -16,7 +16,7 @@ Paj Ramp is a crypto offramp API designed to allow users to convert Solana-based
 - 🔐 Handles Session Management
 - 🧱 Clean, modular API
 - 🕊️ No need to write `fetch()` or `axios` manually
-- 🕸️ Handles Bank Operations like getting banks, adding bank, resolve bank and getting bank linked to the account
+- 🕸️ Handles Bank Operations like getting banks, adding banks, resolving banks and getting banks linked to the account
 
 ---
 
