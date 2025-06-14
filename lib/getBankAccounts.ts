@@ -1,4 +1,4 @@
-import { get } from '../utils/api.js';
+import { get } from "../utils/api.js";
 
 type GetBankAccountsType = {
   id: string;
@@ -17,17 +17,17 @@ type GetBankAccountsType = {
  * Raises:
  *   Throws an error if the request fails.
  */
-export const getBankAccounts = async (token: string) => {
+export const getBankAccounts = async (apiKey: string) => {
   try {
     return await get<GetBankAccountsType[]>(
       `/pub/bankaccount`,
       {},
       {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${apiKey}`,
       }
     );
   } catch (err) {
-    console.error('Error fetching bank accounts:', err);
+    console.error("Error fetching bank accounts:", err);
     throw err;
   }
 };
