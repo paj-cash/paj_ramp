@@ -20,18 +20,6 @@ export const getWalletBody = async (
   secretKey: Uint8Array
 ) => {
   try {
-    // const __filename = fileURLToPath(import.meta.url);
-    // const __dirname = dirname(__filename);
-
-    // const walletPath = resolve(__dirname, '../../wallet.json');
-    // const secretKeyRaw = fs.readFileSync(walletPath, 'utf8');
-    // const secretKeyArray = JSON.parse(secretKeyRaw);
-
-    // if (!Array.isArray(secretKeyArray) || secretKeyArray.length !== 64) {
-    //   throw new Error('Invalid secret key: must be an array of 64 numbers.');
-    // }
-
-    // const secretKey = Uint8Array.from(secretKeyArray);
     const keypair = Keypair.fromSecretKey(secretKey);
 
     let timestamp = new Date().toISOString();
