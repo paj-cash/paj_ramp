@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GOSPEL-CHUKWU/paj_ramp.git"
+    "url": "git+https://github.com/paj-cash/paj_ramp.git"
   },
   "keywords": [
     "PAJ"
@@ -20,9 +20,9 @@
   "author": "Ebube",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GOSPEL-CHUKWU/paj_ramp/issues"
+    "url": "https://github.com/paj-cash/paj_ramp/issues"
   },
-  "homepage": "https://github.com/GOSPEL-CHUKWU/paj_ramp#readme",
+  "homepage": "https://github.com/paj-cash/paj_ramp#readme",
   "devDependencies": {
     "@types/node": "^22.15.24",
     "typescript": "^5.8.3"
