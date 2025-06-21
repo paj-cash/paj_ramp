@@ -210,7 +210,7 @@ const wallet = await getWallet('wallet public key');
 ```bash
 import { addWallet } from 'paj_ramp';
 
-const addedWallet = await addWallet('token', 'bank account id');
+const addedWallet = await addWallet('token', 'bank account id', 'secret key');
 
 # Response
 {
@@ -230,7 +230,7 @@ const addedWallet = await addWallet('token', 'bank account id');
 ```bash
 import { switchWalletBankAccount } from 'paj_ramp';
 
-const switchedWallet = await switchWalletBankAccount('token','bank account id to switch to', 'wallet id');
+const switchedWallet = await switchWalletBankAccount('token','bank account id to switch to', 'wallet id', 'secret key');
 
 # Response
 {
