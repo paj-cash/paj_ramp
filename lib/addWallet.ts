@@ -19,10 +19,9 @@ export const addWallet = async (token: string, accountId: string) => {
       throw new Error('Failed to get wallet body');
     }
 
-    const response = await post<WalletType>('/pub/wallet', body, {
+    return await post<WalletType>('/pub/wallet', body, {
       Authorization: `Bearer ${token}`,
     });
-    return response;
   } catch (err) {
     console.error('Error adding wallet:', err);
     throw err;

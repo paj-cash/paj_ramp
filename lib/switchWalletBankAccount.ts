@@ -4,16 +4,17 @@ import { WalletType } from './getWallet.js';
 
 export const switchWalletBankAccount = async (
   token: string,
-  accountId: string
+  accountId: string,
+  walletId: string,
 ) => {
   try {
     const body = await getWalletBody(accountId);
     if (!body) {
       throw new Error('Failed to get wallet body');
     }
-    console.log(body)
+    console.log(body);
 
-    const response = await patch<WalletType>(`/pub/wallet`, body, {
+    const response = await patch<WalletType>(`/pub/wallet/${walletId}`, body, {
       Authorization: `Bearer ${token}`,
     });
     return response;

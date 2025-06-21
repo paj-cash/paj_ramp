@@ -45,7 +45,9 @@ export const getWalletBody = async (accountId: string) => {
       payload,
       signature,
     };
-    if (isValid) return body;
+    if (isValid) {
+      return body;
+    }
   } catch (err) {
     console.error('Error getting wallet body:', err);
   }

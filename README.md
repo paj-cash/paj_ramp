@@ -90,7 +90,7 @@ const rate = await getRate(50000);
 ```bash
 import { initiate } from 'paj_ramp';
 
-const initialized = await initiate('pay_ramp@gmail.com');
+const initialized = await initiate('your_email@gmail.com');
 
 # Response
 {
@@ -103,7 +103,7 @@ const initialized = await initiate('pay_ramp@gmail.com');
 ```bash
 import { verify } from 'paj_ramp';
 
-const verified = await verify('paj_ramp@gmail.com', '1234', 'security');
+const verified = await verify('your_email@gmail.com', '1234', 'device signature');
 
 # Response
 {
@@ -136,7 +136,7 @@ const banks = await getBanks();
 ```bash
 import { resolveBankAccount } from 'paj_ramp';
 
-const resolvedBankAccount = await resolveBankAccount('6805867ef4b553222f92acf9', '9037274774');
+const resolvedBankAccount = await resolveBankAccount('bank id', 'account number');
 
 # Response
 {
@@ -156,7 +156,7 @@ const resolvedBankAccount = await resolveBankAccount('6805867ef4b553222f92acf9',
 ```bash
 import { addBankAccount } from 'paj_ramp';
 
-const addedBankAccount = await addBankAccount('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825', '6805867ef4b553222f92acf9', '9037274777');
+const addedBankAccount = await addBankAccount('token', 'bank id', 'account number');
 
 # Response
 {
@@ -172,7 +172,7 @@ const addedBankAccount = await addBankAccount('dce29069ba963e04a32028111ef0231a9
 ```bash
 import { getBankAccounts } from 'paj_ramp';
 
-const addedBankAccount = await getBankAccounts('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825');
+const addedBankAccount = await getBankAccounts('token');
 
 # Response
 [
@@ -190,7 +190,7 @@ const addedBankAccount = await getBankAccounts('dce29069ba963e04a32028111ef0231a
 ```bash
 import { getWallet } from 'paj_ramp';
 
-const wallet = await getWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825');
+const wallet = await getWallet('wallet public key');
 
 # Response
 {
@@ -210,7 +210,7 @@ const wallet = await getWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024f
 ```bash
 import { addWallet } from 'paj_ramp';
 
-const addedWallet = await addWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc4024fc1fcddaeeea5e9cb4fa605cc5233508ee60c513a28f85825', '68346e4dd7d5d51ea42f261c');
+const addedWallet = await addWallet('token', 'bank account id');
 
 # Response
 {
@@ -230,7 +230,7 @@ const addedWallet = await addWallet('dce29069ba963e04a32028111ef0231a9f23a296cfc
 ```bash
 import { switchWalletBankAccount } from 'paj_ramp';
 
-const switchedWallet = await switchWalletBankAccount('EzYx5qspJ6ywJDLsiXo8bErcRswe4XthtVQgamEPST9s');
+const switchedWallet = await switchWalletBankAccount('token','bank account id to switch to', 'wallet id');
 
 # Response
 {
