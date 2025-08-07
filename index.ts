@@ -22,7 +22,9 @@ export { addWallet } from "./lib/off_ramp/addWallet.js";
 export { switchWalletBankAccount } from "./lib/off_ramp/switchWalletBankAccount.js";
 
 // ON RAMP
+
+// Create Order
 export { createOrder } from "./lib/on_ramp/createOrder.js";
 
-// NEW: Socket.IO exports
-export { observeOrder, OnRampOrderUpdate } from "./lib/on_ramp/observeOrder.js";
+// Observe Order Socket.IO
+export { observeOrder } from "./lib/on_ramp/observeOrder.js";
