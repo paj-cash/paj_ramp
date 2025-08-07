@@ -1,5 +1,5 @@
-import { post } from "../utils/api.js";
-import { getWalletBody } from "../utils/getWalletBody.js";
+import { post } from "../../utils/api.js";
+import { getWalletBody } from "../../utils/getWalletBody.js";
 import { WalletType } from "./getWallet.js";
 
 /**
@@ -23,7 +23,7 @@ export const addWallet = async (
       throw new Error("Failed to get wallet body");
     }
 
-    const response = await post<WalletType>("/pub/wallet", body, {
+    return await post<WalletType>("/pub/wallet", body, {
       Authorization: `Bearer ${apiKey}`,
     });
   } catch (err) {

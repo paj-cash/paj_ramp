@@ -1,4 +1,4 @@
-import { get } from '../utils/api.js';
+import { get } from "../../utils/api.js";
 
 export type WalletType = {
   id: string;
@@ -28,7 +28,7 @@ export const getWallet = async (publicKey: string) => {
   try {
     return await get<WalletType>(`/pub/wallet/${publicKey}`);
   } catch (err) {
-    console.error('Error fetching wallet:', err);
+    console.error("Error fetching wallet:", err);
     throw err;
   }
 };

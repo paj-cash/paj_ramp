@@ -1,6 +1,6 @@
-import api from './axios.js';
+import api from "./axios.js";
 
-type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
+type Method = "get" | "post" | "put" | "patch" | "delete";
 
 interface ApiOptions {
   data?: any;
@@ -60,7 +60,7 @@ async function request<T>(
  *   Throws the error response data or error message if the request fails.
  */
 export function get<T>(url: string, params?: any, headers?: any) {
-  return request<T>('get', url, { params, headers });
+  return request<T>("get", url, { params, headers });
 }
 
 /**
@@ -79,7 +79,7 @@ export function get<T>(url: string, params?: any, headers?: any) {
  *   Throws the error response data or error message if the request fails.
  */
 export function post<T>(url: string, data?: any, headers?: any) {
-  return request<T>('post', url, { data, headers });
+  return request<T>("post", url, { data, headers });
 }
 
 /**
@@ -98,7 +98,7 @@ export function post<T>(url: string, data?: any, headers?: any) {
  *   Throws the error response data or error message if the request fails.
  */
 export function put<T>(url: string, data?: any, headers?: any) {
-  return request<T>('put', url, { data, headers });
+  return request<T>("put", url, { data, headers });
 }
 /**
  * Sends a PATCH request to the specified URL with optional data and headers.
@@ -116,7 +116,7 @@ export function put<T>(url: string, data?: any, headers?: any) {
  *   Throws the error response data or error message if the request fails.
  */
 export function patch<T>(url: string, data?: any, headers?: any) {
-  return request<T>('patch', url, { data, headers });
+  return request<T>("patch", url, { data, headers });
 }
 
 /**
@@ -135,5 +135,5 @@ export function patch<T>(url: string, data?: any, headers?: any) {
  *   Throws the error response data or error message if the request fails.
  */
 export function del<T>(url: string, data?: any, headers?: any) {
-  return request<T>('delete', url, { data, headers });
+  return request<T>("delete", url, { data, headers });
 }

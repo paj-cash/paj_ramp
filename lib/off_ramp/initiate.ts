@@ -1,4 +1,4 @@
-import { post } from '../utils/api.js';
+import { post } from "../../utils/api.js";
 // Define or import the InitiateResponse type
 type InitiateResponse = {
   email: string;
@@ -18,14 +18,14 @@ type InitiateResponse = {
  *   Throws an error if the request fails.
  */
 export const initiate = async (email: string) => {
-    try {
-      return await post<InitiateResponse>(
-        '/pub/initiate',
-        { email },
-        { 'x-api-key': '3ada687e-78d1-45f3-933d-c992adcc2bbb' }
-      );
-    } catch (err) {
-      console.error('Error initiating:', err);
-      throw err;
-    }
-  };
+  try {
+    return await post<InitiateResponse>(
+      "/pub/initiate",
+      { email },
+      { "x-api-key": "3ada687e-78d1-45f3-933d-c992adcc2bbb" }
+    );
+  } catch (err) {
+    console.error("Error initiating:", err);
+    throw err;
+  }
+};

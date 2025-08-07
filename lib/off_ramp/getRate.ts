@@ -1,4 +1,4 @@
-import { get } from '../utils/api.js';
+import { get } from "../../utils/api.js";
 
 type RateType = {
   baseCurrency: string;
@@ -27,9 +27,9 @@ type RateType = {
  */
 export const getRate = async (amount: number) => {
   try {
-    return await get<RateType>(amount ? `/pub/rate/${amount}` : '/pub/rate');
+    return await get<RateType>(amount ? `/pub/rate/${amount}` : "/pub/rate");
   } catch (err) {
-    console.error('Error fetching Rate:', err);
+    console.error("Error fetching Rate:", err);
     throw err;
   }
 };

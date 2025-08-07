@@ -1,4 +1,4 @@
-import { get } from '../utils/api.js';
+import { get } from "../../utils/api.js";
 
 type BankType = {
   id: string;
@@ -19,7 +19,7 @@ export const getBanks = async () => {
   try {
     return await get<BankType[]>(`/pub/bank`);
   } catch (err) {
-    console.error('Error fetching Banks:', err);
+    console.error("Error fetching Banks:", err);
     throw err;
   }
 };

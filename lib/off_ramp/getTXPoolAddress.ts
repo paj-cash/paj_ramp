@@ -1,4 +1,4 @@
-import { get } from '../utils/api.js';
+import { get } from "../../utils/api.js";
 
 /**
  * Fetches the transaction pool address from the public API endpoint.
@@ -14,9 +14,9 @@ export const getTXPoolAddress = async () => {
   try {
     return await get<{
       address: string;
-    }>('/pub/txpool-address');
+    }>("/pub/txpool-address");
   } catch (err) {
-    console.error('Error fetching TX Pool Address:', err);
+    console.error("Error fetching TX Pool Address:", err);
     throw err;
   }
 };

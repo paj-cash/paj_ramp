@@ -1,4 +1,11 @@
-import { post } from '../utils/api.js';
+import { post } from "../../utils/api.js";
+
+type AddBankAccountType = {
+  id: string;
+  accountName: string;
+  accountNumber: string;
+  bank: string;
+};
 
 /**
  * Adds a new bank account by sending the provided token, bank ID, and account number to the public API.
@@ -15,15 +22,14 @@ import { post } from '../utils/api.js';
  * Raises:
  *   Throws an error if the request fails.
  */
-export const addBankAccount = async (token: string, bankId: string, accountNumber: string) => {
+export const addBankAccount = async (
+  token: string,
+  bankId: string,
+  accountNumber: string
+) => {
   try {
-    return await post<{
-      id: string;
-      accountName: string;
-      accountNumber: string;
-      bank: string;
-    }>(
-      '/pub/bankAccount',
+    return await post<AddBankAccountType>(
+      "/pub/bankAccount",
       {
         bankId,
         accountNumber,
@@ -33,7 +39,7 @@ export const addBankAccount = async (token: string, bankId: string, accountNumbe
       }
     );
   } catch (err) {
-    console.error('Error adding bank account:', err);
+    console.error("Error adding bank account:", err);
     throw err;
   }
 };
