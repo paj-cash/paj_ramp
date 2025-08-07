@@ -8,13 +8,15 @@ A comprehensive SDK for PAJ Ramp onramp and offramp operations with real-time tr
 - **Offramp Operations**: Complete offramp workflow with bank account management
 - **Real-time Updates**: Socket.IO integration for live transaction status updates
 - **TypeScript Support**: Full TypeScript definitions included
-- **Multiple Environments**: Support for both staging and production environments
 - **Functional API**: Clean functional approach for better composability
 
 ## Installation
 
 ```bash
 npm install paj-ramp
+```
+
+```bash
 yarn add paj-ramp
 ```
 
@@ -35,10 +37,9 @@ import {
   createOnRampSocket,
 } from "paj-ramp";
 
-// Method 1: Using observeOrder function
+// Using observeOrder function
 const observer = observeOrder({
-  orderId: "your-order-id",
-  environment: "staging", // or 'main' for production
+  orderId: "your_order_id",
   onOrderUpdate: (data) => {
     console.log("Order update:", data);
     // Handle status changes: pending, processing, completed, failed, cancelled
@@ -49,26 +50,6 @@ const observer = observeOrder({
 });
 
 await observer.connect();
-
-// Method 2: Using createOrderObserver (simpler)
-const observer = await createOrderObserver("your-order-id", "staging", {
-  onOrderUpdate: (data) => {
-    console.log("Order update:", data);
-    if (data.status === "completed") {
-      observer.disconnect();
-    }
-  },
-});
-
-// Method 3: Using createOnRampSocket directly
-const socket = createOnRampSocket({
-  orderId: "your-order-id",
-  environment: "main",
-  onOrderUpdate: (data) => console.log("Update:", data),
-  onError: (error) => console.error("Error:", error),
-});
-
-await socket.connect();
 ```
 
 ### Order Update Data Structure
@@ -81,7 +62,6 @@ interface OnRampOrderUpdate {
   recipient: string; // wallet address
   mint: string; // token address
   chain: Chain; // enum: 'solana', 'ethereum', 'polygon'
-  amount: number;
   status: OnRampStatus; // enum: 'pending', 'processing', 'completed', 'failed', 'cancelled'
 }
 ```
@@ -93,21 +73,15 @@ The SDK listens for these Socket.IO events:
 - **ORDER_UPDATE**: Real-time order status updates
 - **ERROR**: Error messages from the server
 
-### Environment Configuration
-
-- **Staging**: `https://onramp-staging.paj.cash/onramp-socket`
-- **Production**: `https://onramp.paj.cash/onramp-socket`
-
 ## API Reference
 
 ### observeOrder(options)
 
-Creates an order observer with manual connection control.
+Creates an order observer.
 
 **Parameters:**
 
 - `options.orderId` (string, required): The order ID to observe
-- `options.environment` ('main' | 'staging', optional): Environment to use
 - `options.onOrderUpdate` (function, optional): Callback for order updates
 - `options.onError` (function, optional): Callback for errors
 - `options.onConnect` (function, optional): Callback when connected
@@ -121,90 +95,51 @@ Creates an order observer with manual connection control.
 - `connect()`: Function to connect to the socket
 - `disconnect()`: Function to disconnect from the socket
 
-### createOrderObserver(orderId, environment, callbacks)
+### createOrder(orderData)
 
-Creates and automatically connects an order observer.
-
-**Parameters:**
-
-- `orderId` (string, required): The order ID to observe
-- `environment` ('main' | 'staging', optional): Environment to use
-- `callbacks` (object, optional): Callback functions
-
-**Returns:** Promise that resolves to the observer object
-
-### createOnRampSocket(options)
-
-Creates a raw Socket.IO instance for direct control.
+Creates a new onramp order.
 
 **Parameters:**
 
-- `options.orderId` (string, required): The order ID to observe
-- `options.environment` ('main' | 'staging', optional): Environment to use
-- `options.onOrderUpdate` (function, optional): Callback for order updates
-- `options.onError` (function, optional): Callback for errors
+- `orderData` (object, required): Order creation data
+- `orderData.fiatAmount` (number, required): Order amount
+- `orderData.currency` (string, required): Currency code (e.g., 'USD', 'NGN')
+- `orderData.recipient` (string, required): Wallet address to receive tokens
+- `orderData.mint` (string, required): Token mint address
+- `orderData.chain` (Chain, required): Blockchain network ('solana', 'ethereum', 'polygon')
+- `orderData.token` (string, required): Verification token
 
-**Returns:** Object with socket control methods
+**Returns:**
 
-## Examples
+- `id` (string): Unique order identifier
+- `accountNumber` (string): Bank account number for payment
+- `accountName` (string): Bank account holder name
+- `fiatAmount` (number): Order amount in fiat currency
+- `bank` (string): Bank name
 
-See the `examples/observe-order-example.ts` file for complete usage examples.
+**Example:**
+
+```typescript
+import { createOrder } from "paj-ramp";
+
+const order = await createOrder({
+  fiatAmount: 10000,
+  currency: "NGN",
+  recipient: "wallet_address_here",
+  mint: "token_mint_address_here",
+  chain: "SOLANA",
+  token: "token_from_verification",
+});
+// Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
+```
 
 ### Basic Usage
-
-```typescript
-import { createOrderObserver } from "paj-ramp";
-
-const observer = await createOrderObserver("order-123", "staging", {
-  onOrderUpdate: (data) => {
-    switch (data.status) {
-      case "pending":
-        console.log("Order is pending...");
-        break;
-      case "processing":
-        console.log("Order is being processed...");
-        break;
-      case "completed":
-        console.log("Order completed!");
-        observer.disconnect();
-        break;
-      case "failed":
-        console.log("Order failed");
-        observer.disconnect();
-        break;
-    }
-  },
-  onError: (error) => {
-    console.error("Error:", error);
-  },
-});
-```
-
-### Direct Socket Usage
-
-```typescript
-import { createOnRampSocket } from "paj-ramp";
-
-const socket = createOnRampSocket({
-  orderId: "order-123",
-  environment: "main",
-  onOrderUpdate: (data) => console.log("Update:", data),
-  onError: (error) => console.error("Error:", error),
-});
-
-await socket.connect();
-console.log("Connected:", socket.isConnected());
-socket.disconnect();
-```
-
-### Manual Connection Management
 
 ```typescript
 import { observeOrder } from "paj-ramp";
 
 const observer = observeOrder({
-  orderId: "order-123",
-  environment: "main",
+  orderId: "your_order_id",
   onOrderUpdate: (data) => console.log(data),
 });
 
@@ -214,7 +149,7 @@ await observer.connect();
 // Check connection status
 console.log("Connected:", observer.isConnected());
 
-// Disconnect manually
+// Disconnect manually: you could use setTimeout to keep the socket alive for a certain amount of time before you disconnect
 observer.disconnect();
 ```
 
@@ -224,7 +159,7 @@ The SDK provides comprehensive error handling:
 
 ```typescript
 const observer = observeOrder({
-  orderId: "order-123",
+  orderId: "your_order_id",
   onError: (error) => {
     // Handle connection errors, order not found, etc.
     console.error("Socket error:", error);
@@ -238,25 +173,65 @@ Common error messages:
 - `"Connection failed"`
 - `"Socket timeout"`
 
-## Development
+### Usage Example
 
-```bash
-# Install dependencies
-npm install
+```typescript
+import { observeOrder } from "paj-ramp";
 
-# Build the project
-npm run build
+async function example(orderId) {
+  console.log("Observe Order");
 
-# Run tests
-npm test
+  const observer = observeOrder({
+    orderId,
+    onOrderUpdate: (data) => {
+      console.log("Order update received:", data);
+      console.log("Status:", data.status);
+      console.log("Amount:", data.amount);
+      console.log("Currency:", data.currency);
+    },
+    onError: (error) => {
+      console.error("Socket error:", error);
+    },
+    onConnect: () => {
+      console.log("Connected to order socket");
+    },
+    onDisconnect: () => {
+      console.log("Disconnected from order socket");
+    },
+    onConnectionStatusChange: (connected) => {
+      console.log(
+        "Connection status changed:",
+        connected ? "Connected" : "Disconnected"
+      );
+    },
+  });
 
-# Development mode with watch
-npm run dev
+  try {
+    await observer.connect();
+    console.log("Successfully connected to order observer");
+
+    // Keep the connection alive for 1 minute
+    setTimeout(() => {
+      console.log("Disconnecting after 1 minute...");
+      observer.disconnect();
+    }, 1 * 60 * 1000);
+  } catch (error) {
+    console.error("Failed to connect:", error);
+  }
+}
+
+const order = await createOrder({
+  fiatAmount: 10000,
+  currency: "NGN",
+  recipient: "your_wallet_address",
+  mint: "your_token_mint_address",
+  chain: "SOLANA",
+  token: token_from_verification,
+});
+
+await example(order.id);
+// Response: { id: string, fiatAmount: string, currency: string, , recipient: string,  mint: string, chain: Chain, amount: number, status: OnRampStatus }
 ```
-
-## License
-
-MIT
 
 ---
 
@@ -396,10 +371,10 @@ const switchedWallet = await switchWalletBankAccount(
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
 ```
 
----
+## License
+
+MIT
 
 ## 🧑‍💻 Author
 
 Gospel Chidiebube Chukwu
-
-
