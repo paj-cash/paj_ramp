@@ -95,45 +95,7 @@ Creates an order observer.
 - `connect()`: Function to connect to the socket
 - `disconnect()`: Function to disconnect from the socket
 
-### createOrder(orderData)
-
-Creates a new onramp order.
-
-**Parameters:**
-
-- `orderData` (object, required): Order creation data
-- `orderData.fiatAmount` (number, required): Order amount
-- `orderData.currency` (string, required): Currency code (e.g., 'USD', 'NGN')
-- `orderData.recipient` (string, required): Wallet address to receive tokens
-- `orderData.mint` (string, required): Token mint address
-- `orderData.chain` (Chain, required): Blockchain network ('solana', 'ethereum', 'polygon')
-- `orderData.token` (string, required): Verification token
-
-**Returns:**
-
-- `id` (string): Unique order identifier
-- `accountNumber` (string): Bank account number for payment
-- `accountName` (string): Bank account holder name
-- `fiatAmount` (number): Order amount in fiat currency
-- `bank` (string): Bank name
-
 **Example:**
-
-```typescript
-import { createOrder } from "paj-ramp";
-
-const order = await createOrder({
-  fiatAmount: 10000,
-  currency: "NGN",
-  recipient: "wallet_address_here",
-  mint: "token_mint_address_here",
-  chain: "SOLANA",
-  token: "token_from_verification",
-});
-// Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
-```
-
-### Basic Usage
 
 ```typescript
 import { observeOrder } from "paj-ramp";
@@ -172,6 +134,44 @@ Common error messages:
 - `"Order not found: {orderId}"`
 - `"Connection failed"`
 - `"Socket timeout"`
+
+### createOrder(orderData)
+
+Creates a new onramp order.
+
+**Parameters:**
+
+- `orderData` (object, required): Order creation data
+- `orderData.fiatAmount` (number, required): Order amount
+- `orderData.currency` (string, required): Currency code (e.g., 'USD', 'NGN')
+- `orderData.recipient` (string, required): Wallet address to receive tokens
+- `orderData.mint` (string, required): Token mint address
+- `orderData.chain` (Chain, required): Blockchain network ('solana', 'ethereum', 'polygon')
+- `orderData.token` (string, required): Verification token
+
+**Returns:**
+
+- `id` (string): Unique order identifier
+- `accountNumber` (string): Bank account number for payment
+- `accountName` (string): Bank account holder name
+- `fiatAmount` (number): Order amount in fiat currency
+- `bank` (string): Bank name
+
+**Example:**
+
+```typescript
+import { createOrder } from "paj-ramp";
+
+const order = await createOrder({
+  fiatAmount: 10000,
+  currency: "NGN",
+  recipient: "wallet_address_here",
+  mint: "token_mint_address_here",
+  chain: "SOLANA",
+  token: "token_from_verification",
+});
+// Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
+```
 
 ### Usage Example
 
