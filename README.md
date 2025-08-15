@@ -354,8 +354,8 @@ const wallet = await getWallet("wallet public key");
 import { addWallet } from "paj-ramp";
 
 // To create wallet.json file with an array of 64 numbers 
-// npm install `@solana/web3.js`
-// then run this code
+- npm install `@solana/web3.js`
+- then run this code
 import { Keypair } from "@solana/web3.js";
 import fs from "fs";
 
