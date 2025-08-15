@@ -290,7 +290,7 @@ import { verify } from "paj-ramp";
 
 const verified = await verify(
   "your_email@gmail.com",
-  "1234",
+  "otp",
   "device signature"
 );
 // Response: { email: string, isActive: string, expiresAt: string, token: string }
@@ -353,7 +353,39 @@ const wallet = await getWallet("wallet public key");
 ```typescript
 import { addWallet } from "paj-ramp";
 
-const addedWallet = await addWallet("token", "bank account id", "secret key");
+// To create wallet.json file with an array of 64 numbers 
+// npm install `@solana/web3.js`
+// then run this code
+import { Keypair } from "@solana/web3.js";
+import fs from "fs";
+
+const keypair = Keypair.generate();
+const secretKey = Array.from(keypair.secretKey);
+
+fs.writeFileSync("wallet.json", JSON.stringify(secretKey));
+console.log("✅ wallets.json generated successfully");
+
+
+// To get secret key
+import * as fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// wallet.json that you created with an array of 64 numbers
+const walletPath = resolve(__dirname, "./wallet.json");
+const secretKeyRaw = fs.readFileSync(walletPath, "utf8");
+const secretKeyArray = JSON.parse(secretKeyRaw);
+
+if (!Array.isArray(secretKeyArray) || secretKeyArray.length !== 64) {
+  throw new Error("Invalid secret key: must be an array of 64 numbers.");
+}
+
+const secretKey = Uint8Array.from(secretKeyArray);
+
+const addedWallet = await addWallet("token", "bank account id", secretKey);
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
 ```
 
