@@ -20,14 +20,18 @@ npm install paj-ramp
 yarn add paj-ramp
 ```
 
+---
+
 # Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
 import { initializeSDK } from "paj_ramp";
 
-initializeSDK('staging')
+initializeSDK("staging");
 // Selects the environment you want to work with
 ```
+
+---
 
 # Onramp SDK (Real-time Order Observation)
 
