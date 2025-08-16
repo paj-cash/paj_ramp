@@ -22,7 +22,7 @@ yarn add paj-ramp
 
 ---
 
-# Initialize SDK (select environment: "staging" | "production")
+## Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
 import { initializeSDK } from "paj_ramp";
