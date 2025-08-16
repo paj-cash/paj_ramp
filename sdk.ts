@@ -7,7 +7,7 @@ export const initializeSDK = (env: "staging" | "production") => {
   if (env === "staging") {
     setBaseUrl("https://api-staging.paj.cash");
   } else {
-    setBaseUrl("");
+    setBaseUrl("https://api.paj.cash");
   }
 };
 
