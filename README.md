@@ -27,8 +27,8 @@ yarn add paj-ramp
 ```typescript
 import { initializeSDK } from "paj_ramp";
 
-initializeSDK("staging");
 // Selects the environment you want to work with
+initializeSDK("staging"); // or production
 ```
 
 ---
