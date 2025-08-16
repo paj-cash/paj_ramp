@@ -11,5 +11,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["lib/**/*", "index.ts", "utils/axios.ts"]
+  "include": ["lib/**/*", "sdk.ts", "utils/axios.ts"]
 }

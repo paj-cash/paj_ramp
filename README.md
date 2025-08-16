@@ -20,7 +20,14 @@ npm install paj-ramp
 yarn add paj-ramp
 ```
 
----
+# Initialize SDK (select environment: "staging" | "production")
+
+```typescript
+import { initializeSDK } from "paj_ramp";
+
+initializeSDK('staging')
+// Selects the environment you want to work with
+```
 
 # Onramp SDK (Real-time Order Observation)
 
@@ -353,9 +360,8 @@ const wallet = await getWallet("wallet public key");
 ```typescript
 import { addWallet } from "paj-ramp";
 
-// To create wallet.json file with an array of 64 numbers 
-- npm install `@solana/web3.js`
-- then run this code
+// To create wallet.json file with an array of 64 numbers
+// npm install @solana/web3.js then run this code
 import { Keypair } from "@solana/web3.js";
 import fs from "fs";
 
@@ -364,7 +370,6 @@ const secretKey = Array.from(keypair.secretKey);
 
 fs.writeFileSync("wallet.json", JSON.stringify(secretKey));
 console.log("✅ wallets.json generated successfully");
-
 
 // To get secret key
 import * as fs from "fs";
