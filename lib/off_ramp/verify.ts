@@ -1,5 +1,20 @@
 import { post } from "../../utils/api.js";
 
+type VerifyType = {
+  email: string;
+  isActive: string;
+  expiresAt: string;
+  token: string;
+};
+
+type deviceSignatureType = {
+  uuid: string;
+  device: string;
+  os?: string;
+  browser?: string;
+  ip?: string;
+};
+
 /**
  * Verifies a user's identity using email, OTP, and device signature via the public API.
  * Returns verification details including email, activation status, expiration, and token, or throws an error if the request fails.
@@ -15,21 +30,22 @@ import { post } from "../../utils/api.js";
  * Raises:
  *   Throws an error if the request fails.
  */
+
 export const verify = async (
   email: string,
   otp: string,
-  deviceSignature: string
+  deviceSignature: deviceSignatureType,
+  apiKey: string
 ) => {
   try {
-    return await post<{
-      email: string;
-      isActive: string;
-      expiresAt: string;
-      token: string;
-    }>(
+    return await post<VerifyType>(
       "/pub/verify",
-      { email, otp, deviceSignature },
-      { "x-api-key": "3ada687e-78d1-45f3-933d-c992adcc2bbb" }
+      {
+        email,
+        otp,
+        device: deviceSignature,
+      },
+      { "x-api-key": apiKey }
     );
   } catch (err) {
     console.error("Error verifying:", err);

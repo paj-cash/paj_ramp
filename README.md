@@ -13,11 +13,11 @@ A comprehensive SDK for PAJ Ramp onramp and offramp operations with real-time tr
 ## Installation
 
 ```bash
-npm install paj-ramp
+npm install paj_ramp
 ```
 
 ```bash
-yarn add paj-ramp
+yarn add paj_ramp
 ```
 
 ---
@@ -42,11 +42,7 @@ initializeSDK("staging"); // or production
 The SDK provides Socket.IO functionality to observe onramp orders in real-time:
 
 ```typescript
-import {
-  observeOrder,
-  createOrderObserver,
-  createOnRampSocket,
-} from "paj-ramp";
+import { observeOrder } from "paj_ramp";
 
 // Using observeOrder function
 const observer = observeOrder({
@@ -109,7 +105,7 @@ Creates an order observer.
 **Example:**
 
 ```typescript
-import { observeOrder } from "paj-ramp";
+import { observeOrder } from "paj_ramp";
 
 const observer = observeOrder({
   orderId: "your_order_id",
@@ -171,7 +167,7 @@ Creates a new onramp order.
 **Example:**
 
 ```typescript
-import { createOrder } from "paj-ramp";
+import { createOrder } from "paj_ramp";
 
 const order = await createOrder({
   fiatAmount: 10000,
@@ -187,7 +183,7 @@ const order = await createOrder({
 ### Usage Example
 
 ```typescript
-import { observeOrder } from "paj-ramp";
+import { observeOrder } from "paj_ramp";
 
 async function example(orderId) {
   console.log("Observe Order");
@@ -257,7 +253,7 @@ The Offramp SDK provides a set of functions to help users convert Solana-based d
 ### Get TX Pool Address
 
 ```typescript
-import { getTXPoolAddress } from "paj-ramp";
+import { getTXPoolAddress } from "paj_ramp";
 
 const txpooladdress = await getTXPoolAddress();
 // Response: { address: string }
@@ -266,43 +262,96 @@ const txpooladdress = await getTXPoolAddress();
 ### Get Rate
 
 ```typescript
-import { getRate } from "paj-ramp";
+import { getRate } from "paj_ramp";
 
 const rate = await getRate();
-// Response: { baseCurrency: string, targetCurrency: string, rate: number }
+/*
+Response: 
+{
+    "onRampRate": {
+        "baseCurrency": "USD",
+        "targetCurrency": "NGN",
+        "isActive": true,
+        "rate": 1510,
+        "type": "onRamp"
+    },
+    "offRampRate": {
+        "baseCurrency": "USD",
+        "targetCurrency": "NGN",
+        "isActive": true,
+        "rate": 1525,
+        "type": "offRamp"
+    }
+}*/
 ```
 
-### Get Rate with Amount
+### Get Rate by Amount
 
 ```typescript
-import { getRate } from "paj-ramp";
+import { getRate } from "paj_ramp";
 
 const rate = await getRate(50000);
-// Response:
-// {
-//   rate: { baseCurrency: string, targetCurrency: string, rate: number },
-//   amounts: { userTax: number, merchantTax: number, amountUSD: number, userAmountFiat: number }
-// }
+/*
+Response:
+{
+	rate: {
+		baseCurrency: string,
+    targetCurrency: string,
+    rate: number
+  },
+  amounts: {
+	  userTax": number,
+	  merchantTax": number,
+    amountUSD": number,
+    userAmountFiat": number
+   }
+}*/
+```
+
+### Get Rate by Rate Type
+
+```typescript
+import { getRate, RateType } from "paj_ramp";
+
+const rate = await getRate(RateType.offRamp); // or RateType.onRamp
+
+/*
+Response:
+"offRampRate": {
+	"baseCurrency": "USD",
+  "targetCurrency": "NGN",
+  "isActive": true,
+  "rate": 1525,
+  "type": "offRamp"
+}*/
 ```
 
 ### Initiate Session
 
 ```typescript
-import { initiate } from "paj-ramp";
+import { initiate } from "paj_ramp";
 
-const initialized = await initiate("your_email@gmail.com");
+const initialized = await initiate("your_email@gmail.com", "business_api_key");
 // Response: { email: string }
 ```
 
 ### Verify Session
 
 ```typescript
-import { verify } from "paj-ramp";
+import { verify } from "paj_ramp";
 
 const verified = await verify(
   "your_email@gmail.com",
   "otp",
-  "device signature"
+  {
+    uuid: string,
+    device: string,
+    //optionL ↓↓↓↓↓
+    os: string, //IOS
+    browser: string, //chrome
+    ip: string,
+  },
+  "business_api_key"
 );
 // Response: { email: string, isActive: string, expiresAt: string, token: string }
 ```
@@ -310,7 +359,7 @@ const verified = await verify(
 ### Get Banks
 
 ```typescript
-import { getBanks } from "paj-ramp";
+import { getBanks } from "paj_ramp";
 
 const banks = await getBanks();
 // Response: [ { id: string, name: string, country: string } ]
@@ -319,7 +368,7 @@ const banks = await getBanks();
 ### Resolve Bank Account
 
 ```typescript
-import { resolveBankAccount } from "paj-ramp";
+import { resolveBankAccount } from "paj_ramp";
 
 const resolvedBankAccount = await resolveBankAccount(
   "bank id",
@@ -331,7 +380,7 @@ const resolvedBankAccount = await resolveBankAccount(
 ### Add Bank Account
 
 ```typescript
-import { addBankAccount } from "paj-ramp";
+import { addBankAccount } from "paj_ramp";
 
 const addedBankAccount = await addBankAccount(
   "token",
@@ -344,7 +393,7 @@ const addedBankAccount = await addBankAccount(
 ### Get Bank Accounts
 
 ```typescript
-import { getBankAccounts } from "paj-ramp";
+import { getBankAccounts } from "paj_ramp";
 
 const accounts = await getBankAccounts("token");
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
@@ -353,7 +402,7 @@ const accounts = await getBankAccounts("token");
 ### Get Wallet Info
 
 ```typescript
-import { getWallet } from "paj-ramp";
+import { getWallet } from "paj_ramp";
 
 const wallet = await getWallet("wallet public key");
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
@@ -362,7 +411,7 @@ const wallet = await getWallet("wallet public key");
 ### Add Wallet
 
 ```typescript
-import { addWallet } from "paj-ramp";
+import { addWallet } from "paj_ramp";
 
 // To create wallet.json file with an array of 64 numbers
 // npm install @solana/web3.js then run this code
@@ -401,7 +450,7 @@ const addedWallet = await addWallet("token", "bank account id", secretKey);
 ### Switch Bank Account on Wallet
 
 ```typescript
-import { switchWalletBankAccount } from "paj-ramp";
+import { switchWalletBankAccount } from "paj_ramp";
 
 const switchedWallet = await switchWalletBankAccount(
   "token",

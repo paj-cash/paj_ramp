@@ -17,12 +17,12 @@ type InitiateResponse = {
  * Raises:
  *   Throws an error if the request fails.
  */
-export const initiate = async (email: string) => {
+export const initiate = async (email: string, apiKey: string) => {
   try {
     return await post<InitiateResponse>(
       "/pub/initiate",
       { email },
-      { "x-api-key": "3ada687e-78d1-45f3-933d-c992adcc2bbb" }
+      { "x-api-key": apiKey, "Content-Type": "application/json" }
     );
   } catch (err) {
     console.error("Error initiating:", err);

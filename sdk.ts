@@ -15,7 +15,7 @@ export const initializeSDK = (env: "staging" | "production") => {
 
 // Wallet Info
 export { getTXPoolAddress } from "./lib/off_ramp/getTXPoolAddress.js";
-export { getRate } from "./lib/off_ramp/getRate.js";
+export { getRate, RateType } from "./lib/off_ramp/getRate.js";
 
 // Session Management
 export { initiate } from "./lib/off_ramp/initiate.js";
