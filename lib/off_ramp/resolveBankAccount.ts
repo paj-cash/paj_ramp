@@ -1,4 +1,4 @@
-import { get } from "../../utils/api.js";
+import { get } from '../../utils/api.js';
 
 type ResolveBankAccountType = {
   accountName: string;
@@ -26,15 +26,20 @@ type ResolveBankAccountType = {
  *   Throws an error if the request fails.
  */
 export const resolveBankAccount = async (
+  token: string,
   bankId: string,
   accountNumber: string
 ) => {
   try {
     return await get<ResolveBankAccountType>(
-      `/pub/bankaccount/resolve/?bankId=${bankId}&accountNumber=${accountNumber}`
+      `/pub/offramp/bank-account/confirm/?bankId=${bankId}&accountNumber=${accountNumber}`,
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
     );
   } catch (err) {
-    console.error("Error resolving bank account:", err);
+    console.error('Error resolving bank account:', err);
     throw err;
   }
 };

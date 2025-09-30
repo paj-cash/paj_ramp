@@ -25,10 +25,10 @@ yarn add paj_ramp
 ## Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
-import { initializeSDK } from "paj_ramp";
+import { initializeSDK } from 'paj_ramp';
 
 // Selects the environment you want to work with
-initializeSDK("staging"); // or production
+initializeSDK('staging'); // or production
 ```
 
 ---
@@ -42,17 +42,17 @@ initializeSDK("staging"); // or production
 The SDK provides Socket.IO functionality to observe onramp orders in real-time:
 
 ```typescript
-import { observeOrder } from "paj_ramp";
+import { observeOrder } from 'paj_ramp';
 
 // Using observeOrder function
 const observer = observeOrder({
-  orderId: "your_order_id",
-  onOrderUpdate: (data) => {
-    console.log("Order update:", data);
+  orderId: 'your_order_id',
+  onOrderUpdate: data => {
+    console.log('Order update:', data);
     // Handle status changes: pending, processing, completed, failed, cancelled
   },
-  onError: (error) => {
-    console.error("Socket error:", error);
+  onError: error => {
+    console.error('Socket error:', error);
   },
 });
 
@@ -105,18 +105,18 @@ Creates an order observer.
 **Example:**
 
 ```typescript
-import { observeOrder } from "paj_ramp";
+import { observeOrder } from 'paj_ramp';
 
 const observer = observeOrder({
-  orderId: "your_order_id",
-  onOrderUpdate: (data) => console.log(data),
+  orderId: 'your_order_id',
+  onOrderUpdate: data => console.log(data),
 });
 
 // Connect manually
 await observer.connect();
 
 // Check connection status
-console.log("Connected:", observer.isConnected());
+console.log('Connected:', observer.isConnected());
 
 // Disconnect manually: you could use setTimeout to keep the socket alive for a certain amount of time before you disconnect
 observer.disconnect();
@@ -128,10 +128,10 @@ The SDK provides comprehensive error handling:
 
 ```typescript
 const observer = observeOrder({
-  orderId: "your_order_id",
-  onError: (error) => {
+  orderId: 'your_order_id',
+  onError: error => {
     // Handle connection errors, order not found, etc.
-    console.error("Socket error:", error);
+    console.error('Socket error:', error);
   },
 });
 ```
@@ -167,15 +167,15 @@ Creates a new onramp order.
 **Example:**
 
 ```typescript
-import { createOrder } from "paj_ramp";
+import { createOrder } from 'paj_ramp';
 
 const order = await createOrder({
   fiatAmount: 10000,
-  currency: "NGN",
-  recipient: "wallet_address_here",
-  mint: "token_mint_address_here",
-  chain: "SOLANA",
-  token: "token_from_verification",
+  currency: 'NGN',
+  recipient: 'wallet_address_here',
+  mint: 'token_mint_address_here',
+  chain: 'SOLANA',
+  token: 'token_from_verification',
 });
 // Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
 ```
@@ -183,56 +183,56 @@ const order = await createOrder({
 ### Usage Example
 
 ```typescript
-import { observeOrder } from "paj_ramp";
+import { observeOrder } from 'paj_ramp';
 
 async function example(orderId) {
-  console.log("Observe Order");
+  console.log('Observe Order');
 
   const observer = observeOrder({
     orderId,
-    onOrderUpdate: (data) => {
-      console.log("Order update received:", data);
-      console.log("Status:", data.status);
-      console.log("Amount:", data.amount);
-      console.log("Currency:", data.currency);
+    onOrderUpdate: data => {
+      console.log('Order update received:', data);
+      console.log('Status:', data.status);
+      console.log('Amount:', data.amount);
+      console.log('Currency:', data.currency);
     },
-    onError: (error) => {
-      console.error("Socket error:", error);
+    onError: error => {
+      console.error('Socket error:', error);
     },
     onConnect: () => {
-      console.log("Connected to order socket");
+      console.log('Connected to order socket');
     },
     onDisconnect: () => {
-      console.log("Disconnected from order socket");
+      console.log('Disconnected from order socket');
     },
-    onConnectionStatusChange: (connected) => {
+    onConnectionStatusChange: connected => {
       console.log(
-        "Connection status changed:",
-        connected ? "Connected" : "Disconnected"
+        'Connection status changed:',
+        connected ? 'Connected' : 'Disconnected'
       );
     },
   });
 
   try {
     await observer.connect();
-    console.log("Successfully connected to order observer");
+    console.log('Successfully connected to order observer');
 
     // Keep the connection alive for 1 minute
     setTimeout(() => {
-      console.log("Disconnecting after 1 minute...");
+      console.log('Disconnecting after 1 minute...');
       observer.disconnect();
     }, 1 * 60 * 1000);
   } catch (error) {
-    console.error("Failed to connect:", error);
+    console.error('Failed to connect:', error);
   }
 }
 
 const order = await createOrder({
   fiatAmount: 10000,
-  currency: "NGN",
-  recipient: "your_wallet_address",
-  mint: "your_token_mint_address",
-  chain: "SOLANA",
+  currency: 'NGN',
+  recipient: 'your_wallet_address',
+  mint: 'your_token_mint_address',
+  chain: 'SOLANA',
   token: token_from_verification,
 });
 
@@ -250,19 +250,19 @@ The Offramp SDK provides a set of functions to help users convert Solana-based d
 
 ## Usage Examples
 
-### Get TX Pool Address
+<!-- ### Get TX Pool Address
 
 ```typescript
 import { getTXPoolAddress } from "paj_ramp";
 
 const txpooladdress = await getTXPoolAddress();
 // Response: { address: string }
-```
+``` -->
 
 ### Get Rate
 
 ```typescript
-import { getRate } from "paj_ramp";
+import { getRate } from 'paj_ramp';
 
 const rate = await getRate();
 /*
@@ -288,7 +288,7 @@ Response:
 ### Get Rate by Amount
 
 ```typescript
-import { getRate } from "paj_ramp";
+import { getRate } from 'paj_ramp';
 
 const rate = await getRate(50000);
 /*
@@ -311,14 +311,14 @@ Response:
 ### Get Rate by Rate Type
 
 ```typescript
-import { getRate, RateType } from "paj_ramp";
+import { getRate, RateType } from 'paj_ramp';
 
 const rate = await getRate(RateType.offRamp); // or RateType.onRamp
 
 /*
 Response:
 "offRampRate": {
-	"baseCurrency": "USD",
+  "baseCurrency": "USD",
   "targetCurrency": "NGN",
   "isActive": true,
   "rate": 1525,
@@ -329,20 +329,20 @@ Response:
 ### Initiate Session
 
 ```typescript
-import { initiate } from "paj_ramp";
+import { initiate } from 'paj_ramp';
 
-const initialized = await initiate("your_email@gmail.com", "business_api_key");
+const initiated = await initiate('your_email@gmail.com', 'business_api_key');
 // Response: { email: string }
 ```
 
 ### Verify Session
 
 ```typescript
-import { verify } from "paj_ramp";
+import { verify } from 'paj_ramp';
 
 const verified = await verify(
-  "your_email@gmail.com",
-  "otp",
+  'your_email@gmail.com',
+  'otp',
   {
     uuid: string,
     device: string,
@@ -351,7 +351,7 @@ const verified = await verify(
     browser: string, //chrome
     ip: string,
   },
-  "business_api_key"
+  'business_api_key'
 );
 // Response: { email: string, isActive: string, expiresAt: string, token: string }
 ```
@@ -359,7 +359,7 @@ const verified = await verify(
 ### Get Banks
 
 ```typescript
-import { getBanks } from "paj_ramp";
+import { getBanks } from 'paj_ramp';
 
 const banks = await getBanks();
 // Response: [ { id: string, name: string, country: string } ]
@@ -368,11 +368,12 @@ const banks = await getBanks();
 ### Resolve Bank Account
 
 ```typescript
-import { resolveBankAccount } from "paj_ramp";
+import { resolveBankAccount } from 'paj_ramp';
 
 const resolvedBankAccount = await resolveBankAccount(
-  "bank id",
-  "account number"
+  'token',
+  'bank_id',
+  'account_number'
 );
 // Response: { accountName: string, accountNumber: string, bank: { id: string, name: string, code: string, country: string } }
 ```
@@ -380,12 +381,12 @@ const resolvedBankAccount = await resolveBankAccount(
 ### Add Bank Account
 
 ```typescript
-import { addBankAccount } from "paj_ramp";
+import { addBankAccount } from 'paj_ramp';
 
 const addedBankAccount = await addBankAccount(
-  "token",
-  "bank id",
-  "account number"
+  'token',
+  'bank_id',
+  'account_number'
 );
 // Response: { id: string, accountName: string, accountNumber: string, bank: string }
 ```
@@ -393,70 +394,70 @@ const addedBankAccount = await addBankAccount(
 ### Get Bank Accounts
 
 ```typescript
-import { getBankAccounts } from "paj_ramp";
+import { getBankAccounts } from 'paj_ramp';
 
-const accounts = await getBankAccounts("token");
+const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
 ### Get Wallet Info
 
 ```typescript
-import { getWallet } from "paj_ramp";
+import { getWallet } from 'paj_ramp';
 
-const wallet = await getWallet("wallet public key");
+const wallet = await getWallet('wallet public key');
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
 ```
 
 ### Add Wallet
 
 ```typescript
-import { addWallet } from "paj_ramp";
+import { addWallet } from 'paj_ramp';
 
 // To create wallet.json file with an array of 64 numbers
 // npm install @solana/web3.js then run this code
-import { Keypair } from "@solana/web3.js";
-import fs from "fs";
+import { Keypair } from '@solana/web3.js';
+import fs from 'fs';
 
 const keypair = Keypair.generate();
 const secretKey = Array.from(keypair.secretKey);
 
-fs.writeFileSync("wallet.json", JSON.stringify(secretKey));
-console.log("✅ wallets.json generated successfully");
+fs.writeFileSync('wallet.json', JSON.stringify(secretKey));
+console.log('✅ wallets.json generated successfully');
 
 // To get secret key
-import * as fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
+import * as fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // wallet.json that you created with an array of 64 numbers
-const walletPath = resolve(__dirname, "./wallet.json");
-const secretKeyRaw = fs.readFileSync(walletPath, "utf8");
+const walletPath = resolve(__dirname, './wallet.json');
+const secretKeyRaw = fs.readFileSync(walletPath, 'utf8');
 const secretKeyArray = JSON.parse(secretKeyRaw);
 
 if (!Array.isArray(secretKeyArray) || secretKeyArray.length !== 64) {
-  throw new Error("Invalid secret key: must be an array of 64 numbers.");
+  throw new Error('Invalid secret key: must be an array of 64 numbers.');
 }
 
 const secretKey = Uint8Array.from(secretKeyArray);
 
-const addedWallet = await addWallet("token", "bank account id", secretKey);
+const addedWallet = await addWallet('token', 'bank account id', secretKey);
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
 ```
 
 ### Switch Bank Account on Wallet
 
 ```typescript
-import { switchWalletBankAccount } from "paj_ramp";
+import { switchWalletBankAccount } from 'paj_ramp';
 
 const switchedWallet = await switchWalletBankAccount(
-  "token",
-  "bank account id to switch to",
-  "wallet id",
-  "secret key"
+  'token',
+  'bank account id to switch to',
+  'wallet id',
+  'secret key'
 );
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
 ```

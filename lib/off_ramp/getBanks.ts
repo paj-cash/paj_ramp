@@ -17,7 +17,7 @@ type BankType = {
  */
 export const getBanks = async () => {
   try {
-    return await get<BankType[]>(`/pub/bank`);
+    return await get<BankType[]>(`/pub/offramp/bank`);
   } catch (err) {
     console.error("Error fetching Banks:", err);
     throw err;

@@ -20,7 +20,7 @@ type GetBankAccountsType = {
 export const getBankAccounts = async (apiKey: string) => {
   try {
     return await get<GetBankAccountsType[]>(
-      `/pub/bankaccount`,
+      `/pub/offramp/bank-account`,
       {},
       {
         Authorization: `Bearer ${apiKey}`,
