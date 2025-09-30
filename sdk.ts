@@ -28,9 +28,9 @@ export { addBankAccount } from "./lib/off_ramp/addBankAccount.js";
 export { getBankAccounts } from "./lib/off_ramp/getBankAccounts.js";
 
 // Wallet Operations
-export { getWallet } from './lib/off_ramp/getWallet.js';
-export { addWallet } from './lib/off_ramp/addWallet.js';
-export { switchWalletBankAccount } from './lib/off_ramp/switchWalletBankAccount.js';
+// export { getWallet } from './lib/off_ramp/getWallet.js';
+// export { addWallet } from './lib/off_ramp/addWallet.js';
+// export { switchWalletBankAccount } from './lib/off_ramp/switchWalletBankAccount.js';
 
 // ON RAMP
 

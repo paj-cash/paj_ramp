@@ -266,7 +266,7 @@ import { getRate } from 'paj_ramp';
 
 const rate = await getRate();
 /*
-Response: 
+Response:
 {
     "onRampRate": {
         "baseCurrency": "USD",
@@ -294,17 +294,17 @@ const rate = await getRate(50000);
 /*
 Response:
 {
-	rate: {
-		baseCurrency: string,
-    targetCurrency: string,
-    rate: number
+ rate: {
+  baseCurrency: string,
+  targetCurrency: string,
+  rate: number
   },
-  amounts: {
-	  userTax": number,
-	  merchantTax": number,
-    amountUSD": number,
-    userAmountFiat": number
-   }
+ amounts: {
+  userTax": number,
+  merchantTax": number,
+  amountUSD": number,
+  userAmountFiat": number
+  }
 }*/
 ```
 
@@ -400,6 +400,7 @@ const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
+<!--
 ### Get Wallet Info
 
 ```typescript
@@ -407,8 +408,8 @@ import { getWallet } from 'paj_ramp';
 
 const wallet = await getWallet('wallet public key');
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-```
-
+``` -->
+<!--
 ### Add Wallet
 
 ```typescript
@@ -446,8 +447,8 @@ const secretKey = Uint8Array.from(secretKeyArray);
 
 const addedWallet = await addWallet('token', 'bank account id', secretKey);
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-```
-
+``` -->
+<!--
 ### Switch Bank Account on Wallet
 
 ```typescript
@@ -460,7 +461,7 @@ const switchedWallet = await switchWalletBankAccount(
   'secret key'
 );
 // Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-```
+``` -->
 
 ## License
 
