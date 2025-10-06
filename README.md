@@ -409,7 +409,7 @@ const accounts = await getBankAccounts('token');
 ### Create Order
 
 ```typescript
-import { getBankAccounts } from 'paj_ramp';
+import { offRampCreateOrder } from 'paj_ramp';
 
 const createOrder = await offRampCreateOrder(
   'token',
