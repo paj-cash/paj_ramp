@@ -175,6 +175,7 @@ const order = await createOrder({
   recipient: 'wallet_address_here',
   mint: 'token_mint_address_here',
   chain: 'SOLANA',
+  webhookURL: 'webhook_url',
   token: 'token_from_verification',
 });
 // Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
@@ -183,7 +184,7 @@ const order = await createOrder({
 ### Usage Example
 
 ```typescript
-import { observeOrder } from 'paj_ramp';
+import { observeOrder, createOrder } from 'paj_ramp';
 
 async function example(orderId) {
   console.log('Observe Order');
@@ -233,6 +234,7 @@ const order = await createOrder({
   recipient: 'your_wallet_address',
   mint: 'your_token_mint_address',
   chain: 'SOLANA',
+  webhookURL: 'webhook_url',
   token: token_from_verification,
 });
 
@@ -361,7 +363,7 @@ const verified = await verify(
 ```typescript
 import { getBanks } from 'paj_ramp';
 
-const banks = await getBanks();
+const banks = await getBanks('token');
 // Response: [ { id: string, name: string, country: string } ]
 ```
 
@@ -398,6 +400,27 @@ import { getBankAccounts } from 'paj_ramp';
 
 const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
+```
+
+# Offramp 2 (Direct Offramp)
+
+## Usage Examples
+
+### Create Order
+
+```typescript
+import { getBankAccounts } from 'paj_ramp';
+
+const createOrder = await offRampCreateOrder(
+  'token',
+  'bank_id',
+  'account_number',
+  'NGN', // Currency
+  10000, // amount
+  'token_mint_address'
+  'webhook_url'
+);
+// Response: { id: string, address: string, signature?: string, mint: string, currency: Currency, amount: number, usdcAmount: number, fiatAmount: number, sender: string, receipiant: string, rate: number, status: TransactionStatus, transactionType: TransactionType }
 ```
 
 <!--

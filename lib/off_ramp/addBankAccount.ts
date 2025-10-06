@@ -29,7 +29,7 @@ export const addBankAccount = async (
 ) => {
   try {
     return await post<AddBankAccountType>(
-      '/pub/offramp/bank-account',
+      '/pub/bank-account',
       {
         bankId,
         accountNumber,

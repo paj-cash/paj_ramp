@@ -32,7 +32,7 @@ export const resolveBankAccount = async (
 ) => {
   try {
     return await get<ResolveBankAccountType>(
-      `/pub/offramp/bank-account/confirm/?bankId=${bankId}&accountNumber=${accountNumber}`,
+      `/pub/bank-account/confirm/?bankId=${bankId}&accountNumber=${accountNumber}`,
       {},
       {
         Authorization: `Bearer ${token}`,

@@ -32,6 +32,9 @@ export { getBankAccounts } from "./lib/off_ramp/getBankAccounts.js";
 // export { addWallet } from './lib/off_ramp/addWallet.js';
 // export { switchWalletBankAccount } from './lib/off_ramp/switchWalletBankAccount.js';
 
+// DIRECT OFF RAMP
+export { offRampCreateOrder } from './lib/direct_off_ramp/directCreateOrder.js';
+
 // ON RAMP
 
 // Create Order

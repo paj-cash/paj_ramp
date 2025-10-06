@@ -6,11 +6,12 @@ type CreateOrderType = {
   recipient: string;
   mint: string;
   chain: string;
+  webhookURL: string;
   token?: string;
 };
 
 export const createOrder = async (options: CreateOrderType) => {
-  const { fiatAmount, currency, recipient, mint, chain, token } = options;
+  const { fiatAmount, currency, recipient, mint, chain, webhookURL, token } = options;
   try {
     return await post<CreateOrderType>(
       "/pub/onramp",
@@ -20,6 +21,7 @@ export const createOrder = async (options: CreateOrderType) => {
         recipient,
         mint,
         chain,
+        webhookURL
       },
       {
         Authorization: `Bearer ${token}`,
