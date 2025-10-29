@@ -33,7 +33,7 @@ export const offRampCreateOrder = async (
   token: string,
   bank: string,
   accountNumber: string,
-  currency: Currency,
+  currency: string,
   amount: number,
   mint: string,
   webhookURL: string

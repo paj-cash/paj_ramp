@@ -15,7 +15,7 @@ export const initializeSDK = (env: 'staging' | 'production') => {
 
 // Wallet Info
 // export { getTXPoolAddress } from "./lib/off_ramp/getTXPoolAddress.js";
-export { getRate, RateType } from './lib/off_ramp/getRate.js';
+export { getRate } from './lib/off_ramp/getRate.js';
 
 // Session Management
 export { initiate } from './lib/off_ramp/initiate.js';
@@ -35,6 +35,7 @@ export { getBankAccounts } from "./lib/off_ramp/getBankAccounts.js";
 // DIRECT OFF RAMP
 export { offRampCreateOrder } from './lib/direct_off_ramp/directCreateOrder.js';
 
+
 // ON RAMP
 
 // Create Order
@@ -42,3 +43,6 @@ export { createOrder } from './lib/on_ramp/createOrder.js';
 
 // Observe Order Socket.IO
 export { observeOrder } from './lib/on_ramp/observeOrder.js';
+
+// Types
+export { RateType } from './lib/off_ramp/getRate.js';

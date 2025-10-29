@@ -310,6 +310,25 @@ Response:
 }*/
 ```
 
+### Get Token Value from Amount and Mint Token
+
+```typescript
+import { getRate } from 'paj_ramp';
+
+const tokenValue = await getRate(
+  50000,
+  'token_mint_address'
+);
+/*
+Response:
+{
+  amount: number,        // requested token amount
+  usdcValue: number,     // USD value of the token amount
+  mint: string           // token mint address
+}
+*/
+```
+
 ### Get Rate by Rate Type
 
 ```typescript
