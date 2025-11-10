@@ -15,7 +15,10 @@
     "url": "git+https://github.com/paj-cash/paj_ramp.git"
   },
   "keywords": [
-    "PAJ"
+    "PAJ",
+    "paj",
+    "paj_ramp",
+    "Paj"
   ],
   "author": "Ebube",
   "license": "ISC",
