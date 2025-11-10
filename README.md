@@ -56,7 +56,6 @@ const verified = await verify(
 ## Utility Endpoints
 
 ### Get Rate
-
 ---
 
 **_Get All Rate_**
@@ -143,7 +142,6 @@ Response:
 ```
 
 ### Handle Banks
-
 ---
 
 **_Get Banks_**
