@@ -12,8 +12,6 @@ npm install paj_ramp
 yarn add paj_ramp
 ```
 
----
-
 ## Getting Started
 
 ### Initialize SDK (select environment: "staging" | "production")
@@ -55,11 +53,11 @@ const verified = await verify(
 // Response: { email: string, isActive: string, expiresAt: string, token: string }
 ```
 
----
-
 ## Utility Endpoints
 
 ### Get Rate
+
+---
 
 **_Get All Rate_**
 
@@ -146,6 +144,8 @@ Response:
 
 ### Handle Banks
 
+---
+
 **_Get Banks_**
 
 ```typescript
@@ -190,11 +190,7 @@ const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
----
-
-# Offramp Webhook (Direct Offramp)
-
----
+## Offramp Webhook (Direct Offramp)
 
 ## Usage Example
 
@@ -213,11 +209,7 @@ const createOrder = await offRampCreateOrder(
 // Response: { id: string, address: string, signature?: string, mint: string, currency: Currency, amount: number, usdcAmount: number, fiatAmount: number, sender: string, receipiant: string, rate: number, status: TransactionStatus, transactionType: TransactionType }
 ```
 
----
-
-# Onramp Webhook: Creates a new onramp order and sends status to the webhook url.
-
----
+## Onramp Webhook: Creates a new onramp order and sends status to the webhook url.
 
 ## Usage Example
 
