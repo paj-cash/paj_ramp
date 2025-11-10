@@ -188,7 +188,7 @@ const accounts = await getBankAccounts('token');
 
 ## Offramp Webhook (Direct Offramp)
 
-## Usage Example
+### Usage Example
 
 ```typescript
 import { offRampCreateOrder } from 'paj_ramp';
@@ -207,7 +207,7 @@ const createOrder = await offRampCreateOrder(
 
 ## Onramp Webhook: Creates a new onramp order and sends status to the webhook url.
 
-## Usage Example
+### Usage Example
 
 ```typescript
 import { createOrder } from 'paj_ramp';
