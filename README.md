@@ -1,14 +1,6 @@
 # PAJ Ramp SDK
 
-A comprehensive SDK for PAJ Ramp onramp and offramp operations with real-time transaction updates using Socket.IO.
-
-## Features
-
-- **Onramp Operations**: Create orders and observe real-time updates
-- **Offramp Operations**: Complete offramp workflow with bank account management
-- **Real-time Updates**: Socket.IO integration for live transaction status updates
-- **TypeScript Support**: Full TypeScript definitions included
-- **Functional API**: Clean functional approach for better composability
+A comprehensive SDK for PAJ Ramp onramp and offramp operations with real-time transaction updates using webhooks.
 
 ## Installation
 
@@ -22,7 +14,9 @@ yarn add paj_ramp
 
 ---
 
-## Initialize SDK (select environment: "staging" | "production")
+## Getting Started
+
+### Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
 import { initializeSDK } from 'paj_ramp';
@@ -31,10 +25,218 @@ import { initializeSDK } from 'paj_ramp';
 initializeSDK('staging'); // or production
 ```
 
+### Initiate Session
+
+```typescript
+import { initiate } from 'paj_ramp';
+
+const initiated = await initiate('your_email@gmail.com', 'business_api_key');
+// Response: { email: string }
+```
+
+### Verify Session
+
+```typescript
+import { verify } from 'paj_ramp';
+
+const verified = await verify(
+  'your_email@gmail.com',
+  'otp',
+  {
+    uuid: string,
+    device: string,
+    //optionL ↓↓↓↓↓
+    os: string, //IOS
+    browser: string, //chrome
+    ip: string,
+  },
+  'business_api_key'
+);
+// Response: { email: string, isActive: string, expiresAt: string, token: string }
+```
+
 ---
 
-# Onramp SDK (Real-time Order Observation)
+## Utility Endpoints
 
+### Get Rate
+
+**_Get All Rate_**
+
+```typescript
+import { getRate } from 'paj_ramp';
+
+const rate = await getRate();
+/*
+Response:
+{
+    "onRampRate": {
+        "baseCurrency": "USD",
+        "targetCurrency": "NGN",
+        "isActive": true,
+        "rate": 1510,
+        "type": "onRamp"
+    },
+    "offRampRate": {
+        "baseCurrency": "USD",
+        "targetCurrency": "NGN",
+        "isActive": true,
+        "rate": 1525,
+        "type": "offRamp"
+    }
+}*/
+```
+
+**_Get Rate by Amount_**
+
+```typescript
+import { getRate } from 'paj_ramp';
+
+const rate = await getRate(50000);
+/*
+Response:
+{
+ rate: {
+  baseCurrency: string,
+  targetCurrency: string,
+  rate: number
+  },
+ amounts: {
+  userTax": number,
+  merchantTax": number,
+  amountUSD": number,
+  userAmountFiat": number
+  }
+}*/
+```
+
+**_Get Rate by Rate Type_**
+
+```typescript
+import { getRate, RateType } from 'paj_ramp';
+
+const rate = await getRate(RateType.offRamp); // or RateType.onRamp
+
+/*
+Response:
+"offRampRate": {
+  "baseCurrency": "USD",
+  "targetCurrency": "NGN",
+  "isActive": true,
+  "rate": 1525,
+  "type": "offRamp"
+}*/
+```
+
+**_Get Token Value from Amount and Mint Token_**
+
+```typescript
+import { getRate } from 'paj_ramp';
+
+const tokenValue = await getRate(50000, 'token_mint_address');
+/*
+Response:
+{
+  amount: number,        // requested token amount
+  usdcValue: number,     // USDC value of the token amount
+  mint: string           // token mint address
+}
+*/
+```
+
+### Handle Banks
+
+**_Get Banks_**
+
+```typescript
+import { getBanks } from 'paj_ramp';
+
+const banks = await getBanks('token');
+// Response: [ { id: string, name: string, country: string } ]
+```
+
+**_Resolve Bank Account_**
+
+```typescript
+import { resolveBankAccount } from 'paj_ramp';
+
+const resolvedBankAccount = await resolveBankAccount(
+  'token',
+  'bank_id',
+  'account_number'
+);
+// Response: { accountName: string, accountNumber: string, bank: { id: string, name: string, code: string, country: string } }
+```
+
+**_Add Bank Account_**
+
+```typescript
+import { addBankAccount } from 'paj_ramp';
+
+const addedBankAccount = await addBankAccount(
+  'token',
+  'bank_id',
+  'account_number'
+);
+// Response: { id: string, accountName: string, accountNumber: string, bank: string }
+```
+
+**_Get Bank Accounts_**
+
+```typescript
+import { getBankAccounts } from 'paj_ramp';
+
+const accounts = await getBankAccounts('token');
+// Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
+```
+
+---
+
+# Offramp Webhook (Direct Offramp)
+
+---
+
+## Usage Example
+
+```typescript
+import { offRampCreateOrder } from 'paj_ramp';
+
+const createOrder = await offRampCreateOrder(
+  'token',
+  'bank_id',
+  'account_number',
+  'NGN', // Currency
+  10000, // amount
+  'token_mint_address'
+  'webhook_url'
+);
+// Response: { id: string, address: string, signature?: string, mint: string, currency: Currency, amount: number, usdcAmount: number, fiatAmount: number, sender: string, receipiant: string, rate: number, status: TransactionStatus, transactionType: TransactionType }
+```
+
+---
+
+# Onramp Webhook: Creates a new onramp order and sends status to the webhook url.
+
+---
+
+## Usage Example
+
+```typescript
+import { createOrder } from 'paj_ramp';
+
+const order = await createOrder({
+  fiatAmount: 10000,
+  currency: 'NGN',
+  recipient: 'wallet_address_here',
+  mint: 'token_mint_address_here',
+  chain: 'SOLANA', //ethereum, polygon, etc
+  webhookURL: 'your_webhook_url',
+  token: 'token_from_verification',
+});
+// Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
+```
+
+<!--
 ## Quick Start
 
 ### Real-time Order Observation
@@ -142,45 +344,6 @@ Common error messages:
 - `"Connection failed"`
 - `"Socket timeout"`
 
-### createOrder(orderData)
-
-Creates a new onramp order.
-
-**Parameters:**
-
-- `orderData` (object, required): Order creation data
-- `orderData.fiatAmount` (number, required): Order amount
-- `orderData.currency` (string, required): Currency code (e.g., 'USD', 'NGN')
-- `orderData.recipient` (string, required): Wallet address to receive tokens
-- `orderData.mint` (string, required): Token mint address
-- `orderData.chain` (Chain, required): Blockchain network ('solana', 'ethereum', 'polygon')
-- `orderData.token` (string, required): Verification token
-
-**Returns:**
-
-- `id` (string): Unique order identifier
-- `accountNumber` (string): Bank account number for payment
-- `accountName` (string): Bank account holder name
-- `fiatAmount` (number): Order amount in fiat currency
-- `bank` (string): Bank name
-
-**Example:**
-
-```typescript
-import { createOrder } from 'paj_ramp';
-
-const order = await createOrder({
-  fiatAmount: 10000,
-  currency: 'NGN',
-  recipient: 'wallet_address_here',
-  mint: 'token_mint_address_here',
-  chain: 'SOLANA',
-  webhookURL: 'webhook_url',
-  token: 'token_from_verification',
-});
-// Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
-```
-
 ### Usage Example
 
 ```typescript
@@ -240,270 +403,9 @@ const order = await createOrder({
 
 await example(order.id);
 // Response: { id: string, fiatAmount: string, currency: string, , recipient: string,  mint: string, chain: Chain, amount: number, status: OnRampStatus }
-```
+``` -->
 
 ---
-
-# Offramp SDK
-
-## Overview
-
-The Offramp SDK provides a set of functions to help users convert Solana-based digital assets to fiat and transfer the resulting funds to traditional bank accounts. It includes session management, rate queries, bank account management, and wallet operations.
-
-## Usage Examples
-
-<!-- ### Get TX Pool Address
-
-```typescript
-import { getTXPoolAddress } from "paj_ramp";
-
-const txpooladdress = await getTXPoolAddress();
-// Response: { address: string }
-``` -->
-
-### Get Rate
-
-```typescript
-import { getRate } from 'paj_ramp';
-
-const rate = await getRate();
-/*
-Response:
-{
-    "onRampRate": {
-        "baseCurrency": "USD",
-        "targetCurrency": "NGN",
-        "isActive": true,
-        "rate": 1510,
-        "type": "onRamp"
-    },
-    "offRampRate": {
-        "baseCurrency": "USD",
-        "targetCurrency": "NGN",
-        "isActive": true,
-        "rate": 1525,
-        "type": "offRamp"
-    }
-}*/
-```
-
-### Get Rate by Amount
-
-```typescript
-import { getRate } from 'paj_ramp';
-
-const rate = await getRate(50000);
-/*
-Response:
-{
- rate: {
-  baseCurrency: string,
-  targetCurrency: string,
-  rate: number
-  },
- amounts: {
-  userTax": number,
-  merchantTax": number,
-  amountUSD": number,
-  userAmountFiat": number
-  }
-}*/
-```
-
-### Get Token Value from Amount and Mint Token
-
-```typescript
-import { getRate } from 'paj_ramp';
-
-const tokenValue = await getRate(
-  50000,
-  'token_mint_address'
-);
-/*
-Response:
-{
-  amount: number,        // requested token amount
-  usdcValue: number,     // USD value of the token amount
-  mint: string           // token mint address
-}
-*/
-```
-
-### Get Rate by Rate Type
-
-```typescript
-import { getRate, RateType } from 'paj_ramp';
-
-const rate = await getRate(RateType.offRamp); // or RateType.onRamp
-
-/*
-Response:
-"offRampRate": {
-  "baseCurrency": "USD",
-  "targetCurrency": "NGN",
-  "isActive": true,
-  "rate": 1525,
-  "type": "offRamp"
-}*/
-```
-
-### Initiate Session
-
-```typescript
-import { initiate } from 'paj_ramp';
-
-const initiated = await initiate('your_email@gmail.com', 'business_api_key');
-// Response: { email: string }
-```
-
-### Verify Session
-
-```typescript
-import { verify } from 'paj_ramp';
-
-const verified = await verify(
-  'your_email@gmail.com',
-  'otp',
-  {
-    uuid: string,
-    device: string,
-    //optionL ↓↓↓↓↓
-    os: string, //IOS
-    browser: string, //chrome
-    ip: string,
-  },
-  'business_api_key'
-);
-// Response: { email: string, isActive: string, expiresAt: string, token: string }
-```
-
-### Get Banks
-
-```typescript
-import { getBanks } from 'paj_ramp';
-
-const banks = await getBanks('token');
-// Response: [ { id: string, name: string, country: string } ]
-```
-
-### Resolve Bank Account
-
-```typescript
-import { resolveBankAccount } from 'paj_ramp';
-
-const resolvedBankAccount = await resolveBankAccount(
-  'token',
-  'bank_id',
-  'account_number'
-);
-// Response: { accountName: string, accountNumber: string, bank: { id: string, name: string, code: string, country: string } }
-```
-
-### Add Bank Account
-
-```typescript
-import { addBankAccount } from 'paj_ramp';
-
-const addedBankAccount = await addBankAccount(
-  'token',
-  'bank_id',
-  'account_number'
-);
-// Response: { id: string, accountName: string, accountNumber: string, bank: string }
-```
-
-### Get Bank Accounts
-
-```typescript
-import { getBankAccounts } from 'paj_ramp';
-
-const accounts = await getBankAccounts('token');
-// Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
-```
-
-# Offramp 2 (Direct Offramp)
-
-## Usage Examples
-
-### Create Order
-
-```typescript
-import { offRampCreateOrder } from 'paj_ramp';
-
-const createOrder = await offRampCreateOrder(
-  'token',
-  'bank_id',
-  'account_number',
-  'NGN', // Currency
-  10000, // amount
-  'token_mint_address'
-  'webhook_url'
-);
-// Response: { id: string, address: string, signature?: string, mint: string, currency: Currency, amount: number, usdcAmount: number, fiatAmount: number, sender: string, receipiant: string, rate: number, status: TransactionStatus, transactionType: TransactionType }
-```
-
-<!--
-### Get Wallet Info
-
-```typescript
-import { getWallet } from 'paj_ramp';
-
-const wallet = await getWallet('wallet public key');
-// Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-``` -->
-<!--
-### Add Wallet
-
-```typescript
-import { addWallet } from 'paj_ramp';
-
-// To create wallet.json file with an array of 64 numbers
-// npm install @solana/web3.js then run this code
-import { Keypair } from '@solana/web3.js';
-import fs from 'fs';
-
-const keypair = Keypair.generate();
-const secretKey = Array.from(keypair.secretKey);
-
-fs.writeFileSync('wallet.json', JSON.stringify(secretKey));
-console.log('✅ wallets.json generated successfully');
-
-// To get secret key
-import * as fs from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// wallet.json that you created with an array of 64 numbers
-const walletPath = resolve(__dirname, './wallet.json');
-const secretKeyRaw = fs.readFileSync(walletPath, 'utf8');
-const secretKeyArray = JSON.parse(secretKeyRaw);
-
-if (!Array.isArray(secretKeyArray) || secretKeyArray.length !== 64) {
-  throw new Error('Invalid secret key: must be an array of 64 numbers.');
-}
-
-const secretKey = Uint8Array.from(secretKeyArray);
-
-const addedWallet = await addWallet('token', 'bank account id', secretKey);
-// Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-``` -->
-<!--
-### Switch Bank Account on Wallet
-
-```typescript
-import { switchWalletBankAccount } from 'paj_ramp';
-
-const switchedWallet = await switchWalletBankAccount(
-  'token',
-  'bank account id to switch to',
-  'wallet id',
-  'secret key'
-);
-// Response: { id: string, publicKey: string, bankAccount: { id: string, accountName: string, accountNumber: string, bank: string } }
-``` -->
 
 ## License
 
