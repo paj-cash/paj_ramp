@@ -2,18 +2,18 @@ import { get } from '../../utils/api.js';
 
 type AllRateResponseType = {
   onRampRate: {
-    baseCurrency: 'USD';
-    targetCurrency: 'NGN';
-    isActive: true;
-    rate: 1510;
-    type: 'onRamp';
+    baseCurrency: string;
+    targetCurrency: string;
+    isActive: boolean;
+    rate: number;
+    type: string;
   };
   offRampRate: {
-    baseCurrency: 'USD';
-    targetCurrency: 'NGN';
-    isActive: true;
-    rate: 1525;
-    type: 'offRamp';
+    baseCurrency: string;
+    targetCurrency: string;
+    isActive: boolean;
+    rate: number;
+    type: string;
   };
 };
 
@@ -32,11 +32,11 @@ type RateByAmountType = {
 };
 
 type RateByRateTypeType = {
-  baseCurrency: 'USD';
-  targetCurrency: 'NGN';
+  baseCurrency: string;
+  targetCurrency: string;
   isActive: true;
-  rate: 1525;
-  type: 'offRamp';
+  rate: number;
+  type: string;
 };
 
 type TokenValueType = {
@@ -119,7 +119,6 @@ export const getRateByAmount = async (url: string, amount: number) => {
     throw err;
   }
 };
-
 
 /**
  * The function `getRateByRateType` fetches a rate based on a specified rate type from a given URL.
