@@ -1,6 +1,6 @@
 {
   "name": "paj_ramp",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "paj offramp/onramp service",
   "main": "dist/sdk.js",
   "types": "dist/sdk.d.ts",
