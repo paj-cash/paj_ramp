@@ -61,10 +61,14 @@ export enum RateType {
  * @returns The `getRate` function returns different values based on the conditions inside the
  * function:
  */
-export const getRate = async (
-  param: number | RateType,
-  mint_token?: string
-) => {
+export function getRate(): Promise<AllRateResponseType>;
+export function getRate(
+  param: number,
+  mint_token: string
+): Promise<TokenValueType>;
+export function getRate(param: number): Promise<RateByAmountType>;
+export function getRate(param: RateType): Promise<RateByRateTypeType>;
+export async function getRate(param?: number | RateType, mint_token?: string) {
   try {
     const url = '/pub/rate';
 
@@ -80,7 +84,7 @@ export const getRate = async (
     console.error('Error fetching Rate:', err);
     throw err;
   }
-};
+}
 
 /**
  * The function `getAllRate` fetches all rates from a specified URL and handles any errors that occur
