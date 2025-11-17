@@ -60,9 +60,9 @@ const verified = await verify(
 **_Get All Rate_**
 
 ```typescript
-import { getRate } from 'paj_ramp';
+import { getAllRate } from 'paj_ramp';
 
-const rate = await getRate();
+const rate = await getAllRate();
 /*
 Response:
 {
@@ -86,9 +86,9 @@ Response:
 **_Get Rate by Amount_**
 
 ```typescript
-import { getRate } from 'paj_ramp';
+import { getRateByAmount } from 'paj_ramp';
 
-const rate = await getRate(50000);
+const rate = await getRateByAmount(50000);
 /*
 Response:
 {
@@ -109,9 +109,9 @@ Response:
 **_Get Rate by Rate Type_**
 
 ```typescript
-import { getRate, RateType } from 'paj_ramp';
+import { getRateByType, RateType } from 'paj_ramp';
 
-const rate = await getRate(RateType.offRamp); // or RateType.onRamp
+const rate = await getRateByType(RateType.offRamp); // or RateType.onRamp
 
 /*
 Response:
@@ -127,9 +127,9 @@ Response:
 **_Get Token Value from Amount and Mint Token_**
 
 ```typescript
-import { getRate } from 'paj_ramp';
+import { getTokenValue } from 'paj_ramp';
 
-const tokenValue = await getRate(50000, 'token_mint_address');
+const tokenValue = await getTokenValue(50000, 'token_mint_address');
 /*
 Response:
 {

@@ -2,6 +2,9 @@
 
 // Switch Environment: "staging" | "production"
 import { setBaseUrl } from './utils/axios.js';
+import { getRateByAmount } from './lib/off_ramp/getRateByAmount';
+import { getRateByRateType } from './dist/lib/off_ramp/getRate';
+import { getTokenValue } from './lib/off_ramp/getTokenValue';
 
 export const initializeSDK = (env: 'staging' | 'production') => {
   if (env === 'staging') {
@@ -15,7 +18,10 @@ export const initializeSDK = (env: 'staging' | 'production') => {
 
 // Wallet Info
 // export { getTXPoolAddress } from "./lib/off_ramp/getTXPoolAddress.js";
-export { getRate } from './lib/off_ramp/getRate.js';
+export { getAllRate } from './lib/off_ramp/getAllRate.js';
+export { getRateByAmount } from './lib/off_ramp/getRateByAmount.js';
+export { getRateByType } from './lib/off_ramp/getRateByType.js';
+export { getTokenValue } from './lib/off_ramp/getTokenValue.js';
 
 // Session Management
 export { initiate } from './lib/off_ramp/initiate.js';
@@ -44,4 +50,4 @@ export { createOrder } from './lib/on_ramp/createOrder.js';
 // export { observeOrder } from './lib/on_ramp/observeOrder.js';
 
 // Types
-export { RateType } from './lib/off_ramp/getRate.js';
+export { RateType } from './lib/off_ramp/getRateByType.js';
