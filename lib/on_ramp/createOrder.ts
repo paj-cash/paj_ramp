@@ -18,7 +18,9 @@ type CreateOrderResponseType = {
   bank: string;
 };
 
-export const createOrder = async (options: CreateOrderType) => {
+export const createOrder = async (
+  options: CreateOrderType
+): Promise<CreateOrderResponseType> => {
   const { fiatAmount, currency, recipient, mint, chain, webhookURL, token } =
     options;
   try {
