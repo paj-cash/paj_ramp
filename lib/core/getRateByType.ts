@@ -1,4 +1,5 @@
 import { get } from '../../utils/api.js';
+import { RateType } from '../../utils/enums.js';
 
 type RateByType = {
   baseCurrency: string;
@@ -7,11 +8,6 @@ type RateByType = {
   rate: number;
   type: string;
 };
-
-export enum RateType {
-  onRamp = 'onRamp',
-  offRamp = 'offRamp',
-}
 
 /**
  * This function fetches a rate based on a specified rate type asynchronously.

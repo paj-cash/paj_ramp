@@ -1,8 +1,7 @@
 import { post } from '../../utils/api.js';
+import { Currency, TransactionStatus, TransactionType } from '../../utils/enums.js';
 
-enum Currency {
-  NGN = 'NGN',
-}
+
 
 // type offRampCreateOrderType = {
 //   token?: string;
@@ -15,18 +14,20 @@ enum Currency {
 // };
 
 type offRampCreateOrderResponse = {
-  amount: number;
-  expectedAmount: number;
-  mint: string;
-  decimals: number;
+  id: string;
   address: string;
-  walletId: string;
-  creatorId: string;
-  bankId: string;
-  accountNumber: string;
+  signature?: string;
+  mint: string;
   currency: Currency;
-  status: string;
-  webhookURL: string;
+  amount: number;
+  usdcAmount: number;
+  fiatAmount: number;
+  sender: string;
+  receipiant: string;
+  rate: number;
+  status: TransactionStatus;
+  transactionType: TransactionType;
+  createdAt: string;
 };
 
 export const offRampCreateOrder = async (

@@ -2,9 +2,6 @@
 
 // Switch Environment: "staging" | "production"
 import { setBaseUrl } from './utils/axios.js';
-import { getRateByAmount } from './lib/off_ramp/getRateByAmount';
-import { getRateByRateType } from './dist/lib/off_ramp/getRate';
-import { getTokenValue } from './lib/off_ramp/getTokenValue';
 
 export const initializeSDK = (env: 'staging' | 'production') => {
   if (env === 'staging') {
@@ -14,40 +11,41 @@ export const initializeSDK = (env: 'staging' | 'production') => {
   }
 };
 
-// OFF RAMP
-
-// Wallet Info
-// export { getTXPoolAddress } from "./lib/off_ramp/getTXPoolAddress.js";
-export { getAllRate } from './lib/off_ramp/getAllRate.js';
-export { getRateByAmount } from './lib/off_ramp/getRateByAmount.js';
-export { getRateByType } from './lib/off_ramp/getRateByType.js';
-export { getTokenValue } from './lib/off_ramp/getTokenValue.js';
+// UTILS || CORE
 
 // Session Management
-export { initiate } from './lib/off_ramp/initiate.js';
-export { verify } from './lib/off_ramp/verify.js';
+export { initiate } from './lib/core/initiate.js';
+export { verify } from './lib/core/verify.js';
 
-//  // Banking Operations
-export { getBanks } from './lib/off_ramp/getBanks.js';
-export { resolveBankAccount } from './lib/off_ramp/resolveBankAccount.js';
-export { addBankAccount } from './lib/off_ramp/addBankAccount.js';
-export { getBankAccounts } from './lib/off_ramp/getBankAccounts.js';
+// Rate Operations
+export { getAllRate } from './lib/core/getAllRate.js';
+export { getRateByAmount } from './lib/core/getRateByAmount.js';
+export { getRateByType } from './lib/core/getRateByType.js';
+export { getTokenValue } from './lib/core/getTokenValue.js';
 
-// Wallet Operations
-// export { getWallet } from './lib/off_ramp/getWallet.js';
-// export { addWallet } from './lib/off_ramp/addWallet.js';
-// export { switchWalletBankAccount } from './lib/off_ramp/switchWalletBankAccount.js';
+// Banking Operations
+export { getBanks } from './lib/core/getBanks.js';
+export { resolveBankAccount } from './lib/core/resolveBankAccount.js';
+export { addBankAccount } from './lib/core/addBankAccount.js';
+export { getBankAccounts } from './lib/core/getBankAccounts.js';
 
+// Transaction History
+export { getAllTransactions } from './lib/core/getAllTransactions.js';
+export { getTransaction } from './lib/core/getTransaction.js';
+
+// OFF RAMP
 // DIRECT OFF RAMP
-export { offRampCreateOrder } from './lib/direct_off_ramp/directCreateOrder.js';
+export { offRampCreateOrder } from './lib/off_ramp/directCreateOrder.js';
 
 // ON RAMP
-
 // Create Order
 export { createOrder } from './lib/on_ramp/createOrder.js';
 
-// Observe Order Socket.IO
-// export { observeOrder } from './lib/on_ramp/observeOrder.js';
-
 // Types
-export { RateType } from './lib/off_ramp/getRateByType.js';
+export {
+  RateType,
+  Currency,
+  TransactionType,
+  TransactionStatus,
+  // Chain
+} from './utils/enums.js';
