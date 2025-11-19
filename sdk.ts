@@ -11,27 +11,27 @@ export const initializeSDK = (env: 'staging' | 'production') => {
   }
 };
 
-// UTILS || CORE
+// UTILITY ENDPOINTS
 
 // Session Management
-export { initiate } from './lib/core/initiate.js';
-export { verify } from './lib/core/verify.js';
+export { initiate } from './lib/utility/initiate.js';
+export { verify } from './lib/utility/verify.js';
 
 // Rate Operations
-export { getAllRate } from './lib/core/getAllRate.js';
-export { getRateByAmount } from './lib/core/getRateByAmount.js';
-export { getRateByType } from './lib/core/getRateByType.js';
-export { getTokenValue } from './lib/core/getTokenValue.js';
+export { getAllRate } from './lib/utility/getAllRate.js';
+export { getRateByAmount } from './lib/utility/getRateByAmount.js';
+export { getRateByType } from './lib/utility/getRateByType.js';
+export { getTokenValue } from './lib/utility/getTokenValue.js';
 
 // Banking Operations
-export { getBanks } from './lib/core/getBanks.js';
-export { resolveBankAccount } from './lib/core/resolveBankAccount.js';
-export { addBankAccount } from './lib/core/addBankAccount.js';
-export { getBankAccounts } from './lib/core/getBankAccounts.js';
+export { getBanks } from './lib/utility/getBanks.js';
+export { resolveBankAccount } from './lib/utility/resolveBankAccount.js';
+export { addBankAccount } from './lib/utility/addBankAccount.js';
+export { getBankAccounts } from './lib/utility/getBankAccounts.js';
 
 // Transaction History
-export { getAllTransactions } from './lib/core/getAllTransactions.js';
-export { getTransaction } from './lib/core/getTransaction.js';
+export { getAllTransactions } from './lib/utility/getAllTransactions.js';
+export { getTransaction } from './lib/utility/getTransaction.js';
 
 // OFF RAMP
 // DIRECT OFF RAMP

@@ -186,57 +186,6 @@ const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
-### Transaction History:
-
-**_Get All Transactions_**
-
-```typescript
-import { getAllTransactions } from 'paj_ramp';
-
-const transactions = await getAllTransactions('token_from_verification');
-/* Response: [{
-id: string;
-address: string;
-mint: string;
-currency: Currency;
-amount: number;
-usdcAmount: number;
-fiatAmount: number;
-sender: string;
-receipiant: string;
-rate: number;
-status: TransactionStatus;
-transactionType: TransactionType;
-createdAt: string | Date;
-}]*/
-```
-
-**_Get Transaction_**
-
-```typescript
-import { getTransaction } from 'paj_ramp';
-
-const transactions = await getTransaction(
-  'token_from_verification',
-  'transaction_id'
-);
-/* Response: {
-id: string;
-address: string;
-mint: string;
-currency: Currency;
-amount: number;
-usdcAmount: number;
-fiatAmount: number;
-sender: string;
-receipiant: string;
-rate: number;
-status: TransactionStatus;
-transactionType: TransactionType;
-createdAt: string | Date;
-}*/
-```
-
 ## Offramp Webhook (Direct Offramp)
 
 ### Usage Example
@@ -273,39 +222,6 @@ const order = await createOrder({
   token: 'token_from_verification',
 });
 // Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
-```
-
-## Webhook Response Data Structure
-
-### For both onramp and offramp
-
-```typescript
-{
-  id: string;
-  address: string;
-  signature?: string;
-  mint: string;
-  currency: Currency; // eg. NGN, USD
-  amount: number;
-  usdcAmount: number;
-  fiatAmount: number;
-  sender: string;
-  receipiant: string;
-  rate: number;
-  status: TransactionStatus; // eg. INIT, PAID, COMPLETED
-  transactionType: TransactionType; // ON_RAMP or OFF_RAMP
-}
-```
-
-## Other types
-
-```typescript
-import {
-  // Chain, // SOLANA, etc
-  TransactionStatus, // INIT<, etc
-  TransactionType, // ON_RAMP, etc
-  Currency, // NGN
-} from 'paj_ramp';
 ```
 
 <!--
