@@ -316,7 +316,7 @@ const order = await createOrder({
 ```typescript
 import {
   // Chain, // SOLANA, etc
-  TransactionStatus, // INIT<, etc
+  TransactionStatus, // INIT, etc
   TransactionType, // ON_RAMP, etc
   Currency, // NGN
 } from 'paj_ramp';
