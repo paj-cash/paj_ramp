@@ -1,4 +1,4 @@
-import { get } from '../../utils/api.js';
+import { get } from '../../../utils/api.js';
 
 type RateByAmountType = {
   rate: {

@@ -1,9 +1,9 @@
-import { get } from '../../utils/api.js';
+import { get } from '../../../utils/api.js';
 import {
   Currency,
   TransactionStatus,
   TransactionType,
-} from '../../utils/enums.js';
+} from '../../../utils/enums.js';
 
 export type TransactionResponse = {
   id: string;

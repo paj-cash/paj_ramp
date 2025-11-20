@@ -1,5 +1,5 @@
-import { get } from '../../utils/api.js';
-import { RateType } from '../../utils/enums.js';
+import { get } from '../../../utils/api.js';
+import { RateType } from '../../../utils/enums.js';
 
 type RateByType = {
   baseCurrency: string;

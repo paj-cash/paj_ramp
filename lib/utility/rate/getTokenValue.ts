@@ -1,4 +1,4 @@
-import { get } from '../../utils/api.js';
+import { get } from '../../../utils/api.js';
 
 type TokenValueType = {
   amount: number;
@@ -19,10 +19,7 @@ type TokenValueType = {
  * making an HTTP request to fetch the token value based on the provided amount and mint token. If
  * successful, the function will return the token value. If there is an error during
  */
-export const getTokenValue = async (
-  amount: number,
-  mint_token: string
-) => {
+export const getTokenValue = async (amount: number, mint_token: string) => {
   const url: string = '/pub/rate';
 
   try {

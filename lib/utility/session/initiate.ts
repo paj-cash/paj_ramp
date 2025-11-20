@@ -1,4 +1,4 @@
-import { post } from "../../utils/api.js";
+import { post } from "../../../utils/api.js";
 // Define or import the InitiateResponse type
 type InitiateResponse = {
   email: string;

@@ -1,4 +1,4 @@
-import { get } from '../../utils/api.js';
+import { get } from '../../../utils/api.js';
 import { TransactionResponse } from './getTransaction.js';
 
 type TransactionsResponse = TransactionResponse[];

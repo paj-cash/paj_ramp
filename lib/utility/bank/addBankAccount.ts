@@ -1,4 +1,4 @@
-import { post } from "../../utils/api.js";
+import { post } from '../../../utils/api.js';
 
 type AddBankAccountType = {
   id: string;
@@ -39,7 +39,7 @@ export const addBankAccount = async (
       }
     );
   } catch (err) {
-    console.error("Error adding bank account:", err);
+    console.error('Error adding bank account:', err);
     throw err;
   }
 };

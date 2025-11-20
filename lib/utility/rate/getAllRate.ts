@@ -1,4 +1,4 @@
-import { get } from '../../utils/api.js';
+import { get } from '../../../utils/api.js';
 
 type AllRateResponseType = {
   onRampRate: {
@@ -16,7 +16,6 @@ type AllRateResponseType = {
     type: string;
   };
 };
-
 
 /**
  * This TypeScript function asynchronously fetches all rates from a specified URL and handles any

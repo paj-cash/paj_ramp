@@ -1,4 +1,4 @@
-import { post } from "../../utils/api.js";
+import { post } from "../../../utils/api.js";
 
 type VerifyType = {
   email: string;
