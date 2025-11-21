@@ -28,8 +28,13 @@ initializeSDK('staging'); // or production
 ```typescript
 import { initiate } from 'paj_ramp';
 
-const initiated = await initiate('your_email@gmail.com', 'business_api_key');
-// Response: { email: string }
+// You can get otp by either adding your phone number or email address
+// Phone number must start with a country code
+const initiated = await initiate(
+  'your_email@gmail.com' // +2349053231563
+  'business_api_key'
+  );
+// Response: { email?: string, phone?: string}
 ```
 
 ### Verify Session
@@ -37,8 +42,10 @@ const initiated = await initiate('your_email@gmail.com', 'business_api_key');
 ```typescript
 import { verify } from 'paj_ramp';
 
+// You can get otp by either adding your phone number or email address
+// Phone number must start with a country code
 const verified = await verify(
-  'your_email@gmail.com',
+  'your_email@gmail.com', // or +2349053231563
   'otp',
   {
     uuid: string,
@@ -50,7 +57,13 @@ const verified = await verify(
   },
   'business_api_key'
 );
-// Response: { email: string, isActive: string, expiresAt: string, token: string }
+/* Response: {
+email?: string,
+phone?: string,
+isActive: string,
+expiresAt: string,
+token: string 
+} */
 ```
 
 ## Utility Endpoints
