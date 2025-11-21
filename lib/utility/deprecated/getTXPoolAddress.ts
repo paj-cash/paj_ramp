@@ -1,4 +1,4 @@
-import { get } from "../../utils/api.js";
+import { get } from "../../../utils/api.js";
 
 /**
  * Fetches the transaction pool address from the public API endpoint.

@@ -1,31 +1,22 @@
-import { post } from "../../../utils/api.js";
-// Define or import the InitiateResponse type
+import { post } from '../../../utils/api.js';
+
 type InitiateResponse = {
-  email: string;
+  recipient: string;
 };
 
-/**
- * Initiates a process by sending the provided email to the public API endpoint.
- * Returns the response from the API or throws an error if the request fails.
- *
- * Args:
- *   email: The email address to send in the initiation request.
- *
- * Returns:
- *   The response data from the API.
- *
- * Raises:
- *   Throws an error if the request fails.
- */
-export const initiate = async (email: string, apiKey: string) => {
+export const initiate = async (recipient: string, apiKey: string) => {
+  let body;
+
   try {
-    return await post<InitiateResponse>(
-      "/pub/initiate",
-      { email },
-      { "x-api-key": apiKey, "Content-Type": "application/json" }
-    );
+    if (isNaN(+recipient)) body = { email: recipient };
+    else body = { phone: recipient };
+
+    return await post<InitiateResponse>('/pub/initiate', body, {
+      'x-api-key': apiKey,
+      'Content-Type': 'application/json',
+    });
   } catch (err) {
-    console.error("Error initiating:", err);
+    console.error('Error initiating:', err);
     throw err;
   }
 };

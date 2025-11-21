@@ -1,5 +1,5 @@
-import { post } from "../../utils/api.js";
-import { getWalletBody } from "../../utils/getWalletBody.js";
+import { post } from "../../../utils/api.js";
+import { getWalletBody } from "../../../utils/getWalletBody.js";
 import { WalletType } from "./getWallet.js";
 
 /**

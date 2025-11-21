@@ -1,5 +1,5 @@
-import { patch } from "../../utils/api.js";
-import { getWalletBody } from "../../utils/getWalletBody.js";
+import { patch } from "../../../utils/api.js";
+import { getWalletBody } from "../../../utils/getWalletBody.js";
 import { WalletType } from "./getWallet.js";
 
 export const switchWalletBankAccount = async (
