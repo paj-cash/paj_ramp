@@ -1,4 +1,4 @@
-import { initializeSDK, initiate, verify, createOrder } from "paj_ramp";
+import { initializeSDK, initiate, verify, createOnrampOrder } from "paj_ramp";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,8 +8,13 @@ async function main() {
   console.log("🚀 Initializing PAJ Ramp SDK...");
   initializeSDK("local"); // Use 'production' for production environment
 
-  const email = process.env.USER_EMAIL;
-  const apiKey = process.env.BUSINESS_API_KEY;
+  const email = process.env.USER_EMAIL!;
+  const apiKey = process.env.BUSINESS_API_KEY!;
+  const fiatAmount = parseInt(process.env.FIAT_AMOUNT!);
+  const currency = process.env.CURRENCY!;
+  const recipient = process.env.WALLET_ADDRESS!;
+  const mint = process.env.TOKEN_MINT!;
+  const webhookURL = process.env.WEBHOOK_URL!;
 
   try {
     // Step 2: Initiate session
@@ -52,17 +57,21 @@ async function main() {
       verified.token.substring(0, 20) + "..."
     );
 
+    const sessionToken = verified.token;
+
     // Step 4: Create onramp order
     console.log("\n💰 Creating onramp order...");
-    const order = await createOrder({
-      fiatAmount: parseInt(process.env.FIAT_AMOUNT),
-      currency: process.env.CURRENCY || "NGN",
-      recipient: process.env.WALLET_ADDRESS,
-      mint: process.env.TOKEN_MINT,
-      chain: "SOLANA",
-      webhookURL: process.env.WEBHOOK_URL,
-      token: verified.token,
-    });
+    const order = await createOnrampOrder(
+      {
+        fiatAmount,
+        currency,
+        recipient,
+        mint,
+        chain: "SOLANA",
+        webhookURL,
+      },
+      sessionToken
+    );
 
     console.log("\n✅ Order created successfully!");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -71,7 +80,12 @@ async function main() {
     console.log("Order ID:", order.id);
     console.log("Account Number:", order.accountNumber);
     console.log("Account Name:", order.accountName);
-    console.log("Amount (to send):", order.fiatAmount, process.env.CURRENCY);
+    console.log(
+      "Fiat Amount (to send):",
+      order.fiatAmount,
+      process.env.CURRENCY
+    );
+    console.log("Token Amount (to receive):", order.amount);
     console.log("Bank:", order.bank);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
@@ -85,9 +99,12 @@ async function main() {
     console.log("2. Your webhook will receive status updates");
     console.log("3. Once payment is confirmed, you will receive tokens");
   } catch (error) {
-    console.error("\n❌ Error:", error.message);
-    if (error.response) {
-      console.error("Response data:", error.response.data);
+    console.error(
+      "\n❌ Error:",
+      error instanceof Error ? error.message : String(error)
+    );
+    if (error && typeof error === "object" && "response" in error) {
+      console.error("Response data:", (error as any).response.data);
     }
     process.exit(1);
   }
