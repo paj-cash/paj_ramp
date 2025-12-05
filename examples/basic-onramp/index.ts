@@ -4,6 +4,7 @@ import {
   verify,
   createOnrampOrder,
   getTransaction,
+  getAllTransactions,
 } from "paj_ramp";
 import dotenv from "dotenv";
 
@@ -115,6 +116,29 @@ async function main() {
     console.log("Recipient:", transaction.recipient);
     console.log("Created At:", transaction.createdAt);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    // Step 6: Fetch all transactions
+    console.log("\n📜 Fetching all transactions...");
+    const allTransactions = await getAllTransactions(sessionToken);
+
+    console.log(`\n✅ Found ${allTransactions.length} transaction(s)!\n`);
+
+    if (allTransactions.length > 0) {
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📋 All Transactions:");
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+      allTransactions.forEach((tx, index) => {
+        console.log(`\n${index + 1}. Transaction ID: ${tx.id}`);
+        console.log(`   Status: ${tx.status}`);
+        console.log(`   Type: ${tx.transactionType}`);
+        console.log(`   Amount: ${tx.amount} (${tx.currency})`);
+        console.log(`   Fiat: ${tx.fiatAmount}`);
+        console.log(`   Created: ${tx.createdAt}`);
+      });
+
+      console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    }
 
     console.log("\n📝 Next Steps:");
     console.log(
