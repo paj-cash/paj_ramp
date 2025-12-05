@@ -1,4 +1,10 @@
-import { initializeSDK, initiate, verify, createOnrampOrder } from "paj_ramp";
+import {
+  initializeSDK,
+  initiate,
+  verify,
+  createOnrampOrder,
+  getTransaction,
+} from "paj_ramp";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -87,6 +93,27 @@ async function main() {
     );
     console.log("Token Amount (to receive):", order.amount);
     console.log("Bank:", order.bank);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    // Step 5: Fetch the transaction details
+    console.log("\n🔍 Fetching transaction details...");
+    const transaction = await getTransaction(sessionToken, order.id);
+
+    console.log("\n✅ Transaction fetched successfully!");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("📋 Transaction Details:");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("Transaction ID:", transaction.id);
+    console.log("Status:", transaction.status);
+    console.log("Type:", transaction.transactionType);
+    console.log("Mint:", transaction.mint);
+    console.log("Currency:", transaction.currency);
+    console.log("Token Amount:", transaction.amount);
+    console.log("USDC Amount:", transaction.usdcAmount);
+    console.log("Fiat Amount:", transaction.fiatAmount);
+    console.log("Rate:", transaction.rate);
+    console.log("Recipient:", transaction.recipient);
+    console.log("Created At:", transaction.createdAt);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     console.log("\n📝 Next Steps:");
