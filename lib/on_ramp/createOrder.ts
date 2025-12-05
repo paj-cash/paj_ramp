@@ -1,4 +1,4 @@
-import { post } from '../../utils/api.js';
+import { post } from "../../utils/api.js";
 
 type CreateOrderType = {
   fiatAmount: number;
@@ -18,14 +18,14 @@ type CreateOrderResponseType = {
   bank: string;
 };
 
-export const createOrder = async (
+export const createOnrampOrder = async (
   options: CreateOrderType
 ): Promise<CreateOrderResponseType> => {
   const { fiatAmount, currency, recipient, mint, chain, webhookURL, token } =
     options;
   try {
     return await post<CreateOrderResponseType>(
-      '/pub/onramp',
+      "/pub/onramp",
       {
         fiatAmount,
         currency,
@@ -39,7 +39,7 @@ export const createOrder = async (
       }
     );
   } catch (err) {
-    console.error('Error creating order:', err);
+    console.error("Error creating order:", err);
     throw err;
   }
 };

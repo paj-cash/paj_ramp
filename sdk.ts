@@ -37,11 +37,11 @@ export { getTransaction } from "./lib/utility/transaction/getTransaction.js";
 
 // OFF RAMP
 // DIRECT OFF RAMP
-export { offRampCreateOrder } from "./lib/off_ramp/directCreateOrder.js";
+export { createOfframpOrder } from "./lib/off_ramp/directCreateOrder.js";
 
 // ON RAMP
 // Create Order
-export { createOrder } from "./lib/on_ramp/createOrder.js";
+export { createOnrampOrder as createOnOrder } from "./lib/on_ramp/createOrder.js";
 
 // Types
 export {

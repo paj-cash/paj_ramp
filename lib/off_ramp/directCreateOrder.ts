@@ -1,7 +1,9 @@
-import { post } from '../../utils/api.js';
-import { Currency, TransactionStatus, TransactionType } from '../../utils/enums.js';
-
-
+import { post } from "../../utils/api.js";
+import {
+  Currency,
+  TransactionStatus,
+  TransactionType,
+} from "../../utils/enums.js";
 
 // type offRampCreateOrderType = {
 //   token?: string;
@@ -30,7 +32,7 @@ type offRampCreateOrderResponse = {
   createdAt: string;
 };
 
-export const offRampCreateOrder = async (
+export const createOfframpOrder = async (
   token: string,
   bank: string,
   accountNumber: string,
@@ -41,7 +43,7 @@ export const offRampCreateOrder = async (
 ) => {
   try {
     return await post<offRampCreateOrderResponse>(
-      '/pub/offramp',
+      "/pub/offramp",
       {
         bank,
         accountNumber,
@@ -55,7 +57,7 @@ export const offRampCreateOrder = async (
       }
     );
   } catch (err) {
-    console.error('Error Creating Order', err);
+    console.error("Error Creating Order", err);
     throw err;
   }
 };
