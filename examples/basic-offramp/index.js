@@ -1,6 +1,6 @@
 import {
   initializeSDK,
-  initiate_x,
+  initiate,
   verify,
   getBanks,
   offRampCreateOrder,
@@ -22,7 +22,7 @@ async function main() {
   try {
     // Step 2: Initiate session
     console.log("\n📧 Initiating session...");
-    const initiated = await initiate_x(email, apiKey);
+    const initiated = await initiate(email, apiKey);
     console.log("✅ OTP sent to:", initiated.email || initiated.phone);
 
     const otp = process.env.OTP;
@@ -81,13 +81,10 @@ async function main() {
     console.log("Order ID:", order.id);
     console.log("Address:", order.address);
     console.log("Mint:", order.mint);
-    console.log("Currency:", order.currency);
-    console.log("Token Amount:", order.amount);
-    console.log("Fiat Amount:", order.fiatAmount);
+    console.log("Token Amount (to pay):", order.amount);
+    console.log("Fiat Amount (to receive):", order.fiatAmount);
     console.log("Rate:", order.rate);
     console.log("Status:", order.status);
-    console.log("Transaction Type:", order.transactionType);
-    console.log("Created At:", order.createdAt);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     console.log("\n📝 Next Steps:");

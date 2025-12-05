@@ -79,6 +79,8 @@ export function get<T>(url: string, params?: any, headers?: any) {
  *   Throws the error response data or error message if the request fails.
  */
 export function post<T>(url: string, data?: any, headers?: any) {
+  // console.log("POST request to:", url);
+  // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
   return request<T>("post", url, { data, headers });
 }
 

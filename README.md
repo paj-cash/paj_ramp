@@ -17,10 +17,10 @@ yarn add paj_ramp
 ### Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
-import { initializeSDK } from 'paj_ramp';
+import { initializeSDK } from "paj_ramp";
 
 // Selects the environment you want to work with
-initializeSDK('staging'); // or production
+initializeSDK("staging"); // or production
 ```
 
 ### Initiate Session
@@ -40,13 +40,13 @@ const initiated = await initiate(
 ### Verify Session
 
 ```typescript
-import { verify } from 'paj_ramp';
+import { verify } from "paj_ramp";
 
 // You can get otp by either adding your phone number or email address
 // Phone number must start with a country code
 const verified = await verify(
-  'your_email@gmail.com', // or +2349053231563
-  'otp',
+  "your_email@gmail.com", // or +2349053231563
+  "otp",
   {
     uuid: string,
     device: string,
@@ -55,7 +55,7 @@ const verified = await verify(
     browser: string, //chrome
     ip: string,
   },
-  'business_api_key'
+  "business_api_key"
 );
 /* Response: {
 email?: string,
@@ -66,6 +66,24 @@ token: string
 } */
 ```
 
+## 📚 Examples
+
+Check out our [examples directory](./examples) for complete, runnable examples:
+
+- **[Basic Onramp](./examples/basic-onramp)** - Simple onramp transaction flow showing how users can buy crypto with fiat
+- **[Basic Offramp](./examples/basic-offramp)** - Simple offramp transaction flow showing how users can sell crypto for fiat
+- **[Webhook Integration](./examples/webhook-integration)** - Express server with webhook handling for real-time order updates
+
+Each example includes its own README with detailed setup instructions. Perfect for understanding how to integrate PAJ Ramp into your application!
+
+```bash
+cd examples/basic-onramp
+npm install
+cp .env.example .env
+# Edit .env with your credentials
+npm start
+```
+
 ## Utility Endpoints
 
 ### Handle Rate:
@@ -73,7 +91,7 @@ token: string
 **_Get All Rate_**
 
 ```typescript
-import { getAllRate } from 'paj_ramp';
+import { getAllRate } from "paj_ramp";
 
 const rate = await getAllRate();
 /*
@@ -99,7 +117,7 @@ Response:
 **_Get Rate by Amount_**
 
 ```typescript
-import { getRateByAmount } from 'paj_ramp';
+import { getRateByAmount } from "paj_ramp";
 
 const rate = await getRateByAmount(50000);
 /*
@@ -122,7 +140,7 @@ Response:
 **_Get Rate by Rate Type_**
 
 ```typescript
-import { getRateByType, RateType } from 'paj_ramp';
+import { getRateByType, RateType } from "paj_ramp";
 
 const rate = await getRateByType(RateType.offRamp); // or RateType.onRamp
 
@@ -140,9 +158,9 @@ Response:
 **_Get Token Value from Amount and Mint Token_**
 
 ```typescript
-import { getTokenValue } from 'paj_ramp';
+import { getTokenValue } from "paj_ramp";
 
-const tokenValue = await getTokenValue(50000, 'token_mint_address');
+const tokenValue = await getTokenValue(50000, "token_mint_address");
 /*
 Response:
 {
@@ -158,21 +176,21 @@ Response:
 **_Get Banks_**
 
 ```typescript
-import { getBanks } from 'paj_ramp';
+import { getBanks } from "paj_ramp";
 
-const banks = await getBanks('token');
+const banks = await getBanks("token");
 // Response: [ { id: string, name: string, country: string } ]
 ```
 
 **_Resolve Bank Account_**
 
 ```typescript
-import { resolveBankAccount } from 'paj_ramp';
+import { resolveBankAccount } from "paj_ramp";
 
 const resolvedBankAccount = await resolveBankAccount(
-  'token',
-  'bank_id',
-  'account_number'
+  "token",
+  "bank_id",
+  "account_number"
 );
 // Response: { accountName: string, accountNumber: string, bank: { id: string, name: string, code: string, country: string } }
 ```
@@ -180,12 +198,12 @@ const resolvedBankAccount = await resolveBankAccount(
 **_Add Bank Account_**
 
 ```typescript
-import { addBankAccount } from 'paj_ramp';
+import { addBankAccount } from "paj_ramp";
 
 const addedBankAccount = await addBankAccount(
-  'token',
-  'bank_id',
-  'account_number'
+  "token",
+  "bank_id",
+  "account_number"
 );
 // Response: { id: string, accountName: string, accountNumber: string, bank: string }
 ```
@@ -193,9 +211,9 @@ const addedBankAccount = await addBankAccount(
 **_Get Bank Accounts_**
 
 ```typescript
-import { getBankAccounts } from 'paj_ramp';
+import { getBankAccounts } from "paj_ramp";
 
-const accounts = await getBankAccounts('token');
+const accounts = await getBankAccounts("token");
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
@@ -204,9 +222,9 @@ const accounts = await getBankAccounts('token');
 **_Get All Transactions_**
 
 ```typescript
-import { getAllTransactions } from 'paj_ramp';
+import { getAllTransactions } from "paj_ramp";
 
-const transactions = await getAllTransactions('token_from_verification');
+const transactions = await getAllTransactions("token_from_verification");
 /* Response: [{
 id: string;
 address: string;
@@ -227,11 +245,11 @@ createdAt: string | Date;
 **_Get Transaction_**
 
 ```typescript
-import { getTransaction } from 'paj_ramp';
+import { getTransaction } from "paj_ramp";
 
 const transactions = await getTransaction(
-  'token_from_verification',
-  'transaction_id'
+  "token_from_verification",
+  "transaction_id"
 );
 /* Response: {
 id: string;
@@ -288,16 +306,16 @@ transactionType: TransactionType
 ### Usage Example
 
 ```typescript
-import { createOrder } from 'paj_ramp';
+import { createOrder } from "paj_ramp";
 
 const order = await createOrder({
   fiatAmount: 10000,
-  currency: 'NGN',
-  recipient: 'wallet_address_here',
-  mint: 'token_mint_address_here',
-  chain: 'SOLANA', //ethereum, polygon, etc
-  webhookURL: 'your_webhook_url',
-  token: 'token_from_verification',
+  currency: "NGN",
+  recipient: "wallet_address_here",
+  mint: "token_mint_address_here",
+  chain: "SOLANA", //ethereum, polygon, etc
+  webhookURL: "your_webhook_url",
+  token: "token_from_verification",
 });
 // Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
 ```
@@ -332,7 +350,7 @@ import {
   TransactionStatus, // INIT, etc
   TransactionType, // ON_RAMP, etc
   Currency, // NGN
-} from 'paj_ramp';
+} from "paj_ramp";
 ```
 
 <!--
