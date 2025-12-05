@@ -1,7 +1,8 @@
 import { post } from "../../../utils/api.js";
 
 type InitiateResponse = {
-  recipient: string;
+  email?: string;
+  phone?: string;
 };
 
 export const initiate = async (recipient: string, apiKey: string) => {

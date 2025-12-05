@@ -1,41 +1,40 @@
 import { post } from "../../utils/api.js";
+import { Currency } from "../../utils/enums.js";
 
-type CreateOrderType = {
+type CreateOnrampOrder = {
   fiatAmount: number;
   currency: string;
   recipient: string;
   mint: string;
   chain: string;
   webhookURL: string;
-  token?: string;
 };
 
-type CreateOrderResponseType = {
+export interface OnrampOrder {
   id: string;
   accountNumber: string;
   accountName: string;
   amount: number;
+  fiatAmount: number;
   bank: string;
-};
+  rate: number;
+  recipient: string;
+  currency: Currency;
+  mint: string;
+}
 
 export const createOnrampOrder = async (
-  options: CreateOrderType
-): Promise<CreateOrderResponseType> => {
-  const { fiatAmount, currency, recipient, mint, chain, webhookURL, token } =
-    options;
+  order: CreateOnrampOrder,
+  sessionToken: string
+): Promise<OnrampOrder> => {
   try {
-    return await post<CreateOrderResponseType>(
+    return await post<OnrampOrder>(
       "/pub/onramp",
       {
-        fiatAmount,
-        currency,
-        recipient,
-        mint,
-        chain,
-        webhookURL,
+        ...order,
       },
       {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionToken}`,
       }
     );
   } catch (err) {

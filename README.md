@@ -234,7 +234,7 @@ amount: number;
 usdcAmount: number;
 fiatAmount: number;
 sender: string;
-receipiant: string;
+receipient: string;
 rate: number;
 status: TransactionStatus;
 transactionType: TransactionType;
@@ -260,7 +260,7 @@ amount: number;
 usdcAmount: number;
 fiatAmount: number;
 sender: string;
-receipiant: string;
+receipint: string;
 rate: number;
 status: TransactionStatus;
 transactionType: TransactionType;
@@ -294,7 +294,7 @@ amount: number,
 usdcAmount: number,
 fiatAmount: number,
 sender: string,
-receipiant: string,
+receipint: string,
 rate: number,
 status: TransactionStatus,
 transactionType: TransactionType
@@ -335,7 +335,7 @@ const order = await createOrder({
   usdcAmount: number;
   fiatAmount: number;
   sender: string;
-  receipiant: string;
+  receipient: string;
   rate: number;
   status: TransactionStatus; // eg. INIT, PAID, COMPLETED
   transactionType: TransactionType; // ON_RAMP or OFF_RAMP

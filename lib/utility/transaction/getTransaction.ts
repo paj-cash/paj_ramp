@@ -1,25 +1,19 @@
-import { get } from '../../../utils/api.js';
+import { get } from "../../../utils/api.js";
 import {
   Currency,
   TransactionStatus,
   TransactionType,
-} from '../../../utils/enums.js';
+} from "../../../utils/enums.js";
+import { OnrampOrder } from "../../on_ramp/createOrder.js";
+import { OfframpOrder } from "../../off_ramp/directCreateOrder.js";
 
-export type TransactionResponse = {
-  id: string;
-  address: string;
-  mint: string;
-  currency: Currency;
-  amount: number;
-  usdcAmount: number;
-  fiatAmount: number;
-  sender: string;
-  receipiant: string;
-  rate: number;
+export interface PajTransaction extends OnrampOrder, OfframpOrder {
+  signature: string;
   status: TransactionStatus;
   transactionType: TransactionType;
   createdAt: string | Date;
-};
+  usdcAmount: number;
+}
 
 /**
  * The function `getTransaction` asynchronously fetches a transaction with a specified ID and handles
@@ -32,7 +26,7 @@ export type TransactionResponse = {
  */
 export const getTransaction = async (token: string, id: string) => {
   try {
-    return await get<TransactionResponse>(
+    return await get<PajTransaction>(
       `/pub/transactions/${id}`,
       {},
       {
@@ -40,7 +34,7 @@ export const getTransaction = async (token: string, id: string) => {
       }
     );
   } catch (err) {
-    console.error('Error fetching Transaction:', err);
+    console.error("Error fetching Transaction:", err);
     throw err;
   }
 };

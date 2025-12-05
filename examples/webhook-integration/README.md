@@ -76,7 +76,7 @@ Receives order status updates from PAJ Ramp.
   "usdcAmount": 6.55,
   "fiatAmount": 10000,
   "sender": "sender_address",
-  "receipiant": "recipient_address",
+  "receipient": "recipient_address",
   "rate": 1525,
   "status": "COMPLETED",
   "transactionType": "ON_RAMP"

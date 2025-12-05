@@ -41,7 +41,7 @@ export { createOfframpOrder } from "./lib/off_ramp/directCreateOrder.js";
 
 // ON RAMP
 // Create Order
-export { createOnrampOrder as createOnOrder } from "./lib/on_ramp/createOrder.js";
+export { createOnrampOrder } from "./lib/on_ramp/createOrder.js";
 
 // Types
 export {
