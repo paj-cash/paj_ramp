@@ -3,7 +3,8 @@ import {
   initiate,
   verify,
   getBanks,
-  offRampCreateOrder,
+  createOfframpOrder,
+  Currency,
 } from "paj_ramp";
 import dotenv from "dotenv";
 
@@ -14,10 +15,13 @@ async function main() {
   console.log("🚀 Initializing PAJ Ramp SDK...");
   initializeSDK("local");
 
-  const email = process.env.USER_EMAIL;
-  const apiKey = process.env.BUSINESS_API_KEY;
-  const accountNumber = process.env.ACCOUNT_NUMBER;
-  const bankId = process.env.BANK_ID;
+  const email = process.env.USER_EMAIL!;
+  const apiKey = process.env.BUSINESS_API_KEY!;
+  const accountNumber = process.env.ACCOUNT_NUMBER!;
+  const bankId = process.env.BANK_ID!;
+  const currency = process.env.CURRENCY! as Currency;
+  const mint = process.env.TOKEN_MINT!;
+  const webhookURL = process.env.WEBHOOK_URL!;
 
   try {
     // Step 2: Initiate session
@@ -48,9 +52,11 @@ async function main() {
     );
     console.log("✅ Session verified successfully!");
 
+    const sessionToken = verified.token;
+
     // Step 4: Get available banks
     console.log("\n🏦 Fetching available banks...");
-    const banks = await getBanks(verified.token);
+    const banks = await getBanks(sessionToken);
     console.log(`✅ Found ${banks.length} banks`);
     if (banks.length > 0) {
       console.log(
@@ -64,14 +70,17 @@ async function main() {
 
     // Step 7: Create offramp order
     console.log("\n💸 Creating offramp order...");
-    const order = await offRampCreateOrder(
-      verified.token,
-      bankId,
-      accountNumber,
-      process.env.CURRENCY || "NGN",
-      parseInt(process.env.TOKEN_AMOUNT || "1"),
-      process.env.TOKEN_MINT,
-      process.env.WEBHOOK_URL
+    const order = await createOfframpOrder(
+      {
+        token: verified.token,
+        bank: bankId,
+        accountNumber,
+        currency,
+        amount: parseInt(process.env.TOKEN_AMOUNT || "1"),
+        mint,
+        webhookURL,
+      },
+      sessionToken
     );
 
     console.log("\n✅ Offramp order created successfully!");
@@ -84,7 +93,6 @@ async function main() {
     console.log("Token Amount (to pay):", order.amount);
     console.log("Fiat Amount (to receive):", order.fiatAmount);
     console.log("Rate:", order.rate);
-    console.log("Status:", order.status);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     console.log("\n📝 Next Steps:");
@@ -94,9 +102,12 @@ async function main() {
       "3. Once tokens are received and confirmed, fiat will be sent to your bank account"
     );
   } catch (error) {
-    console.error("\n❌ Error:", error.message);
-    if (error.response) {
-      console.error("Response data:", error.response.data);
+    console.error(
+      "\n❌ Error:",
+      error instanceof Error ? error.message : String(error)
+    );
+    if (error && typeof error === "object" && "response" in error) {
+      console.error("Response data:", (error as any).response.data);
     }
     process.exit(1);
   }
