@@ -1,5 +1,5 @@
 import express from "express";
-import { initializeSDK, createOrder } from "paj_ramp";
+import { initializeSDK, initiate, verify, createOnrampOrder } from "paj_ramp";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -27,9 +27,8 @@ app.post("/webhook/paj-ramp", (req, res) => {
   console.log("Status:", orderUpdate.status);
   console.log("Transaction Type:", orderUpdate.transactionType);
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("Full data:", JSON.stringify(orderUpdate, null, 2));
 
-  // Store order update
+  // Store or update order
   orders.set(orderUpdate.id, {
     ...orderUpdate,
     lastUpdated: new Date().toISOString(),
@@ -39,28 +38,22 @@ app.post("/webhook/paj-ramp", (req, res) => {
   switch (orderUpdate.status) {
     case "INIT":
       console.log("📝 Order initialized - waiting for payment");
-      // You might want to notify the user that their order is created
       break;
 
     case "PAID":
       console.log("💰 Payment received - processing transaction");
-      // Update your database, notify user that payment was detected
       break;
 
     case "COMPLETED":
       console.log("✅ Transaction completed successfully!");
-      // Notify user that they received their tokens/fiat
-      // Update order status in your database
       break;
 
     case "FAILED":
       console.log("❌ Transaction failed");
-      // Notify user, handle refund if necessary
       break;
 
     case "CANCELLED":
       console.log("🚫 Transaction cancelled");
-      // Update your records
       break;
 
     default:
@@ -72,111 +65,96 @@ app.post("/webhook/paj-ramp", (req, res) => {
 });
 
 /**
- * Endpoint to get order status
+ * Example function to create an order
+ * This demonstrates how to create an order with proper webhook integration
  */
-app.get("/orders/:orderId", (req, res) => {
-  const { orderId } = req.params;
-  const order = orders.get(orderId);
-
-  if (!order) {
-    return res.status(404).json({ error: "Order not found" });
-  }
-
-  res.json(order);
-});
-
-/**
- * Endpoint to list all orders
- */
-app.get("/orders", (req, res) => {
-  const allOrders = Array.from(orders.values());
-  res.json({
-    total: allOrders.length,
-    orders: allOrders,
-  });
-});
-
-/**
- * Health check endpoint
- */
-app.get("/health", (req, res) => {
-  res.json({
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-    totalOrders: orders.size,
-  });
-});
-
-/**
- * Example endpoint that creates an onramp order
- * In production, this would be protected and require authentication
- */
-app.post("/create-onramp-order", async (req, res) => {
+async function createExampleOrder() {
   try {
+    console.log("\n🚀 Starting order creation example...\n");
+
+    // Initialize SDK
     initializeSDK(process.env.ENVIRONMENT || "staging");
 
-    const { fiatAmount, currency, recipient, mint, chain, token } = req.body;
+    const email = process.env.USER_EMAIL;
+    const apiKey = process.env.BUSINESS_API_KEY;
 
-    // Validate required fields
-    if (!fiatAmount || !currency || !recipient || !mint || !token) {
-      return res.status(400).json({
-        error: "Missing required fields",
-        required: ["fiatAmount", "currency", "recipient", "mint", "token"],
-      });
+    if (!email || !apiKey) {
+      console.error("❌ Missing USER_EMAIL or BUSINESS_API_KEY in .env");
+      return;
     }
 
-    // Create webhook URL
+    // Step 1: Initiate session
+    console.log("📧 Initiating session...");
+    await initiate(email, apiKey);
+    console.log("✅ OTP sent to:", email);
+
+    const otp = process.env.OTP;
+    if (!otp) {
+      console.log("\n⏳ Please add OTP to .env file and restart the server");
+      return;
+    }
+
+    // Step 2: Verify session
+    console.log("\n🔐 Verifying session...");
+    const verified = await verify(
+      email,
+      otp,
+      {
+        uuid: "webhook-server-" + Date.now(),
+        device: "Server",
+        os: "Node.js",
+        browser: "Express",
+      },
+      apiKey
+    );
+    console.log("✅ Session verified!");
+
+    // Step 3: Create order with webhook
     const webhookURL = `${process.env.BASE_URL}/webhook/paj-ramp`;
 
     console.log("\n💰 Creating onramp order...");
     console.log("Webhook URL:", webhookURL);
 
-    const order = await createOrder({
-      fiatAmount,
-      currency,
-      recipient,
-      mint,
-      chain: chain || "SOLANA",
-      webhookURL,
-      token,
-    });
+    console.log({ webhookURL });
+    const order = await createOnrampOrder(
+      {
+        fiatAmount: parseInt(process.env.FIAT_AMOUNT || "10000"),
+        currency: process.env.CURRENCY || "NGN",
+        recipient: process.env.WALLET_ADDRESS,
+        mint: process.env.TOKEN_MINT,
+        chain: "SOLANA",
+        webhookURL,
+      },
+      verified.token
+    );
 
-    // Store initial order
+    // Store order
     orders.set(order.id, {
       ...order,
       createdAt: new Date().toISOString(),
       lastUpdated: new Date().toISOString(),
     });
 
-    console.log("✅ Order created:", order.id);
-
-    res.status(201).json(order);
+    console.log("\n✅ Order created successfully!");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("Order ID:", order.id);
+    console.log("Account Number:", order.accountNumber);
+    console.log("Account Name:", order.accountName);
+    console.log("Fiat Amount:", order.fiatAmount, process.env.CURRENCY);
+    console.log("Bank:", order.bank);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log(
+      "\n📝 Transfer",
+      order.fiatAmount,
+      process.env.CURRENCY,
+      "to account:",
+      order.accountNumber
+    );
+    console.log("💡 Webhook updates will appear above when status changes\n");
   } catch (error) {
-    console.error("❌ Error creating order:", error.message);
-    res.status(500).json({
-      error: "Failed to create order",
-      message: error.message,
-    });
+    console.error("\n❌ Error creating order:", error.message);
   }
-});
-
-/**
- * Root endpoint with API documentation
- */
-app.get("/", (req, res) => {
-  res.json({
-    name: "PAJ Ramp Webhook Integration Example",
-    version: "1.0.0",
-    endpoints: {
-      "POST /webhook/paj-ramp": "Receive order status updates from PAJ Ramp",
-      "POST /create-onramp-order": "Create a new onramp order",
-      "GET /orders": "List all orders",
-      "GET /orders/:orderId": "Get specific order details",
-      "GET /health": "Health check",
-    },
-    documentation: "See README.md for more details",
-  });
-});
+}
 
 // Start server
 app.listen(PORT, () => {
@@ -186,8 +164,21 @@ app.listen(PORT, () => {
   console.log(`📡 Server running on http://localhost:${PORT}`);
   console.log(`🔗 Webhook endpoint: http://localhost:${PORT}/webhook/paj-ramp`);
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("\n📝 Next steps:");
-  console.log("1. Expose this server to the internet using ngrok or similar");
-  console.log("2. Use the public URL as your webhook URL when creating orders");
-  console.log("3. Monitor this console for webhook events\n");
+
+  // Automatically create an example order when server starts
+  // Comment this out if you don't want auto-creation
+  console.log({ AUTO_CREATE_ORDER: process.env.AUTO_CREATE_ORDER });
+  if (process.env.AUTO_CREATE_ORDER === "true") {
+    setTimeout(() => {
+      createExampleOrder();
+    }, 1000);
+  } else {
+    console.log(
+      "\n💡 Set AUTO_CREATE_ORDER=true in .env to auto-create an order on startup"
+    );
+    console.log("📝 Or call createExampleOrder() manually from the console\n");
+  }
 });
+
+// Export for manual testing
+export { createExampleOrder };

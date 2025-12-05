@@ -1,20 +1,19 @@
 # Webhook Integration Example
 
-This example demonstrates how to set up a webhook server to receive real-time order status updates from PAJ Ramp using Express.js.
+This example demonstrates a simplified webhook server that receives real-time order status updates from PAJ Ramp and can automatically create orders.
 
 ## What This Example Shows
 
-- 🔗 Setting up webhook endpoints to receive PAJ Ramp notifications
+- 🔗 Simple webhook endpoint to receive PAJ Ramp notifications
 - 📡 Handling different order statuses (INIT, PAID, COMPLETED, FAILED, CANCELLED)
-- 💾 Storing and tracking order updates
-- 🌐 Creating a REST API to query order status
-- 🔧 Best practices for webhook security and reliability
+- 💾 In-memory order tracking
+- 🚀 Automatic order creation on server startup
 
 ## Prerequisites
 
 - Node.js 16 or higher
+- A PAJ business API key
 - A way to expose your local server to the internet (ngrok, localtunnel, or a deployed server)
-- Optional: PAJ business API key (if you want to create orders from this server)
 
 ## Setup
 
@@ -30,19 +29,36 @@ This example demonstrates how to set up a webhook server to receive real-time or
    cp .env.example .env
    ```
 
-3. **Start the server:**
+3. **Configure your .env file:**
+
+   ```bash
+   BUSINESS_API_KEY=your_business_api_key
+   USER_EMAIL=your_email@example.com
+   WALLET_ADDRESS=your_solana_wallet_address
+   TOKEN_MINT=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+   FIAT_AMOUNT=10000
+   CURRENCY=NGN
+   ```
+
+4. **Start the server:**
 
    ```bash
    npm start
    ```
 
-   For development with auto-reload:
+   The server will start and request an OTP. Check your email, add the OTP to your `.env` file:
 
    ```bash
-   npm run dev
+   OTP=123456
    ```
 
-4. **Expose your server to the internet:**
+5. **Restart the server:**
+
+   ```bash
+   npm start
+   ```
+
+6. **Expose your server to the internet:**
 
    Using ngrok:
 
@@ -52,34 +68,31 @@ This example demonstrates how to set up a webhook server to receive real-time or
 
    Copy the ngrok URL (e.g., `https://abc123.ngrok.io`) and update `BASE_URL` in your `.env` file.
 
-5. **Use the webhook URL when creating orders:**
-   ```
-   https://abc123.ngrok.io/webhook/paj-ramp
+7. **Enable auto-order creation (optional):**
+
+   ```bash
+   AUTO_CREATE_ORDER=true
    ```
 
-## API Endpoints
+   When enabled, the server will automatically create an order on startup.
+
+## The Webhook Endpoint
 
 ### POST `/webhook/paj-ramp`
 
-Receives order status updates from PAJ Ramp.
+This is the **only** endpoint in the server. It receives order status updates from PAJ Ramp.
 
 **Request body (from PAJ Ramp):**
 
 ```json
 {
   "id": "order_123",
-  "address": "SolanaAddress...",
-  "signature": "transaction_signature",
-  "mint": "token_mint_address",
-  "currency": "NGN",
-  "amount": 6.55,
-  "usdcAmount": 6.55,
-  "fiatAmount": 10000,
-  "sender": "sender_address",
-  "receipient": "recipient_address",
-  "rate": 1525,
   "status": "COMPLETED",
-  "transactionType": "ON_RAMP"
+  "transactionType": "ON_RAMP",
+  "amount": 6.55,
+  "currency": "NGN",
+  "fiatAmount": 10000,
+  "rate": 1525
 }
 ```
 
@@ -91,54 +104,29 @@ Receives order status updates from PAJ Ramp.
 }
 ```
 
-### GET `/orders`
+## Creating Orders
 
-List all received orders.
+The server includes a `createExampleOrder()` function that demonstrates the complete flow:
 
-**Response:**
+1. **Initiates** a session with PAJ
+2. **Verifies** the session with OTP
+3. **Creates** an onramp order with webhook URL
+4. **Receives** webhook updates when order status changes
 
-```json
-{
-  "total": 5,
-  "orders": [...]
-}
+### Auto-Create on Startup
+
+Set `AUTO_CREATE_ORDER=true` in your `.env` to automatically create an order when the server starts.
+
+### Manual Creation
+
+You can also call the function manually by importing it:
+
+```javascript
+import { createExampleOrder } from "./server.js";
+
+// Call whenever you want to create an order
+await createExampleOrder();
 ```
-
-### GET `/orders/:orderId`
-
-Get details for a specific order.
-
-**Response:**
-
-```json
-{
-  "id": "order_123",
-  "status": "COMPLETED",
-  "lastUpdated": "2024-12-04T00:00:00.000Z",
-  ...
-}
-```
-
-### POST `/create-onramp-order`
-
-Create a new onramp order (example endpoint).
-
-**Request:**
-
-```json
-{
-  "fiatAmount": 10000,
-  "currency": "NGN",
-  "recipient": "wallet_address",
-  "mint": "token_mint",
-  "chain": "SOLANA",
-  "token": "verified_session_token"
-}
-```
-
-### GET `/health`
-
-Health check endpoint.
 
 ## Order Status Flow
 
@@ -166,10 +154,28 @@ CANCELLED  FAILED
 🔗 Webhook endpoint: http://localhost:3000/webhook/paj-ramp
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📝 Next steps:
-1. Expose this server to the internet using ngrok or similar
-2. Use the public URL as your webhook URL when creating orders
-3. Monitor this console for webhook events
+🚀 Starting order creation example...
+
+📧 Initiating session...
+✅ OTP sent to: your@email.com
+
+🔐 Verifying session...
+✅ Session verified!
+
+💰 Creating onramp order...
+Webhook URL: https://abc123.ngrok.io/webhook/paj-ramp
+
+✅ Order created successfully!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Order ID: abc123
+Account Number: 1234567890
+Account Name: PAJ CASH
+Fiat Amount: 10000 NGN
+Bank: GTBank
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 Transfer 10000 NGN to account: 1234567890
+💡 Webhook updates will appear above when status changes
 
 🔔 Webhook received!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -180,44 +186,7 @@ Transaction Type: ON_RAMP
 💰 Payment received - processing transaction
 ```
 
-## How It Works
-
-### 1. Server Setup
-
-```javascript
-const app = express();
-app.use(express.json());
-```
-
-### 2. Webhook Handler
-
-```javascript
-app.post("/webhook/paj-ramp", (req, res) => {
-  const orderUpdate = req.body;
-
-  // Process the update
-  handleOrderUpdate(orderUpdate);
-
-  // Always respond 200 OK
-  res.status(200).json({ received: true });
-});
-```
-
-### 3. Status Processing
-
-```javascript
-switch (orderUpdate.status) {
-  case "PAID":
-    // Notify user, update database
-    break;
-  case "COMPLETED":
-    // Mark order complete, release goods
-    break;
-  // ... handle other statuses
-}
-```
-
-## Testing Webhooks
+## Testing Webhooks Locally
 
 ### Using curl:
 
@@ -233,12 +202,6 @@ curl -X POST http://localhost:3000/webhook/paj-ramp \
   }'
 ```
 
-### Check order status:
-
-```bash
-curl http://localhost:3000/orders/test_order_123
-```
-
 ## Production Considerations
 
 ### Security
@@ -246,31 +209,28 @@ curl http://localhost:3000/orders/test_order_123
 - ✅ Validate webhook signatures (if provided by PAJ Ramp)
 - ✅ Use HTTPS in production
 - ✅ Implement rate limiting
-- ✅ Add authentication for admin endpoints
+- ✅ Store sensitive data in environment variables
 
 ### Reliability
 
 - ✅ Always respond with 200 OK quickly
 - ✅ Process webhooks asynchronously
 - ✅ Implement idempotency (handle duplicate webhooks)
+- ✅ Use a database instead of in-memory storage
 - ✅ Log all webhook events
 
-### Example with signature verification:
+### Deployment
+
+Replace in-memory storage with a database:
 
 ```javascript
-app.post("/webhook/paj-ramp", (req, res) => {
-  // Verify signature
-  const signature = req.headers["x-paj-signature"];
-  if (!verifySignature(req.body, signature)) {
-    return res.status(401).json({ error: "Invalid signature" });
-  }
+// Instead of Map
+const orders = new Map();
 
-  // Respond immediately
-  res.status(200).json({ received: true });
-
-  // Process asynchronously
-  processWebhook(req.body).catch(console.error);
-});
+// Use a database
+import { MongoClient } from "mongodb";
+// or
+import pg from "pg";
 ```
 
 ## Next Steps
@@ -278,27 +238,28 @@ app.post("/webhook/paj-ramp", (req, res) => {
 - Add database storage (MongoDB, PostgreSQL, etc.)
 - Implement user notifications (email, SMS, push)
 - Add webhook retry logic
-- Deploy to production (Heroku, Railway, AWS, etc.)
-- See the [basic onramp](../basic-onramp) and [offramp](../basic-offramp) examples for creating orders
+- Deploy to production (Heroku, Railway, Vercel, AWS, etc.)
+- See the [basic onramp](../basic-onramp) and [offramp](../basic-offramp) examples
 
 ## Troubleshooting
 
 ### Webhooks not being received
 
-- Check that your server is publicly accessible
-- Verify the webhook URL is correct
-- Check firewall settings
+- Check that your server is publicly accessible via ngrok
+- Verify the webhook URL is correct in your `.env`
+- Make sure ngrok is still running
 
-### Duplicate webhooks
+### OTP not received
 
-- Implement idempotency using order ID
-- Store processed webhook IDs
+- Check your email spam folder
+- Verify your `USER_EMAIL` is correct
+- Ensure your `BUSINESS_API_KEY` is valid
 
-### Server crashes
+### Order creation fails
 
-- Add error handling and logging
-- Use process managers like PM2
-- Implement health checks
+- Verify all required fields in `.env` are filled
+- Check that your wallet address is valid
+- Ensure you're using the correct token mint address
 
 ## Support
 
