@@ -1,0 +1,96 @@
+import { initializeSDK, initiate, verify, createOrder } from "paj_ramp";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+async function main() {
+  // Step 1: Initialize SDK
+  console.log("🚀 Initializing PAJ Ramp SDK...");
+  initializeSDK("local"); // Use 'production' for production environment
+
+  const email = process.env.USER_EMAIL;
+  const apiKey = process.env.BUSINESS_API_KEY;
+
+  try {
+    // Step 2: Initiate session
+    console.log("\n📧 Initiating session...");
+    console.log("Email:", email);
+    console.log("API Key:", apiKey);
+    const initiated = await initiate(email, apiKey);
+    console.log("✅ OTP sent to:", initiated.email || initiated.phone);
+
+    // In a real application, you would wait for the user to receive and enter the OTP
+    // For this example, we assume you have the OTP from your email
+    console.log(
+      "\n⏳ Please check your email for the OTP and add it to your .env file"
+    );
+
+    const otp = process.env.OTP;
+    if (!otp) {
+      console.error(
+        "❌ OTP not found in .env file. Please add OTP=your_otp to .env"
+      );
+      process.exit(1);
+    }
+
+    // Step 3: Verify session
+    console.log("\n🔐 Verifying session with OTP...");
+    const verified = await verify(
+      email,
+      otp,
+      {
+        uuid: "example-device-uuid-" + Date.now(),
+        device: "Desktop",
+        os: "MacOS",
+        browser: "Chrome",
+      },
+      apiKey
+    );
+    console.log("✅ Session verified successfully!");
+    console.log(
+      "Token (first 20 chars):",
+      verified.token.substring(0, 20) + "..."
+    );
+
+    // Step 4: Create onramp order
+    console.log("\n💰 Creating onramp order...");
+    const order = await createOrder({
+      fiatAmount: parseInt(process.env.FIAT_AMOUNT),
+      currency: process.env.CURRENCY || "NGN",
+      recipient: process.env.WALLET_ADDRESS,
+      mint: process.env.TOKEN_MINT,
+      chain: "SOLANA",
+      webhookURL: process.env.WEBHOOK_URL,
+      token: verified.token,
+    });
+
+    console.log("\n✅ Order created successfully!");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("📋 Order Details:");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("Order ID:", order.id);
+    console.log("Account Number:", order.accountNumber);
+    console.log("Account Name:", order.accountName);
+    console.log("Amount (to send):", order.fiatAmount, process.env.CURRENCY);
+    console.log("Bank:", order.bank);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    console.log("\n📝 Next Steps:");
+    console.log(
+      "1. Transfer",
+      order.fiatAmount,
+      process.env.CURRENCY,
+      "to the account number above"
+    );
+    console.log("2. Your webhook will receive status updates");
+    console.log("3. Once payment is confirmed, you will receive tokens");
+  } catch (error) {
+    console.error("\n❌ Error:", error.message);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+    }
+    process.exit(1);
+  }
+}
+
+main();
