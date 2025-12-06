@@ -18,3 +18,7 @@ yarn-error.log*
 
 # macOS system files
 .DS_Store
+
+# Examples
+examples/**/.env
+examples/**/node_modules/

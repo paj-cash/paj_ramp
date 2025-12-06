@@ -1,13 +1,13 @@
-import { post } from '../../../utils/api.js';
+import { post } from "../../../utils/api.js";
 
-type VerifyType = {
+export type VerifyType = {
   recipient: string;
   isActive: string;
   expiresAt: string;
   token: string;
 };
 
-type deviceSignatureType = {
+export type deviceSignatureType = {
   uuid: string;
   device: string;
   os?: string;
@@ -27,9 +27,9 @@ export const verify = async (
     if (isNaN(+recipient)) body = { email: recipient, otp, device };
     else body = { phone: recipient, otp, device };
 
-    return await post<VerifyType>('/pub/verify', body, { 'x-api-key': apiKey });
+    return await post<VerifyType>("/pub/verify", body, { "x-api-key": apiKey });
   } catch (err) {
-    console.error('Error verifying:', err);
+    console.error("Error verifying:", err);
     throw err;
   }
 };
