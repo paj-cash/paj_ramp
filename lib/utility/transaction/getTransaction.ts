@@ -1,9 +1,5 @@
 import { get } from "../../../utils/api.js";
-import {
-  Currency,
-  TransactionStatus,
-  TransactionType,
-} from "../../../utils/enums.js";
+import { TransactionStatus, TransactionType } from "../../../utils/enums.js";
 import { OnrampOrder } from "../../on_ramp/createOrder.js";
 import { OfframpOrder } from "../../off_ramp/directCreateOrder.js";
 

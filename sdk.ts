@@ -3,12 +3,12 @@
 // Switch Environment: "staging" | "production"
 import { setBaseUrl } from "./utils/axios.js";
 
-export const initializeSDK = (env: "staging" | "production" | "local") => {
-  if (env === "staging") {
+export const initializeSDK = (env: Environment) => {
+  if (env === Environment.Staging) {
     setBaseUrl("https://api-staging.paj.cash");
-  } else if (env === "production") {
+  } else if (env === Environment.Production) {
     setBaseUrl("https://api.paj.cash");
-  } else if (env === "local") {
+  } else if (env === Environment.Local) {
     setBaseUrl("http://localhost:3000");
   }
 };
@@ -49,5 +49,6 @@ export {
   Currency,
   TransactionType,
   TransactionStatus,
+  Environment,
   // Chain
 } from "./utils/enums.js";
