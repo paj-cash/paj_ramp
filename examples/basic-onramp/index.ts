@@ -5,6 +5,7 @@ import {
   createOnrampOrder,
   getTransaction,
   getAllTransactions,
+  Environment,
 } from "paj_ramp";
 import dotenv from "dotenv";
 
@@ -13,7 +14,7 @@ dotenv.config();
 async function main() {
   // Step 1: Initialize SDK
   console.log("🚀 Initializing PAJ Ramp SDK...");
-  initializeSDK("local"); // Use 'production' for production environment
+  initializeSDK(Environment.Local);
 
   const email = process.env.USER_EMAIL!;
   const apiKey = process.env.BUSINESS_API_KEY!;

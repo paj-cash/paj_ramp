@@ -2,6 +2,7 @@
 
 // Switch Environment: "staging" | "production"
 import { setBaseUrl } from "./utils/axios.js";
+import { Environment } from "./utils/enums.js";
 
 export const initializeSDK = (env: Environment) => {
   if (env === Environment.Staging) {
@@ -33,7 +34,10 @@ export { getBankAccounts } from "./lib/utility/bank/getBankAccounts.js";
 
 // Transaction History
 export { getAllTransactions } from "./lib/utility/transaction/getAllTransactions.js";
-export { getTransaction } from "./lib/utility/transaction/getTransaction.js";
+export {
+  getTransaction,
+  PajTransaction,
+} from "./lib/utility/transaction/getTransaction.js";
 
 // OFF RAMP
 // DIRECT OFF RAMP
