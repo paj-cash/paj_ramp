@@ -1,12 +1,9 @@
 import { post } from "../../utils/api.js";
 import {
   Currency,
-  TransactionStatus,
-  TransactionType,
 } from "../../utils/enums.js";
 
 interface CreateOfframpOrder {
-  token: string;
   bank: string;
   accountNumber: string;
   currency: Currency;

@@ -17,10 +17,10 @@ yarn add paj_ramp
 ### Initialize SDK (select environment: "staging" | "production")
 
 ```typescript
-import { initializeSDK } from "paj_ramp";
+import { initializeSDK, Environment } from 'paj_ramp';
 
 // Selects the environment you want to work with
-initializeSDK("staging"); // or production
+initializeSDK(Environment.Production); // or Environment.Staging
 ```
 
 ### Initiate Session
@@ -40,13 +40,13 @@ const initiated = await initiate(
 ### Verify Session
 
 ```typescript
-import { verify } from "paj_ramp";
+import { verify } from 'paj_ramp';
 
 // You can get otp by either adding your phone number or email address
 // Phone number must start with a country code
 const verified = await verify(
-  "your_email@gmail.com", // or +2349053231563
-  "otp",
+  'your_email@gmail.com', // or +2349053231563
+  'otp',
   {
     uuid: string,
     device: string,
@@ -55,7 +55,7 @@ const verified = await verify(
     browser: string, //chrome
     ip: string,
   },
-  "business_api_key"
+  'business_api_key'
 );
 /* Response: {
 email?: string,
@@ -91,7 +91,7 @@ npm start
 **_Get All Rate_**
 
 ```typescript
-import { getAllRate } from "paj_ramp";
+import { getAllRate } from 'paj_ramp';
 
 const rate = await getAllRate();
 /*
@@ -117,7 +117,7 @@ Response:
 **_Get Rate by Amount_**
 
 ```typescript
-import { getRateByAmount } from "paj_ramp";
+import { getRateByAmount } from 'paj_ramp';
 
 const rate = await getRateByAmount(50000);
 /*
@@ -140,7 +140,7 @@ Response:
 **_Get Rate by Rate Type_**
 
 ```typescript
-import { getRateByType, RateType } from "paj_ramp";
+import { getRateByType, RateType } from 'paj_ramp';
 
 const rate = await getRateByType(RateType.offRamp); // or RateType.onRamp
 
@@ -158,9 +158,9 @@ Response:
 **_Get Token Value from Amount and Mint Token_**
 
 ```typescript
-import { getTokenValue } from "paj_ramp";
+import { getTokenValue } from 'paj_ramp';
 
-const tokenValue = await getTokenValue(50000, "token_mint_address");
+const tokenValue = await getTokenValue(50000, 'token_mint_address');
 /*
 Response:
 {
@@ -176,21 +176,21 @@ Response:
 **_Get Banks_**
 
 ```typescript
-import { getBanks } from "paj_ramp";
+import { getBanks } from 'paj_ramp';
 
-const banks = await getBanks("token");
+const banks = await getBanks('token');
 // Response: [ { id: string, name: string, country: string } ]
 ```
 
 **_Resolve Bank Account_**
 
 ```typescript
-import { resolveBankAccount } from "paj_ramp";
+import { resolveBankAccount } from 'paj_ramp';
 
 const resolvedBankAccount = await resolveBankAccount(
-  "token",
-  "bank_id",
-  "account_number"
+  'token',
+  'bank_id',
+  'account_number'
 );
 // Response: { accountName: string, accountNumber: string, bank: { id: string, name: string, code: string, country: string } }
 ```
@@ -198,12 +198,12 @@ const resolvedBankAccount = await resolveBankAccount(
 **_Add Bank Account_**
 
 ```typescript
-import { addBankAccount } from "paj_ramp";
+import { addBankAccount } from 'paj_ramp';
 
 const addedBankAccount = await addBankAccount(
-  "token",
-  "bank_id",
-  "account_number"
+  'token',
+  'bank_id',
+  'account_number'
 );
 // Response: { id: string, accountName: string, accountNumber: string, bank: string }
 ```
@@ -211,9 +211,9 @@ const addedBankAccount = await addBankAccount(
 **_Get Bank Accounts_**
 
 ```typescript
-import { getBankAccounts } from "paj_ramp";
+import { getBankAccounts } from 'paj_ramp';
 
-const accounts = await getBankAccounts("token");
+const accounts = await getBankAccounts('token');
 // Response: [ { id: string, accountName: string, accountNumber: string, bank: string } ]
 ```
 
@@ -222,9 +222,9 @@ const accounts = await getBankAccounts("token");
 **_Get All Transactions_**
 
 ```typescript
-import { getAllTransactions } from "paj_ramp";
+import { getAllTransactions } from 'paj_ramp';
 
-const transactions = await getAllTransactions("token_from_verification");
+const transactions = await getAllTransactions('token_from_verification');
 /* Response: [{
 id: string;
 address: string;
@@ -245,11 +245,11 @@ createdAt: string | Date;
 **_Get Transaction_**
 
 ```typescript
-import { getTransaction } from "paj_ramp";
+import { getTransaction } from 'paj_ramp';
 
 const transactions = await getTransaction(
-  "token_from_verification",
-  "transaction_id"
+  'token_from_verification',
+  'transaction_id'
 );
 /* Response: {
 id: string;
@@ -273,31 +273,31 @@ createdAt: string | Date;
 ### Usage Example
 
 ```typescript
-import { offRampCreateOrder } from 'paj_ramp';
+import { createOfframpOrder, Currency } from 'paj_ramp';
 
-const createOrder = await offRampCreateOrder(
-  'token',
-  'bank_id',
-  'account_number',
-  'NGN', // Currency
-  10000, // amount
-  'token_mint_address'
-  'webhook_url'
+const createOrder = await createOfframpOrder(
+  {
+    bank: 'bank_id',
+    accountNumber: 'account_number',
+    currency: 'NGN' as Currency, // Currency
+    amount: 10000, // amount
+    mint: 'token_mint_address',
+    webhookURL: 'webhook_url', // https://your-domain.com/webhook
+  },
+  'token'
 );
 /* Response: {
 id: string,
 address: string,
-signature?: string,
 mint: string,
 currency: Currency,
 amount: number,
-usdcAmount: number,
 fiatAmount: number,
 sender: string,
-receipint: string,
 rate: number,
 status: TransactionStatus,
 transactionType: TransactionType
+createdAt: string
 }*/
 ```
 
@@ -306,17 +306,19 @@ transactionType: TransactionType
 ### Usage Example
 
 ```typescript
-import { createOrder } from "paj_ramp";
+import { createOrder, Currency } from 'paj_ramp';
 
-const order = await createOrder({
-  fiatAmount: 10000,
-  currency: "NGN",
-  recipient: "wallet_address_here",
-  mint: "token_mint_address_here",
-  chain: "SOLANA", //ethereum, polygon, etc
-  webhookURL: "your_webhook_url",
-  token: "token_from_verification",
-});
+const order = await createOrder(
+  {
+    fiatAmount: 10000,
+    currency: 'NGN' as Currency,
+    recipient: 'wallet_address_here',
+    mint: 'token_mint_address_here',
+    chain: 'SOLANA', //ethereum, polygon, etc
+    webhookURL: 'your_webhook_url', // https://your-domain.com/webhook
+  },
+  'token_from_verification'
+);
 // Response: { id: string, accountNumber: string, accountName: string, fiatAmount: number, bank: string }
 ```
 
@@ -342,6 +344,300 @@ const order = await createOrder({
 }
 ```
 
+## SDK Reference
+
+### Complete On-Ramp Flow Example
+
+```typescript
+import {
+  initializeSDK,
+  initiate,
+  verify,
+  createOnrampOrder,
+  getTransaction,
+  getAllTransactions,
+  Environment,
+} from 'paj_ramp';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+async function main() {
+  // Step 1: Initialize SDK
+  console.log('🚀 Initializing PAJ Ramp SDK...');
+  initializeSDK(Environment.Local);
+
+  const email = process.env.USER_EMAIL!;
+  const apiKey = process.env.BUSINESS_API_KEY!;
+  const fiatAmount = parseInt(process.env.FIAT_AMOUNT!);
+  const currency = process.env.CURRENCY!;
+  const recipient = process.env.WALLET_ADDRESS!;
+  const mint = process.env.TOKEN_MINT!;
+  const webhookURL = process.env.WEBHOOK_URL!;
+
+  try {
+    // Step 2: Initiate session
+    console.log('\n📧 Initiating session...');
+    console.log('Email:', email);
+    console.log('API Key:', apiKey);
+    const initiated = await initiate(email, apiKey);
+    console.log('✅ OTP sent to:', initiated.email || initiated.phone);
+
+    // In a real application, you would wait for the user to receive and enter the OTP
+    // For this example, we assume you have the OTP from your email
+    console.log(
+      '\n⏳ Please check your email for the OTP and add it to your .env file'
+    );
+
+    const otp = process.env.OTP;
+    if (!otp) {
+      console.error(
+        '❌ OTP not found in .env file. Please add OTP=your_otp to .env'
+      );
+      process.exit(1);
+    }
+
+    // Step 3: Verify session
+    console.log('\n🔐 Verifying session with OTP...');
+    const verified = await verify(
+      email,
+      otp,
+      {
+        uuid: 'example-device-uuid-' + Date.now(),
+        device: 'Desktop',
+        os: 'MacOS',
+        browser: 'Chrome',
+      },
+      apiKey
+    );
+    console.log('✅ Session verified successfully!');
+    console.log(
+      'Token (first 20 chars):',
+      verified.token.substring(0, 20) + '...'
+    );
+
+    const sessionToken = verified.token;
+
+    // Step 4: Create onramp order
+    console.log('\n💰 Creating onramp order...');
+    const order = await createOnrampOrder(
+      {
+        fiatAmount,
+        currency,
+        recipient,
+        mint,
+        chain: 'SOLANA',
+        webhookURL,
+      },
+      sessionToken
+    );
+
+    console.log('\n✅ Order created successfully!');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('📋 Order Details:');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('Order ID:', order.id);
+    console.log('Account Number:', order.accountNumber);
+    console.log('Account Name:', order.accountName);
+    console.log(
+      'Fiat Amount (to send):',
+      order.fiatAmount,
+      process.env.CURRENCY
+    );
+    console.log('Token Amount (to receive):', order.amount);
+    console.log('Bank:', order.bank);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    // Step 5: Fetch the transaction details
+    console.log('\n🔍 Fetching transaction details...');
+    const transaction = await getTransaction(sessionToken, order.id);
+
+    console.log('\n✅ Transaction fetched successfully!');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('📋 Transaction Details:');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('Transaction ID:', transaction.id);
+    console.log('Status:', transaction.status);
+    console.log('Type:', transaction.transactionType);
+    console.log('Mint:', transaction.mint);
+    console.log('Currency:', transaction.currency);
+    console.log('Token Amount:', transaction.amount);
+    console.log('USDC Amount:', transaction.usdcAmount);
+    console.log('Fiat Amount:', transaction.fiatAmount);
+    console.log('Rate:', transaction.rate);
+    console.log('Recipient:', transaction.recipient);
+    console.log('Created At:', transaction.createdAt);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    // Step 6: Fetch all transactions
+    console.log('\n📜 Fetching all transactions...');
+    const allTransactions = await getAllTransactions(sessionToken);
+
+    console.log(`\n✅ Found ${allTransactions.length} transaction(s)!\n`);
+
+    if (allTransactions.length > 0) {
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('📋 All Transactions:');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+      allTransactions.forEach((tx, index) => {
+        console.log(`\n${index + 1}. Transaction ID: ${tx.id}`);
+        console.log(`   Status: ${tx.status}`);
+        console.log(`   Type: ${tx.transactionType}`);
+        console.log(`   Amount: ${tx.amount} (${tx.currency})`);
+        console.log(`   Fiat: ${tx.fiatAmount}`);
+        console.log(`   Created: ${tx.createdAt}`);
+      });
+
+      console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    }
+
+    console.log('\n📝 Next Steps:');
+    console.log(
+      '1. Transfer',
+      order.fiatAmount,
+      process.env.CURRENCY,
+      'to the account number above'
+    );
+    console.log('2. Your webhook will receive status updates');
+    console.log('3. Once payment is confirmed, you will receive tokens');
+  } catch (error) {
+    console.error(
+      '\n❌ Error:',
+      error instanceof Error ? error.message : String(error)
+    );
+    if (error && typeof error === 'object' && 'response' in error) {
+      console.error('Response data:', (error as any).response.data);
+    }
+    process.exit(1);
+  }
+}
+
+main();
+```
+
+### Complete Off-Ramp Flow Example
+
+```typescript
+import {
+  initializeSDK,
+  initiate,
+  verify,
+  getBanks,
+  createOfframpOrder,
+  Currency,
+  Environment,
+} from 'paj_ramp';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+async function main() {
+  // Step 1: Initialize SDK
+  console.log('🚀 Initializing PAJ Ramp SDK...');
+  initializeSDK(Environment.Local);
+
+  const email = process.env.USER_EMAIL!;
+  const apiKey = process.env.BUSINESS_API_KEY!;
+  const accountNumber = process.env.ACCOUNT_NUMBER!;
+  const bankId = process.env.BANK_ID!;
+  const currency = process.env.CURRENCY! as Currency;
+  const mint = process.env.TOKEN_MINT!;
+  const webhookURL = process.env.WEBHOOK_URL!;
+
+  try {
+    // Step 2: Initiate session
+    console.log('\n📧 Initiating session...');
+    const initiated = await initiate(email, apiKey);
+    console.log('✅ OTP sent to:', initiated.email || initiated.phone);
+
+    const otp = process.env.OTP;
+    if (!otp) {
+      console.error(
+        '❌ OTP not found in .env file. Please add OTP=your_otp to .env'
+      );
+      process.exit(1);
+    }
+
+    // Step 3: Verify session
+    console.log('\n🔐 Verifying session with OTP...');
+    const verified = await verify(
+      email,
+      otp,
+      {
+        uuid: 'example-device-uuid-' + Date.now(),
+        device: 'Desktop',
+        os: 'MacOS',
+        browser: 'Chrome',
+      },
+      apiKey
+    );
+    console.log('✅ Session verified successfully!');
+
+    const sessionToken = verified.token;
+
+    // Step 4: Get available banks
+    console.log('\n🏦 Fetching available banks...');
+    const banks = await getBanks(sessionToken);
+    console.log(`✅ Found ${banks.length} banks`);
+    if (banks.length > 0) {
+      console.log(
+        'First few banks:',
+        banks
+          .slice(0, 3)
+          .map(b => b.name)
+          .join(', ')
+      );
+    }
+
+    // Step 7: Create offramp order
+    console.log('\n💸 Creating offramp order...');
+    const order = await createOfframpOrder(
+      {
+        token: verified.token,
+        bank: bankId,
+        accountNumber,
+        currency,
+        amount: parseInt(process.env.TOKEN_AMOUNT || '1'),
+        mint,
+        webhookURL,
+      },
+      sessionToken
+    );
+
+    console.log('\n✅ Offramp order created successfully!');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('📋 Order Details:');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('Order ID:', order.id);
+    console.log('Address:', order.address);
+    console.log('Mint:', order.mint);
+    console.log('Token Amount (to pay):', order.amount);
+    console.log('Fiat Amount (to receive):', order.fiatAmount);
+    console.log('Rate:', order.rate);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    console.log('\n📝 Next Steps:');
+    console.log('1. Send', order.amount, 'tokens to address:', order.address);
+    console.log('2. Your webhook will receive status updates');
+    console.log(
+      '3. Once tokens are received and confirmed, fiat will be sent to your bank account'
+    );
+  } catch (error) {
+    console.error(
+      '\n❌ Error:',
+      error instanceof Error ? error.message : String(error)
+    );
+    if (error && typeof error === 'object' && 'response' in error) {
+      console.error('Response data:', (error as any).response.data);
+    }
+    process.exit(1);
+  }
+}
+
+main();
+```
+
 ## Other types
 
 ```typescript
@@ -350,179 +646,10 @@ import {
   TransactionStatus, // INIT, etc
   TransactionType, // ON_RAMP, etc
   Currency, // NGN
-} from "paj_ramp";
+  Environment,
+  RateType,
+} from 'paj_ramp';
 ```
-
-<!--
-## Quick Start
-
-### Real-time Order Observation
-
-The SDK provides Socket.IO functionality to observe onramp orders in real-time:
-
-```typescript
-import { observeOrder } from 'paj_ramp';
-
-// Using observeOrder function
-const observer = observeOrder({
-  orderId: 'your_order_id',
-  onOrderUpdate: data => {
-    console.log('Order update:', data);
-    // Handle status changes: pending, processing, completed, failed, cancelled
-  },
-  onError: error => {
-    console.error('Socket error:', error);
-  },
-});
-
-await observer.connect();
-```
-
-### Order Update Data Structure
-
-```typescript
-interface OnRampOrderUpdate {
-  id: string;
-  fiatAmount: string;
-  currency: string;
-  recipient: string; // wallet address
-  mint: string; // token address
-  chain: Chain; // enum: 'solana', 'ethereum', 'polygon'
-  status: OnRampStatus; // enum: 'pending', 'processing', 'completed', 'failed', 'cancelled'
-}
-```
-
-### Socket Events
-
-The SDK listens for these Socket.IO events:
-
-- **ORDER_UPDATE**: Real-time order status updates
-- **ERROR**: Error messages from the server
-
-## API Reference
-
-### observeOrder(options)
-
-Creates an order observer.
-
-**Parameters:**
-
-- `options.orderId` (string, required): The order ID to observe
-- `options.onOrderUpdate` (function, optional): Callback for order updates
-- `options.onError` (function, optional): Callback for errors
-- `options.onConnect` (function, optional): Callback when connected
-- `options.onDisconnect` (function, optional): Callback when disconnected
-- `options.onConnectionStatusChange` (function, optional): Callback for connection status changes
-
-**Returns:**
-
-- `socket`: The Socket.IO instance
-- `isConnected()`: Function to check connection status
-- `connect()`: Function to connect to the socket
-- `disconnect()`: Function to disconnect from the socket
-
-**Example:**
-
-```typescript
-import { observeOrder } from 'paj_ramp';
-
-const observer = observeOrder({
-  orderId: 'your_order_id',
-  onOrderUpdate: data => console.log(data),
-});
-
-// Connect manually
-await observer.connect();
-
-// Check connection status
-console.log('Connected:', observer.isConnected());
-
-// Disconnect manually: you could use setTimeout to keep the socket alive for a certain amount of time before you disconnect
-observer.disconnect();
-```
-
-## Error Handling
-
-The SDK provides comprehensive error handling:
-
-```typescript
-const observer = observeOrder({
-  orderId: 'your_order_id',
-  onError: error => {
-    // Handle connection errors, order not found, etc.
-    console.error('Socket error:', error);
-  },
-});
-```
-
-Common error messages:
-
-- `"Order not found: {orderId}"`
-- `"Connection failed"`
-- `"Socket timeout"`
-
-### Usage Example
-
-```typescript
-import { observeOrder, createOrder } from 'paj_ramp';
-
-async function example(orderId) {
-  console.log('Observe Order');
-
-  const observer = observeOrder({
-    orderId,
-    onOrderUpdate: data => {
-      console.log('Order update received:', data);
-      console.log('Status:', data.status);
-      console.log('Amount:', data.amount);
-      console.log('Currency:', data.currency);
-    },
-    onError: error => {
-      console.error('Socket error:', error);
-    },
-    onConnect: () => {
-      console.log('Connected to order socket');
-    },
-    onDisconnect: () => {
-      console.log('Disconnected from order socket');
-    },
-    onConnectionStatusChange: connected => {
-      console.log(
-        'Connection status changed:',
-        connected ? 'Connected' : 'Disconnected'
-      );
-    },
-  });
-
-  try {
-    await observer.connect();
-    console.log('Successfully connected to order observer');
-
-    // Keep the connection alive for 1 minute
-    setTimeout(() => {
-      console.log('Disconnecting after 1 minute...');
-      observer.disconnect();
-    }, 1 * 60 * 1000);
-  } catch (error) {
-    console.error('Failed to connect:', error);
-  }
-}
-
-const order = await createOrder({
-  fiatAmount: 10000,
-  currency: 'NGN',
-  recipient: 'your_wallet_address',
-  mint: 'your_token_mint_address',
-  chain: 'SOLANA',
-  webhookURL: 'webhook_url',
-  token: token_from_verification,
-});
-
-await example(order.id);
-// Response: { id: string, fiatAmount: string, currency: string, , recipient: string,  mint: string, chain: Chain, amount: number, status: OnRampStatus }
-``` -->
-
----
 
 ## License
 
