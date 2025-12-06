@@ -1,0 +1,13 @@
+{
+  "name": "paj-ramp-basic-onramp-example",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Basic onramp example using paj_ramp SDK",
+  "type": "module",
+  "scripts": {
+    "start": "node index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}

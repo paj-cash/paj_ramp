@@ -8,6 +8,7 @@
   "scripts": {
     "prelink": "npm run build",
     "build": "tsc",
+    "build:watch": "tsc --watch",
     "test": "jest"
   },
   "repository": {

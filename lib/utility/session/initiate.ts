@@ -1,7 +1,8 @@
-import { post } from '../../../utils/api.js';
+import { post } from "../../../utils/api.js";
 
 type InitiateResponse = {
-  recipient: string;
+  email?: string;
+  phone?: string;
 };
 
 export const initiate = async (recipient: string, apiKey: string) => {
@@ -11,12 +12,12 @@ export const initiate = async (recipient: string, apiKey: string) => {
     if (isNaN(+recipient)) body = { email: recipient };
     else body = { phone: recipient };
 
-    return await post<InitiateResponse>('/pub/initiate', body, {
-      'x-api-key': apiKey,
-      'Content-Type': 'application/json',
+    return await post<InitiateResponse>("/pub/initiate", body, {
+      "x-api-key": apiKey,
+      "Content-Type": "application/json",
     });
   } catch (err) {
-    console.error('Error initiating:', err);
+    console.error("Error initiating:", err);
     throw err;
   }
 };

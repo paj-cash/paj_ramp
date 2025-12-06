@@ -1,61 +1,46 @@
-import { post } from '../../utils/api.js';
-import { Currency, TransactionStatus, TransactionType } from '../../utils/enums.js';
+import { post } from "../../utils/api.js";
+import {
+  Currency,
+  TransactionStatus,
+  TransactionType,
+} from "../../utils/enums.js";
 
+interface CreateOfframpOrder {
+  token: string;
+  bank: string;
+  accountNumber: string;
+  currency: Currency;
+  amount: number;
+  mint: string;
+  webhookURL: string;
+}
 
-
-// type offRampCreateOrderType = {
-//   token?: string;
-//   bank: string;
-//   accountNumber: string;
-//   currency: Currency;
-//   amount: number;
-//   mint: string;
-//   webhookURL: string;
-// };
-
-type offRampCreateOrderResponse = {
+export interface OfframpOrder {
   id: string;
   address: string;
-  signature?: string;
   mint: string;
   currency: Currency;
   amount: number;
-  usdcAmount: number;
   fiatAmount: number;
-  sender: string;
-  receipiant: string;
   rate: number;
-  status: TransactionStatus;
-  transactionType: TransactionType;
-  createdAt: string;
-};
+}
 
-export const offRampCreateOrder = async (
-  token: string,
-  bank: string,
-  accountNumber: string,
-  currency: string,
-  amount: number,
-  mint: string,
-  webhookURL: string
+export const createOfframpOrder = async (
+  order: CreateOfframpOrder,
+  sessionToken: string
 ) => {
   try {
-    return await post<offRampCreateOrderResponse>(
-      '/pub/offramp',
+    return await post<OfframpOrder>(
+      "/pub/offramp",
       {
-        bank,
-        accountNumber,
-        currency,
-        amount,
-        mint,
-        webhookURL,
+        ...order,
       },
       {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${sessionToken}`,
       }
     );
   } catch (err) {
-    console.error('Error Creating Order', err);
+    console.error("Error Creating Order", err);
     throw err;
   }
 };
