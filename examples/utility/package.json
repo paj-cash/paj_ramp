@@ -1,0 +1,26 @@
+{
+  "name": "paj-utility-example",
+  "version": "1.0.0",
+  "description": "Example demonstrating PAJ Ramp utility functions for value conversion",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts",
+    "dev": "tsx watch index.ts"
+  },
+  "keywords": [
+    "paj",
+    "ramp",
+    "utility",
+    "value",
+    "conversion"
+  ],
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
