@@ -24,7 +24,11 @@ export { verify } from "./lib/utility/session/verify.js";
 export { getAllRate } from "./lib/utility/rate/getAllRate.js";
 export { getRateByAmount } from "./lib/utility/rate/getRateByAmount.js";
 export { getRateByType } from "./lib/utility/rate/getRateByType.js";
-export { getTokenValue } from "./lib/utility/rate/getTokenValue.js";
+export {
+  getTokenValue,
+  TokenValue,
+} from "./lib/utility/value/getTokenValue.js";
+export { getFiatValue, FiatValue } from "./lib/utility/value/getFiatValue.js";
 
 // Banking Operations
 export { getBanks } from "./lib/utility/bank/getBanks.js";
