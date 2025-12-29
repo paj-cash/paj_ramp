@@ -73,7 +73,6 @@ async function main() {
     console.log("\n💸 Creating offramp order...");
     const order = await createOfframpOrder(
       {
-        token: verified.token,
         bank: bankId,
         accountNumber,
         currency,

@@ -111,7 +111,6 @@ async function main() {
     console.log("Mint:", transaction.mint);
     console.log("Currency:", transaction.currency);
     console.log("Token Amount:", transaction.amount);
-    console.log("USDC Amount:", transaction.usdcAmount);
     console.log("Fiat Amount:", transaction.fiatAmount);
     console.log("Rate:", transaction.rate);
     console.log("Recipient:", transaction.recipient);

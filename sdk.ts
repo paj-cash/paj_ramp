@@ -25,10 +25,13 @@ export { getAllRate } from "./lib/utility/rate/getAllRate.js";
 export { getRateByAmount } from "./lib/utility/rate/getRateByAmount.js";
 export { getRateByType } from "./lib/utility/rate/getRateByType.js";
 export {
-  getTokenValue,
-  TokenValue,
-} from "./lib/utility/value/getTokenValue.js";
-export { getFiatValue, FiatValue } from "./lib/utility/value/getFiatValue.js";
+  getOnrampValue as getTokenValue,
+  OnrampValue as TokenValue,
+} from "./lib/utility/value/getOnrampValue.js";
+export {
+  getOfframpValue as getFiatValue,
+  OfframpValue as FiatValue,
+} from "./lib/utility/value/getOfframpValue.js";
 
 // Banking Operations
 export { getBanks } from "./lib/utility/bank/getBanks.js";
@@ -45,7 +48,7 @@ export {
 
 // OFF RAMP
 // DIRECT OFF RAMP
-export { createOfframpOrder } from "./lib/off_ramp/directCreateOrder.js";
+export { createOfframpOrder } from "./lib/off_ramp/createOrder.js";
 
 // ON RAMP
 // Create Order

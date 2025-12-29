@@ -57,8 +57,8 @@ async function main() {
 
     const sessionToken = verified.token;
 
-    // Step 4: Get Token Value (convert fiat to token amount)
-    console.log("\n💰 Getting token value...");
+    // Step 4: Get Onramp (convert fiat to token amount)
+    console.log("\n💰 Getting onramp value...");
     const tokenAmount = 1010; // Example: 100 tokens
     const tokenValueResult = await getTokenValue(
       {
@@ -69,20 +69,18 @@ async function main() {
       sessionToken
     );
 
-    console.log("\n✅ Token value fetched successfully!");
+    console.log("\n✅ Onramp value fetched successfully!");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("📋 Token Value Details:");
+    console.log("📋 Onramp Details:");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("Token Amount:", tokenValueResult.amount);
     console.log("Mint:", tokenValueResult.mint);
     console.log("Currency:", tokenValueResult.currency);
-    console.log(
-      `Token Value: ${tokenValueResult.tokenAmount} ${tokenValueResult.currency}`
-    );
+    console.log(`Token Value: ${tokenValueResult.amount} usdc`);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
-    // Step 5: Get Fiat Value (convert token amount to fiat)
-    console.log("\n💵 Getting fiat value...");
+    // Step 5: Get Offramp (convert token amount to fiat)
+    console.log("\n💵 Getting offramp value...");
     const fiatAmount = 1000; // Example: 1000 NGN/USD
     const fiatValueResult = await getFiatValue(
       {
@@ -93,9 +91,9 @@ async function main() {
       sessionToken
     );
 
-    console.log("\n✅ Fiat value fetched successfully!");
+    console.log("\n✅ Offramp value fetched successfully!");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("📋 Fiat Value Details:");
+    console.log("📋 Offramp Details:");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("Token Amount:", fiatValueResult.amount);
     console.log("Mint:", fiatValueResult.mint);
@@ -105,7 +103,7 @@ async function main() {
 
     console.log("\n✨ Summary:");
     console.log(
-      `• ${tokenAmount} ${currency} = ${tokenValueResult.tokenAmount} USDC`
+      `• ${tokenAmount} ${currency} = ${tokenValueResult.amount} USDC`
     );
     console.log(
       `• ${fiatAmount} USDC = ${fiatValueResult.fiatAmount}  ${currency}`
