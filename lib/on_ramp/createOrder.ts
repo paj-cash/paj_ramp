@@ -2,7 +2,8 @@ import { post } from "../../utils/api.js";
 import { Currency } from "../../utils/enums.js";
 
 type CreateOnrampOrder = {
-  fiatAmount: number;
+  amount?: number;
+  fiatAmount?: number;
   currency: string;
   recipient: string;
   mint: string;
@@ -21,6 +22,7 @@ export interface OnrampOrder {
   recipient: string;
   currency: Currency;
   mint: string;
+  fee: number;
 }
 
 export const createOnrampOrder = async (
