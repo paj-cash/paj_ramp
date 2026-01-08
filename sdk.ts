@@ -48,11 +48,30 @@ export {
 
 // OFF RAMP
 // DIRECT OFF RAMP
-export { createOfframpOrder } from "./lib/off_ramp/createOrder.js";
+export {
+  createOfframpOrder,
+  CreateOfframpOrder,
+  OfframpOrder,
+} from "./lib/off_ramp/createOrder.js";
 
 // ON RAMP
 // Create Order
-export { createOnrampOrder } from "./lib/on_ramp/createOrder.js";
+export {
+  createOnrampOrder,
+  CreateOnrampOrder,
+  OnrampOrder,
+} from "./lib/on_ramp/createOrder.js";
+
+// Value Operations
+export {
+  getOnrampValue,
+  OnrampValue,
+} from "./lib/utility/value/getOnrampValue.js";
+export {
+  getOfframpValue,
+  OfframpValue,
+  ValueQuery,
+} from "./lib/utility/value/getOfframpValue.js";
 
 // Types
 export {

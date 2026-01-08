@@ -1,7 +1,7 @@
 import { post } from "../../utils/api.js";
 import { Currency } from "../../utils/enums.js";
 
-type CreateOnrampOrder = {
+export interface CreateOnrampOrder {
   amount?: number;
   fiatAmount?: number;
   currency: string;
@@ -9,7 +9,7 @@ type CreateOnrampOrder = {
   mint: string;
   chain: string;
   webhookURL: string;
-};
+}
 
 export interface OnrampOrder {
   id: string;

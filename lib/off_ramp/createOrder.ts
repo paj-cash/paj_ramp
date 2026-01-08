@@ -1,7 +1,7 @@
 import { post } from "../../utils/api.js";
 import { Currency } from "../../utils/enums.js";
 
-interface CreateOfframpOrder {
+export interface CreateOfframpOrder {
   bank: string;
   accountNumber: string;
   currency: Currency;
