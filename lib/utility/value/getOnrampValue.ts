@@ -1,12 +1,5 @@
 import { get } from "../../../utils/api.js";
-import { Currency } from "../../../utils/enums.js";
-
-interface ValueQuery {
-  amount?: number;
-  fiatAmount?: number;
-  mint: string;
-  currency: Currency;
-}
+import { ValueQuery } from "./getOfframpValue.js";
 
 export interface OnrampValue extends ValueQuery {
   rate: number;

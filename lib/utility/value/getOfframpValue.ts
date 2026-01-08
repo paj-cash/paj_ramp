@@ -1,7 +1,7 @@
 import { get } from "../../../utils/api.js";
 import { Currency } from "../../../utils/enums.js";
 
-interface ValueQuery {
+export interface ValueQuery {
   amount?: number;
   fiatAmount?: number;
   mint: string;

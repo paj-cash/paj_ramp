@@ -1,4 +1,4 @@
-import { get } from '../../../utils/api.js';
+import { get } from "../../../utils/api.js";
 
 type ResolveBankAccountType = {
   accountName: string;
@@ -39,7 +39,7 @@ export const resolveBankAccount = async (
       }
     );
   } catch (err) {
-    console.error('Error resolving bank account:', err);
+    console.error("Error resolving bank account:", err);
     throw err;
   }
 };

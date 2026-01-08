@@ -1,4 +1,4 @@
-import { get } from '../../../utils/api.js';
+import { get } from "../../../utils/api.js";
 
 type BankType = {
   id: string;
@@ -25,7 +25,7 @@ export const getBanks = async (token: string) => {
       }
     );
   } catch (err) {
-    console.error('Error fetching Banks:', err);
+    console.error("Error fetching Banks:", err);
     throw err;
   }
 };
