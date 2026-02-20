@@ -22,3 +22,4 @@ yarn-error.log*
 # Examples
 examples/**/.env
 examples/**/node_modules/
+/.idea/
