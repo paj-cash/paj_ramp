@@ -1,11 +1,11 @@
 import { get } from '../../../utils/api.js';
 
-type GetBankAccountsType = {
+export interface GetBankAccounts {
   id: string;
   accountName: string;
   accountNumber: string;
   bank: string;
-};
+}
 
 /**
  * Fetches a list of added bank accounts from the public API endpoint.
@@ -19,7 +19,7 @@ type GetBankAccountsType = {
  */
 export const getBankAccounts = async (apiKey: string) => {
   try {
-    return await get<GetBankAccountsType[]>(
+    return await get<GetBankAccounts[]>(
       `/pub/bank-account`,
       {},
       {

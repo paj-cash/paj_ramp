@@ -4,6 +4,7 @@ import {
   verify,
   getTokenValue,
   getFiatValue,
+  getBanks,
   Environment,
   Currency,
 } from "paj_ramp";
@@ -57,7 +58,20 @@ async function main() {
 
     const sessionToken = verified.token;
 
-    // Step 4: Get Onramp (convert fiat to token amount)
+    // Step 4: Get Banks
+    console.log("\n🏦 Fetching available banks...");
+    const banks = await getBanks(sessionToken);
+    console.log(`✅ Found ${banks.length} banks`);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("📋 First 3 Banks:");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    banks.slice(0, 3).forEach((bank, index) => {
+      console.log(`${index + 1}. ${bank.name} (${bank.code}) - ${bank.country}`);
+      console.log(`   Logo: ${bank.logo}`);
+    });
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    // Step 5: Get Onramp (convert fiat to token amount)
     console.log("\n💰 Getting onramp value...");
     const tokenAmount = 1010; // Example: 100 tokens
     const tokenValueResult = await getTokenValue(
@@ -79,7 +93,7 @@ async function main() {
     console.log(`Token Value: ${tokenValueResult.amount} usdc`);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
-    // Step 5: Get Offramp (convert token amount to fiat)
+    // Step 6: Get Offramp (convert token amount to fiat)
     console.log("\n💵 Getting offramp value...");
     const fiatAmount = 1000; // Example: 1000 NGN/USD
     const fiatValueResult = await getFiatValue(

@@ -1,4 +1,4 @@
-# Basic Offramp Example
+# Offramp Example
 
 This example demonstrates a complete offramp flow using the PAJ Ramp SDK, where a user can sell crypto tokens for fiat currency.
 
@@ -92,12 +92,11 @@ Saved Account ID: abc123...
 📋 Order Details:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Order ID: xyz789...
-Status: INIT
-Crypto Amount: 6.55
-USDC Amount: 6.55
+Deposit Address: SoLxxx...
+Token Amount: 6.55
 Fiat Amount: 10000 NGN
 Rate: 1525
-Recipient: 1234567890
+Fee: 0.05
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📝 Next Steps:
@@ -110,47 +109,69 @@ Recipient: 1234567890
 
 ### 1. SDK Initialization
 
-```javascript
-initializeSDK("staging"); // or 'production'
+```typescript
+import { initializeSDK, Environment } from 'paj_ramp';
+
+initializeSDK(Environment.Staging); // or Environment.Production
 ```
 
 ### 2. Session Management
 
-```javascript
+```typescript
+import { initiate, verify } from 'paj_ramp';
+
 const initiated = await initiate(email, apiKey);
 const verified = await verify(email, otp, deviceInfo, apiKey);
+const sessionToken = verified.token;
 ```
 
 ### 3. Bank Account Setup
 
-```javascript
+```typescript
+import { getBanks, resolveBankAccount, addBankAccount } from 'paj_ramp';
+
 // Get available banks
-const banks = await getBanks(token);
+const banks = await getBanks(sessionToken);
 
 // Verify account exists
-const resolved = await resolveBankAccount(token, bankId, accountNumber);
+const resolved = await resolveBankAccount(sessionToken, bankId, accountNumber);
 
 // Save to profile
-const added = await addBankAccount(token, bankId, accountNumber);
+const added = await addBankAccount(sessionToken, bankId, accountNumber);
 ```
 
 ### 4. Create Offramp Order
 
-```javascript
-const order = await offRampCreateOrder(
-  token,
-  bankAccountId,
-  accountNumber,
-  "NGN",
-  10000,
-  tokenMint,
-  webhookUrl
+```typescript
+import { createOfframpOrder, Currency, Chain } from 'paj_ramp';
+
+const order = await createOfframpOrder(
+  {
+    bank: bankId,
+    accountNumber: accountNumber,
+    currency: Currency.NGN,
+    amount: 10000,           // token amount (optional if fiatAmount provided)
+    mint: tokenMint,
+    chain: Chain.SOLANA,     // Chain.SOLANA or Chain.MONAD
+    webhookURL: webhookUrl,
+  },
+  sessionToken
 );
+/* Response: {
+  id: string,
+  address: string,   // deposit address — send tokens here
+  mint: string,
+  currency: Currency,
+  amount: number,
+  fiatAmount: number,
+  rate: number,
+  fee: number
+} */
 ```
 
 ### 5. Send Tokens
 
-Transfer the specified amount of tokens to the address provided in the order. The system will:
+Transfer the specified amount of tokens to the `address` provided in the order. The system will:
 
 - Detect the token transfer
 - Verify the transaction
@@ -160,7 +181,7 @@ Transfer the specified amount of tokens to the address provided in the order. Th
 ## Next Steps
 
 - Check out the [webhook integration example](../webhook-integration) to see how to handle status updates
-- See the [basic onramp example](../basic-onramp) for the reverse flow
+- See the [onramp example](../onramp) for the reverse flow
 - Read the [main documentation](../../README.md) for all available features
 
 ## Troubleshooting

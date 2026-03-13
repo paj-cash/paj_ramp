@@ -6,6 +6,7 @@ import {
   createOfframpOrder,
   Currency,
   Environment,
+  Chain,
 } from "paj_ramp";
 import dotenv from "dotenv";
 
@@ -33,7 +34,7 @@ async function main() {
     const otp = process.env.OTP;
     if (!otp) {
       console.error(
-        "❌ OTP not found in .env file. Please add OTP=your_otp to .env"
+        "❌ OTP not found in .env file. Please add OTP=your_otp to .env",
       );
       process.exit(1);
     }
@@ -49,7 +50,7 @@ async function main() {
         os: "MacOS",
         browser: "Chrome",
       },
-      apiKey
+      apiKey,
     );
     console.log("✅ Session verified successfully!");
 
@@ -65,7 +66,7 @@ async function main() {
         banks
           .slice(0, 3)
           .map((b) => b.name)
-          .join(", ")
+          .join(", "),
       );
     }
 
@@ -79,8 +80,9 @@ async function main() {
         amount: parseInt(process.env.TOKEN_AMOUNT || "1"),
         mint,
         webhookURL,
+        chain: Chain.SOLANA,
       },
-      sessionToken
+      sessionToken,
     );
 
     console.log("\n✅ Offramp order created successfully!");
@@ -99,12 +101,12 @@ async function main() {
     console.log("1. Send", order.amount, "tokens to address:", order.address);
     console.log("2. Your webhook will receive status updates");
     console.log(
-      "3. Once tokens are received and confirmed, fiat will be sent to your bank account"
+      "3. Once tokens are received and confirmed, fiat will be sent to your bank account",
     );
   } catch (error) {
     console.error(
       "\n❌ Error:",
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
     if (error && typeof error === "object" && "response" in error) {
       console.error("Response data:", (error as any).response.data);

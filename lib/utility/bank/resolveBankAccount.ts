@@ -1,6 +1,6 @@
 import { get } from "../../../utils/api.js";
 
-type ResolveBankAccountType = {
+export interface ResolveBankAccount {
   accountName: string;
   accountNumber: string;
   bank: {
@@ -9,7 +9,7 @@ type ResolveBankAccountType = {
     code: string;
     country: string;
   };
-};
+}
 
 /**
  * Resolves and fetches bank account details for a given bank ID and account number from the public API.
@@ -31,7 +31,7 @@ export const resolveBankAccount = async (
   accountNumber: string
 ) => {
   try {
-    return await get<ResolveBankAccountType>(
+    return await get<ResolveBankAccount>(
       `/pub/bank-account/confirm/?bankId=${bankId}&accountNumber=${accountNumber}`,
       {},
       {

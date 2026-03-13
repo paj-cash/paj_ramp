@@ -1,9 +1,9 @@
 import { post } from "../../../utils/api.js";
 
-type InitiateResponse = {
+export interface InitiateResponse {
   email?: string;
   phone?: string;
-};
+}
 
 export const initiate = async (recipient: string, apiKey: string) => {
   let body;

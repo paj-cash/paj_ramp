@@ -1,10 +1,10 @@
 import { get } from '../../../utils/api.js';
 
-type TokenValueType = {
+interface TokenValue {
   amount: number;
   usdcValue: number;
   mint: string;
-};
+}
 
 /**
  * The function `getTokenValue` asynchronously fetches the value of a token based on the specified
@@ -23,7 +23,7 @@ export const getTokenValue = async (amount: number, mint_token: string) => {
   const url: string = '/pub/rate';
 
   try {
-    return await get<TokenValueType>(
+    return await get<TokenValue>(
       `${url}/value?amount=${amount}&mint=${mint_token}`
     );
   } catch (err) {

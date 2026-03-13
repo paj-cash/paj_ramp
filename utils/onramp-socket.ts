@@ -12,9 +12,8 @@ export interface OnRampOrderUpdate {
 }
 
 export enum Chain {
-  SOLANA = "solana",
-  ETHEREUM = "ethereum",
-  POLYGON = "polygon",
+  SOLANA = "SOLANA",
+  MONAD = "MONAD",
 }
 
 export enum OnRampStatus {

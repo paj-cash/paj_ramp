@@ -17,13 +17,26 @@ export const initializeSDK = (env: Environment) => {
 // UTILITY ENDPOINTS
 
 // Session Management
-export { initiate } from "./lib/utility/session/initiate.js";
-export { verify } from "./lib/utility/session/verify.js";
+export {
+  initiate,
+  InitiateResponse,
+} from "./lib/utility/session/initiate.js";
+export {
+  verify,
+  Verify,
+  DeviceSignature,
+} from "./lib/utility/session/verify.js";
 
 // Rate Operations
 export { getAllRate } from "./lib/utility/rate/getAllRate.js";
-export { getRateByAmount } from "./lib/utility/rate/getRateByAmount.js";
-export { getRateByType } from "./lib/utility/rate/getRateByType.js";
+export {
+  getRateByAmount,
+  RateByAmount,
+} from "./lib/utility/rate/getRateByAmount.js";
+export {
+  getRateByType,
+  RateBy,
+} from "./lib/utility/rate/getRateByType.js";
 export {
   getOnrampValue as getTokenValue,
   OnrampValue as TokenValue,
@@ -34,10 +47,28 @@ export {
 } from "./lib/utility/value/getOfframpValue.js";
 
 // Banking Operations
-export { getBanks } from "./lib/utility/bank/getBanks.js";
-export { resolveBankAccount } from "./lib/utility/bank/resolveBankAccount.js";
-export { addBankAccount } from "./lib/utility/bank/addBankAccount.js";
-export { getBankAccounts } from "./lib/utility/bank/getBankAccounts.js";
+export {
+  getBanks,
+  Bank,
+} from "./lib/utility/bank/getBanks.js";
+export {
+  resolveBankAccount,
+  ResolveBankAccount,
+} from "./lib/utility/bank/resolveBankAccount.js";
+export {
+  addBankAccount,
+  AddBankAccount,
+} from "./lib/utility/bank/addBankAccount.js";
+export {
+  getBankAccounts,
+  GetBankAccounts,
+} from "./lib/utility/bank/getBankAccounts.js";
+
+// Token Operations
+export {
+  getTokenInfo,
+  TokenInfo,
+} from "./lib/utility/token/getTokenInfo.js";
 
 // Transaction History
 export { getAllTransactions } from "./lib/utility/transaction/getAllTransactions.js";
@@ -61,6 +92,11 @@ export {
   CreateOnrampOrder,
   OnrampOrder,
 } from "./lib/on_ramp/createOrder.js";
+export {
+  observeOrder,
+  ObserveOrderOptions,
+  ObserveOrderReturn,
+} from "./lib/on_ramp/observeOrder.js";
 
 // Value Operations
 export {
@@ -73,12 +109,19 @@ export {
   ValueQuery,
 } from "./lib/utility/value/getOfframpValue.js";
 
-// Types
+// Enums
 export {
   RateType,
   Currency,
   TransactionType,
   TransactionStatus,
   Environment,
-  // Chain
 } from "./utils/enums.js";
+export {
+  Chain,
+  OnRampStatus,
+  OnRampOrderUpdate,
+  OnRampSocketEvents,
+  OnRampSocketOptions,
+  OnRampSocketInstance,
+} from "./utils/onramp-socket.js";

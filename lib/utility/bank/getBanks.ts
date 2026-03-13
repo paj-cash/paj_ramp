@@ -1,10 +1,12 @@
 import { get } from "../../../utils/api.js";
 
-type BankType = {
+export interface Bank {
   id: string;
+  code: string;
   name: string;
+  logo: string;
   country: string;
-};
+}
 /**
  * Fetches a list of banks from the public API endpoint.
  * Returns an array of bank objects or throws an error if the request fails.
@@ -17,12 +19,12 @@ type BankType = {
  */
 export const getBanks = async (token: string) => {
   try {
-    return await get<BankType[]>(
+    return await get<Bank[]>(
       `/pub/bank`,
       {},
       {
         Authorization: `Bearer ${token}`,
-      }
+      },
     );
   } catch (err) {
     console.error("Error fetching Banks:", err);

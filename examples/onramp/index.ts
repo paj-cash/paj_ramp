@@ -6,6 +6,7 @@ import {
   getTransaction,
   getAllTransactions,
   Environment,
+  Chain,
 } from "paj_ramp";
 import dotenv from "dotenv";
 
@@ -75,7 +76,7 @@ async function main() {
         currency,
         recipient,
         mint,
-        chain: "SOLANA",
+        chain: Chain.SOLANA,
         webhookURL,
       },
       sessionToken

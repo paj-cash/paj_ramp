@@ -1,5 +1,6 @@
 import { post } from "../../utils/api.js";
 import { Currency } from "../../utils/enums.js";
+import { Chain } from "../../utils/onramp-socket.js";
 
 export interface CreateOnrampOrder {
   amount?: number;
@@ -7,7 +8,7 @@ export interface CreateOnrampOrder {
   currency: string;
   recipient: string;
   mint: string;
-  chain: string;
+  chain: Chain;
   webhookURL: string;
 }
 
@@ -27,7 +28,7 @@ export interface OnrampOrder {
 
 export const createOnrampOrder = async (
   order: CreateOnrampOrder,
-  sessionToken: string
+  sessionToken: string,
 ): Promise<OnrampOrder> => {
   try {
     return await post<OnrampOrder>(
@@ -37,7 +38,7 @@ export const createOnrampOrder = async (
       },
       {
         Authorization: `Bearer ${sessionToken}`,
-      }
+      },
     );
   } catch (err) {
     console.error("Error creating order:", err);

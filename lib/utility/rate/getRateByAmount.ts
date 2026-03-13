@@ -1,6 +1,6 @@
 import { get } from '../../../utils/api.js';
 
-type RateByAmountType = {
+export interface RateByAmount {
   rate: {
     baseCurrency: string;
     targetCurrency: string;
@@ -12,7 +12,7 @@ type RateByAmountType = {
     amountUSD: number;
     userAmountFiat: number;
   };
-};
+}
 
 /**
  * The function `getRateByAmount` fetches a rate based on a specified amount asynchronously.
@@ -30,7 +30,7 @@ export const getRateByAmount = async (amount: number) => {
   const url: string = '/pub/rate';
 
   try {
-    return await get<RateByAmountType>(`${url}/${amount}`);
+    return await get<RateByAmount>(`${url}/${amount}`);
   } catch (err) {
     console.error('Error fetching Rate by Amount:', err);
     throw err;

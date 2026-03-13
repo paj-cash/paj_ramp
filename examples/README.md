@@ -4,22 +4,23 @@ This directory contains complete, runnable examples demonstrating how to use the
 
 ## 📚 Available Examples
 
-### [Basic Onramp](./basic-onramp)
+### [Onramp](./onramp)
 
-**Difficulty:** Beginner  
+**Difficulty:** Beginner
 **What you'll learn:**
 
 - Session management (initiate & verify)
 - Creating onramp orders
+- Fetching transaction details
 - Handling bank account details for payment
 
 Perfect for: Understanding the basic onramp flow where users buy crypto with fiat.
 
 ---
 
-### [Basic Offramp](./basic-offramp)
+### [Offramp](./offramp)
 
-**Difficulty:** Beginner  
+**Difficulty:** Beginner
 **What you'll learn:**
 
 - Bank account verification and management
@@ -30,9 +31,22 @@ Perfect for: Understanding the reverse flow where users sell crypto for fiat.
 
 ---
 
+### [Utility](./utility)
+
+**Difficulty:** Beginner
+**What you'll learn:**
+
+- Fetching available banks
+- Converting fiat amounts to token amounts (and vice versa)
+- Fetching exchange rates
+
+Perfect for: Building UI components like price quotes, bank selectors, and currency conversion displays.
+
+---
+
 ### [Webhook Integration](./webhook-integration)
 
-**Difficulty:** Intermediate  
+**Difficulty:** Intermediate
 **What you'll learn:**
 
 - Setting up webhook endpoints
@@ -70,13 +84,16 @@ Specific examples may have additional requirements (documented in their READMEs)
 
 We recommend exploring the examples in this order:
 
-1. **Start with [Basic Onramp](./basic-onramp)**  
+1. **Start with [Onramp](./onramp)**
    Understand the fundamental flow of creating onramp orders
 
-2. **Then try [Basic Offramp](./basic-offramp)**  
+2. **Then try [Offramp](./offramp)**
    Learn the reverse process and bank account management
 
-3. **Finally explore [Webhook Integration](./webhook-integration)**  
+3. **Explore [Utility](./utility)**
+   Discover helper functions for rates, banks, and value conversions
+
+4. **Finally explore [Webhook Integration](./webhook-integration)**
    Build production-ready integrations with real-time updates
 
 ## 💡 Example Structure
@@ -86,9 +103,9 @@ Each example follows this structure:
 ```
 example-name/
 ├── package.json          # Dependencies and scripts
-├── index.js (or server.js)  # Main application code
+├── index.ts              # Main application code
 ├── .env.example          # Environment variables template
-└── README.md            # Detailed documentation
+└── README.md             # Detailed documentation
 ```
 
 ## 🔑 Getting Your API Key
@@ -113,7 +130,6 @@ Configure the environment in each example's `.env` file.
 
 - 📖 Read the [main SDK documentation](../README.md)
 - 🐛 [Report issues](https://github.com/paj-cash/paj_ramp/issues)
-- 💬 [Join our Discord](https://discord.gg/pajcash) (if available)
 - 📧 Email: support@paj.cash
 
 ## 🤝 Contributing
@@ -130,7 +146,6 @@ Good example ideas:
 - Mobile app integration (React Native)
 - Advanced error handling patterns
 - Multi-currency support
-- Automated testing examples
 
 ## 📄 License
 

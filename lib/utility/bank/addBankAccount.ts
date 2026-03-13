@@ -1,11 +1,11 @@
 import { post } from "../../../utils/api.js";
 
-type AddBankAccountType = {
+export interface AddBankAccount {
   id: string;
   accountName: string;
   accountNumber: string;
   bank: string;
-};
+}
 
 /**
  * Adds a new bank account by sending the provided token, bank ID, and account number to the public API.
@@ -28,7 +28,7 @@ export const addBankAccount = async (
   accountNumber: string
 ) => {
   try {
-    return await post<AddBankAccountType>(
+    return await post<AddBankAccount>(
       "/pub/bank-account",
       {
         bankId,
