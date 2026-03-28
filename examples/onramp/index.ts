@@ -36,13 +36,13 @@ async function main() {
     // In a real application, you would wait for the user to receive and enter the OTP
     // For this example, we assume you have the OTP from your email
     console.log(
-      "\n⏳ Please check your email for the OTP and add it to your .env file"
+      "\n⏳ Please check your email for the OTP and add it to your .env file",
     );
 
     const otp = process.env.OTP;
     if (!otp) {
       console.error(
-        "❌ OTP not found in .env file. Please add OTP=your_otp to .env"
+        "❌ OTP not found in .env file. Please add OTP=your_otp to .env",
       );
       process.exit(1);
     }
@@ -58,12 +58,12 @@ async function main() {
         os: "MacOS",
         browser: "Chrome",
       },
-      apiKey
+      apiKey,
     );
     console.log("✅ Session verified successfully!");
     console.log(
       "Token (first 20 chars):",
-      verified.token.substring(0, 20) + "..."
+      verified.token.substring(0, 20) + "...",
     );
 
     const sessionToken = verified.token;
@@ -78,8 +78,9 @@ async function main() {
         mint,
         chain: Chain.SOLANA,
         webhookURL,
+        fee: 0.12,
       },
-      sessionToken
+      sessionToken,
     );
 
     console.log("\n✅ Order created successfully!");
@@ -92,10 +93,12 @@ async function main() {
     console.log(
       "Fiat Amount (to send):",
       order.fiatAmount,
-      process.env.CURRENCY
+      process.env.CURRENCY,
     );
     console.log("Token Amount (to receive):", order.amount);
     console.log("Bank:", order.bank);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("fee:", order.fee);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     // Step 5: Fetch the transaction details
@@ -146,14 +149,14 @@ async function main() {
       "1. Transfer",
       order.fiatAmount,
       process.env.CURRENCY,
-      "to the account number above"
+      "to the account number above",
     );
     console.log("2. Your webhook will receive status updates");
     console.log("3. Once payment is confirmed, you will receive tokens");
   } catch (error) {
     console.error(
       "\n❌ Error:",
-      error instanceof Error ? error.message : String(error)
+      error instanceof Error ? error.message : String(error),
     );
     if (error && typeof error === "object" && "response" in error) {
       console.error("Response data:", (error as any).response.data);

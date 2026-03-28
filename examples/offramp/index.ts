@@ -81,6 +81,8 @@ async function main() {
         mint,
         webhookURL,
         chain: Chain.SOLANA,
+        fee: 0.1,
+        description: "Groceries bill",
       },
       sessionToken,
     );
@@ -95,6 +97,8 @@ async function main() {
     console.log("Token Amount (to pay):", order.amount);
     console.log("Fiat Amount (to receive):", order.fiatAmount);
     console.log("Rate:", order.rate);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("fee:", order.fee);
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
     console.log("\n📝 Next Steps:");

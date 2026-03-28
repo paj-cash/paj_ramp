@@ -32,11 +32,12 @@ export const createOnrampOrder = async (
   sessionToken: string,
 ): Promise<OnrampOrder> => {
   try {
+    const { fee, ...rest } = order;
     return await post<OnrampOrder>(
       "/pub/onramp",
       {
-        ...order,
-        businessUSDCFee: order.fee,
+        ...rest,
+        businessUSDCFee: fee,
       },
       {
         Authorization: `Bearer ${sessionToken}`,

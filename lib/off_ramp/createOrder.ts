@@ -31,11 +31,12 @@ export const createOfframpOrder = async (
   sessionToken: string,
 ) => {
   try {
+    const { fee, ...rest } = order;
     return await post<OfframpOrder>(
       "/pub/offramp",
       {
-        ...order,
-        businessUSDCFee: order.fee,
+        ...rest,
+        businessUSDCFee: fee,
       },
       {
         Authorization: `Bearer ${sessionToken}`,
