@@ -10,7 +10,9 @@ export interface CreateOfframpOrder {
   fiatAmount?: number;
   mint: string;
   chain: Chain;
+  description?: string;
   webhookURL: string;
+  fee?: number;
 }
 
 export interface OfframpOrder {
@@ -33,6 +35,7 @@ export const createOfframpOrder = async (
       "/pub/offramp",
       {
         ...order,
+        businessUSDCFee: order.fee,
       },
       {
         Authorization: `Bearer ${sessionToken}`,
