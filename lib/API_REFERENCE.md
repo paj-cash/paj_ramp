@@ -13,7 +13,6 @@ All requests use JSON. Timestamps are ISO 8601 strings.
 |---|---|
 | Production | `https://api.paj.cash` |
 | Staging | `https://api-staging.paj.cash` |
-| Socket (onramp real-time updates, staging) | `https://onramp-staging.paj.cash` |
 
 Use the base URL as the prefix for every path below.
 
@@ -374,9 +373,50 @@ Response `200`:
 
 ---
 
-## 7. Token info
+## 7. KYC
 
-### 7.1 Get token metadata
+### 7.1 Submit government-ID KYC
+
+```
+POST /pub/kyc
+```
+
+Headers:
+```
+Authorization: Bearer <sessionToken>
+Content-Type: application/json
+```
+
+Body:
+```json
+{
+  "idNumber": "12345678901",
+  "idType": "BVN",
+  "country": "NG"
+}
+```
+
+Rules:
+- The session must already have completed email verification
+  (i.e. obtained from `/pub/verify`).
+- `idType` — one of `BVN`, `NIN`.
+- `country` — one of `NG`, `GH`, `TZ`, `KE`, `ZA`.
+- A given (`idNumber`, `idType`, `country`) combination may only be linked
+  to one user; reusing one tied to a different user returns
+  `400 IdNumber already used`.
+
+Response `200`:
+```json
+{
+  "message": "KYC submitted successfully"
+}
+```
+
+---
+
+## 8. Token info
+
+### 8.1 Get token metadata
 
 ```
 GET /token/{mint}?chain={chain}
@@ -401,9 +441,9 @@ Response `200`:
 
 ---
 
-## 8. Offramp (crypto → fiat)
+## 9. Offramp (crypto → fiat)
 
-### 8.1 Create offramp order
+### 9.1 Create offramp order
 
 ```
 POST /pub/offramp
@@ -456,13 +496,13 @@ Response `200`:
 
 After receiving the response, the user transfers `amount` of `mint` on
 `chain` to `address`. Order status updates are pushed to `webhookURL`
-(see section 10).
+(see section 12).
 
 ---
 
-## 9. Onramp (fiat → crypto)
+## 10. Onramp (fiat → crypto)
 
-### 9.1 Create onramp order
+### 10.1 Create onramp order
 
 ```
 POST /pub/onramp
@@ -515,46 +555,6 @@ Response `200`:
 The user sends `fiatAmount` in `currency` to `accountNumber` at `bank`.
 Once PAJ detects the payment, it disburses the crypto to `recipient`
 and notifies `webhookURL`.
-
----
-
-## 10. Real-time onramp updates (Socket.IO)
-
-For onramp orders, PAJ exposes a Socket.IO connection that pushes live order
-status updates. This is optional — webhooks remain the source of truth — but
-useful for driving UI.
-
-Connect to:
-
-```
-https://onramp-staging.paj.cash/onramp-socket?id={orderId}
-```
-
-Events:
-
-| Event | Payload |
-|---|---|
-| `ORDER_UPDATE` | `OnRampOrderUpdate` (below) |
-| `ERROR` | `string` error message |
-
-`OnRampOrderUpdate`:
-```json
-{
-  "id": "order_id",
-  "fiatAmount": "50000",
-  "currency": "NGN",
-  "recipient": "RecipientWalletAddress...",
-  "mint": "EPjFW...",
-  "chain": "SOLANA",
-  "amount": 33.11,
-  "status": "pending"
-}
-```
-
-`status` values: `pending`, `processing`, `completed`, `failed`, `cancelled`.
-
-Any Socket.IO client (e.g. `socket.io-client` in any language) can subscribe.
-If your backend cannot use Socket.IO, rely on the webhook instead.
 
 ---
 
@@ -642,10 +642,11 @@ source of truth for final order state.
 | Enum | Values |
 |---|---|
 | `Currency` | `NGN`, `GHS`, `TZS`, `KES`, `ZAR`, `USD` |
+| `Country` | `NG`, `GH`, `TZ`, `KE`, `ZA` |
+| `IdType` | `BVN`, `NIN` |
 | `Chain` | `SOLANA`, `MONAD` |
 | `TransactionStatus` | `INIT`, `PAID`, `COMPLETED` |
 | `TransactionType` | `ON_RAMP`, `OFF_RAMP` |
-| `OnRampStatus` (socket) | `pending`, `processing`, `completed`, `failed`, `cancelled` |
 | `RateType` | `onRamp`, `offRamp` |
 
 ---
@@ -669,8 +670,7 @@ source of truth for final order state.
 2. `POST /pub/onramp` with `recipient` wallet + amount → bank `accountNumber`
    and `accountName`.
 3. User transfers `fiatAmount` in `currency` to that account.
-4. (Optional) Subscribe to `onramp-socket?id={orderId}` for live status.
-5. PAJ `POST`s the webhook when the crypto is disbursed.
+4. PAJ `POST`s the webhook when the crypto is disbursed.
 
 ---
 

@@ -70,6 +70,12 @@ export {
   TokenInfo,
 } from "./lib/utility/token/getTokenInfo.js";
 
+// KYC
+export {
+  submitKyc,
+  SubmitKyc,
+} from "./lib/utility/kyc/submitKyc.js";
+
 // Transaction History
 export { getAllTransactions } from "./lib/utility/transaction/getAllTransactions.js";
 export {
@@ -116,6 +122,8 @@ export {
   TransactionType,
   TransactionStatus,
   Environment,
+  IdType,
+  Country,
 } from "./utils/enums.js";
 export {
   Chain,

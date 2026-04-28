@@ -33,3 +33,16 @@ export enum Environment {
   Production = "production",
   Local = "local",
 }
+
+export enum IdType {
+  NIN = "NIN",
+  BVN = "BVN",
+}
+
+export enum Country {
+  NG = "NG",
+  GH = "GH",
+  TZ = "TZ",
+  KE = "KE",
+  ZA = "ZA",
+}
