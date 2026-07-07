@@ -8,4 +8,6 @@ export default {
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
+  globalSetup: "<rootDir>/jest.globalSetup.ts",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
